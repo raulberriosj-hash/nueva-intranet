@@ -78,17 +78,17 @@
   const SALDO_GERENTE = {
     semanas: ["Sem 35", "Sem 36", "Sem 37", "Sem 38"],
     series: [
-      { name: "Biron Alejandro Fierro Fuentes", data: [4439, 4425, 4412, 4399] },
-      { name: "Antonella Tamara Mena Caro", data: [2694, 2686, 2678, 2670] },
-      { name: "Chito Abel Deliz Muñoz", data: [808, 806, 803, 801] },
-      { name: "Jorge Hugo Aguilera Sánchez", data: [588, 586, 585, 583] },
-      { name: "Francisco Javier Ituarte Valderrama", data: [339, 338, 337, 336] },
-      { name: "Cristobal Israel Caceres Muñoz", data: [157, 157, 156, 156] },
-      { name: "Jeovana Teresa Guajardo Barahona", data: [112, 112, 111, 111] },
-      { name: "Diego Fernando Alexis Marty Sáez", data: [74, 73, 73, 73] },
-      { name: "Gabriel Emilio Pizarro Inostroza", data: [68, 67, 67, 67] },
-      { name: "Walter Lobos Cárdenas", data: [31, 31, 31, 31] },
-      { name: "17074601", data: [30, 30, 30, 30] }
+      { name: "Rodrigo Alberto Vergara Cáceres", data: [4439, 4425, 4412, 4399] },
+      { name: "Valentina Soledad Carrasco Pinto", data: [2694, 2686, 2678, 2670] },
+      { name: "Marcelo Iván Bustos Rojas", data: [808, 806, 803, 801] },
+      { name: "Patricio Hernán Cortés Lagos", data: [588, 586, 585, 583] },
+      { name: "Ricardo Andrés Salgado Villalobos", data: [339, 338, 337, 336] },
+      { name: "Sebastián Ignacio Quiroz Fuentes", data: [157, 157, 156, 156] },
+      { name: "Fernanda Isabel Olivares Riquelme", data: [112, 112, 111, 111] },
+      { name: "Álvaro Esteban Nicolás Vera Soto", data: [74, 73, 73, 73] },
+      { name: "Tomás Eduardo Maldonado Paredes", data: [68, 67, 67, 67] },
+      { name: "Óscar Durán Espinoza", data: [31, 31, 31, 31] },
+      { name: "10982345", data: [30, 30, 30, 30] }
     ],
   };
 

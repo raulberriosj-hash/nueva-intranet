@@ -13,7 +13,7 @@ como referencia de marcado, estilos y comportamiento.
 | [`index.html`](index.html) | Home de la intranet | Sistema de CSS antiguo, pendiente de migrar |
 | [`mis-vacaciones.html`](mis-vacaciones.html) | Solicitud de vacaciones del colaborador | Al día |
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
-| [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día |
+| [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
 | [`panel-rrhh.html`](panel-rrhh.html) | Panel de seguimiento de vacaciones (RRHH) | Al día |
 
 ## Cómo verlas
@@ -104,11 +104,24 @@ datos acabe teniendo la suya.
 
 ## Datos de ejemplo
 
-Todo lo que se ve es inventado y está para que las pantallas se entiendan.
+**Ninguna persona que aparece en estas pantallas existe.** Los nombres, los RUT
+y los saldos son inventados; este repositorio es público y no lleva datos de
+nadie. Cualquier parecido con un nombre real es casualidad de usar nombres
+chilenos corrientes.
 
-`js/panel-rrhh-datos.js` son 609 colaboradores generados, calibrados para que
-las columnas por año y los tramos cuadren con el informe real. **Ese archivo se
-borra entero** cuando el panel se conecte al backend.
+`js/panel-rrhh-datos.js` son 609 colaboradores generados. Los nombres y los RUT
+salen de un generador, pero los saldos están calibrados para que las columnas
+por año y los tramos cuadren con las cifras del informe real:
+
+| | 2026 | 2025 | 2024 | 2023 | 2022 | 2021 | Total |
+|---|---|---|---|---|---|---|---|
+| Días | 41 | 3.572 | 3.895 | 1.278 | 351 | 120 | **9.257** |
+
+Y los tramos: 60 personas con más de 31 días, 164 entre 16 y 30, 385 entre 1 y
+15. Ningún reparto supera los 15 días por año, que es el tope del artículo 67
+del Código del Trabajo.
+
+**Ese archivo se borra entero** cuando el panel se conecte al backend.
 
 ## El panel de RRHH
 
@@ -130,6 +143,6 @@ producción.
 - [ ] Migrar el home al sistema de `css/sistema/`
 - [ ] Decidir el corte por año del panel y borrar el andamio
 - [ ] Confirmar la licencia de Highcharts con TI
-- [ ] Un gerente aparece como RUT (`17074601`): le falta el nombre en el maestro
+- [ ] Un gerente aparece como RUT (`10982345`): le falta el nombre en el maestro
 - [ ] Enlazar las pantallas entre sí para poder navegar el prototipo completo
 - [ ] Plantillas sin datos del resto de las pantallas
