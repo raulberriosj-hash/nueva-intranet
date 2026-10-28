@@ -42,24 +42,24 @@
   --text-body-small-tracking: 0.5px;
 
   /* ---- Espaciado ------------------------------------------------------- */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-xl: 24px;
+  --home-space-xs: 4px;
+  --home-space-sm: 8px;
+  --home-space-md: 12px;
+  --home-space-xl: 24px;
 
   /* ---- Radios ------------------------------------------------------------ */
   --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 20px;
+  --home-radius-sm: 8px;
+  --home-radius-md: 16px;
+  --home-radius-lg: 20px;
   --radius-xl: 32px;
-  --radius-full: 999px;
+  --home-radius-full: 999px;
 
   /* ---- Sombras ------------------------------------------------------------ */
-  --shadow-button: 0px 2px 2px -1px rgba(0, 0, 0, 0.25);
+  --home-shadow-button: 0px 2px 2px -1px rgba(0, 0, 0, 0.25);
 
   /* ---- Transiciones --------------------------------------------------------
      */
-  --transition-fast: 150ms ease-out;
+  --home-transition-fast: 150ms ease-out;
   --transition-slide: 500ms ease;
 }

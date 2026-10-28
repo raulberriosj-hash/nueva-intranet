@@ -1,0 +1,230 @@
+/* ==========================================================================
+   SIDEBAR · secciones, rótulos y grupos desplegables
+
+   Se carga DESPUÉS de 04-components.css, que es donde vive la base de
+   .c-sidebar y .c-navlink. Acá está solo lo que trajo el diseño nuevo:
+
+     .c-sidebar__seccion   bloque con su rótulo y sus enlaces
+     .c-sidebar__label     el rótulo ("Jefatura", "RRHH", "Tickets")
+     .c-navgroup           un enlace que despliega hijos
+     .c-navlink--pendiente pantalla todavía no diseñada
+
+   El marcado lo pinta js/sidebar.js. No declara ningún color ni tamaño
+   propio: todo sale de 01-tokens.css.
+   ========================================================================== */
+
+/* ==========================================================================
+   RESET ACOTADO
+
+   El componente se monta también en index.html, que es del sistema viejo y
+   no carga 02-base.css. Para que no dependa de ese reset, lo que necesita
+   va acá, acotado al propio menú: fuera de .c-sidebar no toca nada. En las
+   pantallas que sí cargan 02-base.css esto repite lo que ya hay.
+   ========================================================================== */
+
+.c-sidebar,
+.c-sidebar *,
+.c-sidebar *::before,
+.c-sidebar *::after {
+  box-sizing: border-box;
+}
+
+.c-sidebar {
+  font-family: var(--font-sans);
+}
+
+.c-sidebar p,
+.c-sidebar ul {
+  margin: 0;
+}
+
+.c-sidebar ul {
+  padding: 0;
+  list-style: none;
+}
+
+.c-sidebar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.c-sidebar button {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.c-sidebar svg,
+.c-sidebar img {
+  display: block;
+}
+
+/* El texto para lector de pantalla que acompaña a cada icono. La utilidad
+   vive en 02-base.css, que el home no carga, así que acá va otra vez
+   acotada al menú. */
+.c-sidebar .u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   MÓVIL · barra inferior
+   Abajo no caben ni los rótulos ni los grupos: la barra deja solo los
+   enlaces sueltos de la primera sección. La navegación completa en teléfono
+   todavía no está diseñada.
+   ========================================================================== */
+
+.c-sidebar__seccion {
+  display: contents;
+}
+
+.c-sidebar__label,
+.c-navgroup {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .c-sidebar {
+    /* Con tantas entradas el menú ya no cabe de una vez en pantallas
+       bajas, así que se desplaza él solo. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .c-sidebar__seccion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .c-sidebar__label {
+    display: block;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-regular);
+    line-height: 1.3;
+    letter-spacing: var(--ls-wide);
+    color: var(--color-text-heading);
+  }
+
+  .c-navgroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  /* Plegado solo se ven los iconos: el rótulo de sección sobra y los hijos
+     no tienen dónde ir. */
+  .c-sidebar:not(.c-sidebar--expanded) .c-sidebar__label {
+    display: none;
+  }
+
+  .c-sidebar:not(.c-sidebar--expanded) .c-navgroup__hijos,
+  .c-sidebar:not(.c-sidebar--expanded) .c-navgroup__chevron {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   GRUPO DESPLEGABLE
+   ========================================================================== */
+
+.c-navgroup__toggle {
+  width: 100%;
+  text-align: left;
+}
+
+.c-navgroup__chevron {
+  margin-left: auto;
+  color: var(--color-icon-muted);
+  transition: rotate var(--transition-fast);
+}
+
+.c-navgroup--abierto .c-navgroup__chevron {
+  rotate: 180deg;
+}
+
+.c-navgroup__hijos {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  /* El hueco de la izquierda es donde se dibuja la línea del árbol. El
+     icono del padre mide 24 y lleva 12 de aire, así que la línea cae a 24
+     del borde y queda centrada bajo él. */
+  margin-left: calc(var(--space-xs) + var(--icon-lg) / 2);
+  padding-left: var(--space-xs);
+  border-left: 2px solid var(--color-divider);
+}
+
+.c-sidebar--expanded .c-navgroup--abierto .c-navgroup__hijos {
+  display: flex;
+}
+
+/* El codo que une la línea con cada hijo */
+.c-navgroup__hijo {
+  position: relative;
+}
+
+.c-navgroup__hijo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--space-xs) * -1);
+  width: var(--space-xs);
+  height: 50%;
+  border-bottom: 2px solid var(--color-divider);
+  border-left: 2px solid var(--color-divider);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+/* Al último hijo la línea le llega justo hasta el codo y no sigue de largo */
+.c-navgroup__hijo:last-child::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(var(--space-xs) * -1 - 2px);
+  width: 2px;
+  bottom: -2px;
+  background-color: var(--color-surface);
+}
+
+.c-navgroup__hijo .c-navlink {
+  width: 100%;
+}
+
+/* ==========================================================================
+   PANTALLA TODAVÍA NO DISEÑADA
+   No es un enlace roto: es una entrada que el diseño ya contempla y que
+   todavía no tiene pantalla. Se deja a la vista, apagada y sin clic, para
+   que se entienda el alcance del menú.
+   ========================================================================== */
+
+.c-navlink--pendiente {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.c-navlink--pendiente:hover {
+  background-color: transparent;
+}
+
+/* ==========================================================================
+   GRUPO QUE CONTIENE LA PÁGINA ACTUAL
+   Plegado no se ven los hijos, así que la marca de "estás aquí" se la lleva
+   el padre; si no, en esas pantallas el menú no señalaba nada.
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .c-sidebar:not(.c-sidebar--expanded) .c-navgroup--activo .c-navgroup__toggle {
+    background-color: var(--color-nav-selected);
+  }
+}

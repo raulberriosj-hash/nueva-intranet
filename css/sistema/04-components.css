@@ -110,6 +110,44 @@
 }
 
 /* ==========================================================================
+   ICONO
+   ========================================================================== */
+
+.c-icon {
+  display: inline-block;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex-shrink: 0;
+  color: var(--color-icon);
+  pointer-events: none;
+}
+
+.c-icon--xs {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+}
+.c-icon--sm {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+.c-icon--md {
+  width: var(--icon-md);
+  height: var(--icon-md);
+}
+.c-icon--lg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+.c-icon--xl {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+}
+.c-icon--maleta {
+  width: auto;
+  aspect-ratio: 5 / 8;
+}
+
+/* ==========================================================================
    SIDEBAR
    ========================================================================== */
 

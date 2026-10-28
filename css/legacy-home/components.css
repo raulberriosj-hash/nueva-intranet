@@ -36,7 +36,7 @@
 .avatar {
   width: 24px;
   height: 24px;
-  border-radius: var(--radius-full);
+  border-radius: var(--home-radius-full);
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -51,7 +51,7 @@
   background-color: var(--color-support-cta-50);
   cursor: pointer;
   text-decoration: none;
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--home-transition-fast);
 }
 
 .btn:hover {
@@ -72,11 +72,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xs);
+  gap: var(--home-space-xs);
   min-width: 0;
-  padding: var(--space-md);
+  padding: var(--home-space-md);
   border: 1px solid var(--color-support-cta-500);
-  border-radius: var(--radius-md);
+  border-radius: var(--home-radius-md);
   text-align: center;
 }
 
@@ -94,11 +94,11 @@ botones Enviar Tickets
 .btn--ticket {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
-  padding: var(--space-md);
+  padding: var(--home-space-md);
   border: 1px solid var(--color-support-cta-500);
-  border-radius: var(--radius-sm);
+  border-radius: var(--home-radius-sm);
   text-align: left;
 }
 
@@ -119,10 +119,10 @@ botones Enviar Tickets
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-md);
-  padding: var(--space-xl);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-button);
+  gap: var(--home-space-md);
+  padding: var(--home-space-xl);
+  border-radius: var(--home-radius-md);
+  box-shadow: var(--home-shadow-button);
   text-align: center;
 }
 
@@ -142,10 +142,10 @@ botones Enviar Tickets
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xs);
-  padding: var(--space-md);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-button);
+  gap: var(--home-space-xs);
+  padding: var(--home-space-md);
+  border-radius: var(--home-radius-full);
+  box-shadow: var(--home-shadow-button);
 }
 
 .btn--profile {
@@ -170,8 +170,8 @@ botones Enviar Tickets
   justify-content: center;
   width: 40px;
   height: 40px;
-  padding: var(--space-sm);
-  border-radius: var(--radius-lg);
+  padding: var(--home-space-sm);
+  border-radius: var(--home-radius-lg);
 }
 
 /* --------------------------------------------------------------------------
@@ -182,11 +182,11 @@ botones Enviar Tickets
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
-  padding: var(--space-xl);
+  padding: var(--home-space-xl);
   border: 1px solid var(--color-support-cta-500);
-  border-radius: var(--radius-md);
+  border-radius: var(--home-radius-md);
   overflow: hidden;
   text-align: left;
 }
@@ -195,7 +195,7 @@ botones Enviar Tickets
   display: flex;
   flex: 1 0 0;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--home-space-sm);
   min-width: 0;
   letter-spacing: var(--text-body-small-tracking);
 }
@@ -227,12 +227,12 @@ botones Enviar Tickets
 .card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
-  padding: var(--space-xl);
+  padding: var(--home-space-xl);
   background-color: var(--color-support-cta-50);
   border: 1px solid var(--color-support-cta-500);
-  border-radius: var(--radius-md);
+  border-radius: var(--home-radius-md);
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -243,7 +243,7 @@ botones Enviar Tickets
 .section-header {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--home-space-sm);
   margin: 0;
   font-size: var(--text-heading-h3-section-size);
   line-height: var(--text-heading-h3-section-line-height);
@@ -267,11 +267,11 @@ botones Enviar Tickets
 .list__row {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-xs);
+  gap: var(--home-space-md);
+  padding: var(--home-space-xs);
   border-radius: var(--radius-xs);
   background-color: var(--color-support-cta-50);
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--home-transition-fast);
 }
 
 .list__row:hover {
@@ -295,7 +295,7 @@ botones Enviar Tickets
   display: flex;
   flex: 1 0 0;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   min-width: 0;
 }
 

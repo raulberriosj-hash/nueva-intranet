@@ -12,7 +12,7 @@
      Calendario    igual, pero el popover lleva
                    <div class="c-calendar" data-calendario></div>
      Diálogos      [data-abre="#id"] para abrir · [data-cierra] para cerrar
-     Sidebar       [data-sidebar] con aria-controls al <aside>
+     Sidebar       lo pinta y lo pliega js/sidebar.js, no este archivo
      Grupo         [data-grupo="clave"] pliega las filas con [data-grupo-de="clave"]
 
      El marcado completo está en plantillas/mis-vacaciones.html.
@@ -340,21 +340,9 @@
       return;
     }
 
-    // --- sidebar
-    const sb = ev.target.closest("[data-sidebar]");
-    if (sb) {
-      const panel = document.getElementById(sb.getAttribute("aria-controls"));
-      if (panel) {
-        const ahora = !panel.classList.contains("c-sidebar--expanded");
-        panel.classList.toggle("c-sidebar--expanded", ahora);
-        sb.setAttribute("aria-expanded", String(ahora));
-        sb.setAttribute(
-          "aria-label",
-          ahora ? "Plegar navegación" : "Desplegar navegación",
-        );
-      }
-      return;
-    }
+    // El plegado del sidebar se fue a js/sidebar.js, que es quien pinta el
+    // menú. Si se maneja también acá el clic se cuenta dos veces y no pasa
+    // nada al pulsar.
 
     // --- navegación de mes
     const mes = ev.target.closest("[data-mes]");

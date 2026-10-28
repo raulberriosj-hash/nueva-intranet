@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="css/sistema/02-base.css" />
     <link rel="stylesheet" href="css/sistema/03-layout.css" />
     <link rel="stylesheet" href="css/sistema/04-components.css" />
+    <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
     <link rel="stylesheet" href="css/pantallas/mis-vacaciones.css" />
   </head>
 
-  <body>
+  <body data-pagina="vacaciones">
     <!-- ============================================================================
      PROTOTIPO · para revisar el diseño con datos de verdad.
 
@@ -155,67 +156,8 @@
        Si la intranet ya tiene su propia navegación, se borra entero este
        <aside> y la pantalla sigue funcionando: el layout no depende de él.
        ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
-      <aside class="c-sidebar" id="sidebar" aria-label="Navegación principal">
-        <div class="c-sidebar__profile">
-          <img
-            class="c-avatar c-avatar--lg"
-            src="assets/img/avatar-placeholder.png"
-            alt=""
-          />
-          <span class="c-sidebar__identity">
-            <span class="c-sidebar__org" data-org></span>
-            <span class="c-sidebar__user" data-usuario></span>
-          </span>
-        </div>
-
-        <hr class="c-divider c-divider--thick c-sidebar__divider" />
-
-        <nav class="c-sidebar__nav">
-          <a class="c-navlink" href="#">
-            <svg class="c-icon" aria-hidden="true"><use href="#i-home" /></svg>
-            <span class="c-navlink__label">Inicio</span>
-            <span class="u-visually-hidden">Inicio</span>
-          </a>
-          <a class="c-navlink" href="#">
-            <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
-            <span class="c-navlink__label">Mi Perfil</span>
-            <span class="u-visually-hidden">Mi Perfil</span>
-          </a>
-          <a class="c-navlink" href="#" aria-current="page">
-            <svg class="c-icon c-icon--maleta" aria-hidden="true">
-              <use href="#i-maleta" />
-            </svg>
-            <span class="c-navlink__label">Vacaciones</span>
-            <span class="u-visually-hidden">Vacaciones</span>
-          </a>
-        </nav>
-
-        <hr class="c-divider c-divider--thick c-sidebar__divider" />
-
-        <div class="c-sidebar__spacer"></div>
-
-        <div class="c-sidebar__footer">
-          <a class="c-navlink c-navlink--logout" href="#">
-            <svg class="c-icon" aria-hidden="true">
-              <use href="#i-log-out" />
-            </svg>
-            <span class="c-navlink__label">Cerrar Sesión</span>
-            <span class="u-visually-hidden">Cerrar sesión</span>
-          </a>
-        </div>
-
-        <button
-          class="c-sidebar__toggle"
-          type="button"
-          id="sidebar-toggle"
-          data-sidebar
-          aria-expanded="false"
-          aria-controls="sidebar"
-          aria-label="Desplegar navegación"
-        >
-          <svg class="c-icon" aria-hidden="true"><use href="#i-chevron" /></svg>
-        </button>
-      </aside>
+      <!-- El menú lo pinta js/sidebar.js, igual en todas las pantallas -->
+      <div data-sidebar-slot></div>
       <!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■  FIN · SIDEBAR  ■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
 
       <div class="l-main">
@@ -731,6 +673,7 @@
       </div>
     </dialog>
 
+    <script src="js/sidebar.js" defer></script>
     <script src="js/componentes.js"></script>
     <script src="js/mis-vacaciones.js"></script>
   </body>

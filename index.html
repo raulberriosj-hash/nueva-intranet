@@ -11,14 +11,22 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <!-- El menú compartido viene del sistema nuevo; el resto del home sigue
+         con su CSS de siempre. Los tokens no chocan: los que compartían
+         nombre están renombrados a --home-* en legacy-home/. -->
+    <link rel="stylesheet" href="css/sistema/01-tokens.css" />
+    <link rel="stylesheet" href="css/sistema/04-components.css" />
+    <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
+
     <link rel="stylesheet" href="css/legacy-home/tokens.css" />
     <link rel="stylesheet" href="css/legacy-home/components.css" />
     <link rel="stylesheet" href="css/legacy-home/screen.css" />
+    <script src="js/sidebar.js" defer></script>
     <script src="js/legacy-home/slider.js" defer></script>
     <script src="js/legacy-home/holidays.js" defer></script>
     <script src="js/legacy-home/birthdays.js" defer></script>
   </head>
-  <body>
+  <body data-pagina="inicio">
     <div class="app">
       <div class="main-container">
         <main class="page-content">
@@ -471,39 +479,8 @@
         </main>
       </div>
 
-      <nav class="sidebar" aria-label="Navegación principal">
-        <a class="sidebar__logo" href="index.html" aria-label="Inicio Inelcom">
-          <img src="assets/home/img-logo.png" alt="Inelcom" />
-        </a>
-        <button
-          type="button"
-          class="btn btn--icon-sidebar"
-          aria-label="Mi perfil"
-        >
-          <img class="icon" src="assets/home/ic-sidebar-user.svg" alt="" />
-        </button>
-        <button
-          type="button"
-          class="btn btn--icon-sidebar"
-          aria-label="Vacaciones"
-        >
-          <img class="icon" src="assets/home/ic-sidebar-vacation.svg" alt="" />
-        </button>
-        <button
-          type="button"
-          class="btn btn--icon-sidebar"
-          aria-label="Agendar sala"
-        >
-          <img class="icon" src="assets/home/ic-sidebar-chair.svg" alt="" />
-        </button>
-        <button
-          type="button"
-          class="btn btn--icon-sidebar"
-          aria-label="Enviar ticket de ayuda"
-        >
-          <img class="icon" src="assets/home/ic-help.svg" alt="" />
-        </button>
-      </nav>
+      <!-- El menú lo pinta js/sidebar.js, igual en todas las pantallas -->
+      <div data-sidebar-slot></div>
     </div>
   </body>
 </html>

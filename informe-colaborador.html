@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="css/sistema/02-base.css" />
     <link rel="stylesheet" href="css/sistema/03-layout.css" />
     <link rel="stylesheet" href="css/sistema/04-components.css" />
+    <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
     <link rel="stylesheet" href="css/pantallas/informe-colaborador.css" />
   </head>
 
-  <body>
+  <body data-pagina="informe">
     <!-- ========================================================================
      INFORME POR COLABORADOR · propuesta de diseño, con datos de muestra.
 
@@ -180,6 +181,8 @@
       </symbol>
     </svg>
     <div class="l-app">
+      <!-- El menú lo pinta js/sidebar.js, igual en todas las pantallas -->
+      <div data-sidebar-slot></div>
       <div class="l-main">
         <header class="l-header">
           <div class="l-header__content">
@@ -631,6 +634,7 @@
       </div>
     </dialog>
 
+    <script src="js/sidebar.js" defer></script>
     <script src="js/componentes.js"></script>
   </body>
 </html>

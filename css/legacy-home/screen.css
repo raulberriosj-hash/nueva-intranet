@@ -31,8 +31,8 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--space-xl);
-  padding: var(--space-xl);
+  gap: var(--home-space-xl);
+  padding: var(--home-space-xl);
   background-color: var(--color-support-cta-500);
 }
 
@@ -56,13 +56,13 @@ body {
   flex-direction: column;
   flex: 1 0 0;
   min-width: 0;
-  padding: var(--space-xl);
+  padding: var(--home-space-xl);
 }
 
 .page-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
   width: 100%;
 }
 
@@ -131,9 +131,9 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
-  padding: var(--space-xl);
+  padding: var(--home-space-xl);
   overflow: hidden;
   border-radius: var(--radius-xl);
   background-image: linear-gradient(
@@ -164,7 +164,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   flex: 1 0 0;
   min-width: 0;
 }
@@ -174,7 +174,7 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
 }
 
 .header__logo {
@@ -185,20 +185,20 @@ body {
 .header__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
 }
 
 .header__buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
 }
 
 /* ---- Accesos rápidos ------------------------------------------------------- */
 .quick-access {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
 }
 
@@ -210,13 +210,13 @@ body {
 /* ---- Área de contenido principal -------------------------------------- */
 .main-content {
   display: contents;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
   width: 100%;
 }
 
 .content-column {
   display: contents;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
   flex: 2 0 0;
   min-width: 0;
 }
@@ -233,7 +233,7 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1920 / 536;
-  border-radius: var(--radius-md);
+  border-radius: var(--home-radius-md);
   overflow: hidden;
 }
 
@@ -269,15 +269,15 @@ body {
   border: none;
   padding: 0;
   transform: translateY(-50%);
-  border-radius: var(--radius-full);
+  border-radius: var(--home-radius-full);
   background-color: var(--color-support-cta-50);
-  box-shadow: var(--shadow-button);
+  box-shadow: var(--home-shadow-button);
   color: var(--color-support-cta-700);
   font-family: inherit;
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--home-transition-fast);
 }
 
 .slider__nav:hover {
@@ -289,18 +289,18 @@ body {
 }
 
 .slider__nav--prev {
-  left: var(--space-md);
+  left: var(--home-space-md);
 }
 
 .slider__nav--next {
-  right: var(--space-md);
+  right: var(--home-space-md);
 }
 
 .slider__dots {
   display: flex;
   justify-content: center;
-  gap: var(--space-sm);
-  padding-top: var(--space-md);
+  gap: var(--home-space-sm);
+  padding-top: var(--home-space-md);
 }
 
 .slider__dot {
@@ -309,10 +309,10 @@ body {
   height: 8px;
   border: none;
   padding: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--home-radius-full);
   background-color: var(--color-support-cta-300);
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--home-transition-fast);
 }
 
 .slider__dot:hover {
@@ -325,14 +325,14 @@ body {
 
 .content-sections {
   display: contents;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
 }
 
 .benefits-list,
 .info-list {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
 }
 
 .benefits-list .btn--card,
@@ -343,7 +343,7 @@ body {
 /* ---- Columna lateral derecha ------------------------------------------- */
 .sidebar-right {
   display: contents;
-  gap: var(--space-xl);
+  gap: var(--home-space-xl);
   flex: 1 0 0;
   min-width: 0;
 }
@@ -351,7 +351,7 @@ body {
 .ticket-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--home-space-md);
   width: 100%;
 }
 
@@ -393,5 +393,24 @@ body {
     display: flex;
     flex-direction: column;
     max-width: 500px;
+  }
+}
+
+/* ==========================================================================
+   MENÚ COMPARTIDO
+
+   .c-sidebar viene de css/sistema/05-sidebar.css y pasa a columna a los
+   768, mientras que el resto de este home no se pone en fila hasta los
+   1024. Entre medio quedaba apilado encima del contenido, así que acá se
+   adelanta la fila. Lo demás del home no se toca: sigue cambiando a 1024.
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .app {
+    flex-direction: row;
+  }
+
+  .c-sidebar {
+    order: -1;
   }
 }

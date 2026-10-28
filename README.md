@@ -10,7 +10,7 @@ como referencia de marcado, estilos y comportamiento.
 
 | Archivo | Pantalla | Estado |
 |---|---|---|
-| [`index.html`](index.html) | Home de la intranet | Sistema de CSS antiguo, pendiente de migrar |
+| [`index.html`](index.html) | Home de la intranet | CSS antiguo, pendiente de migrar · ya comparte el menú |
 | [`mis-vacaciones.html`](mis-vacaciones.html) | Solicitud de vacaciones del colaborador | Al día |
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
 | [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
@@ -45,7 +45,8 @@ Y entrar a <http://localhost:8000>.
 │   │   ├── 01-tokens.css         variables: color, tipografía, espacio, radios
 │   │   ├── 02-base.css           reset y elementos base
 │   │   ├── 03-layout.css         armazón de página (.l-*)
-│   │   └── 04-components.css     componentes (.c-*)
+│   │   ├── 04-components.css     componentes (.c-*)
+│   │   └── 05-sidebar.css        el menú lateral
 │   ├── pantallas/              lo propio de cada pantalla
 │   │   ├── mis-vacaciones.css
 │   │   ├── aprobaciones.css
@@ -54,6 +55,7 @@ Y entrar a <http://localhost:8000>.
 │   └── legacy-home/            el CSS viejo, solo lo usa index.html
 │
 ├── js/
+│   ├── sidebar.js              EL MENÚ · una sola copia para todas
 │   ├── componentes.js          comportamiento declarativo compartido
 │   ├── mis-vacaciones.js       interacciones del prototipo
 │   ├── panel-rrhh.js           gráficos y tablas del panel
@@ -61,7 +63,7 @@ Y entrar a <http://localhost:8000>.
 │   └── legacy-home/            JS viejo, solo lo usa index.html
 │
 └── assets/
-    ├── icons/                  SVG sueltos y el sprite
+    ├── icons/                  SVG sueltos, el sprite y _sprite-nav.svg
     ├── img/
     └── home/                   imágenes del home
 ```
@@ -76,6 +78,7 @@ siempre en orden y después el CSS de la pantalla:
 <link rel="stylesheet" href="css/sistema/02-base.css" />
 <link rel="stylesheet" href="css/sistema/03-layout.css" />
 <link rel="stylesheet" href="css/sistema/04-components.css" />
+<link rel="stylesheet" href="css/sistema/05-sidebar.css" />
 <link rel="stylesheet" href="css/pantallas/mis-vacaciones.css" />
 ```
 
@@ -91,6 +94,38 @@ Nomenclatura BEM con prefijo por capa: `l-` armazón, `c-` componente,
 `tokens.css` / `components.css` / `screen.css`, anteriores al sistema de arriba.
 Funciona, pero no comparte variables con el resto. Migrarlo está pendiente y no
 es un cambio menor: la pantalla va a cambiar de aspecto.
+
+## El menú
+
+Hay una sola copia del menú y la usan las cinco pantallas. Antes cada HTML
+llevaba su propio `<aside>` y había que tocarlos uno por uno.
+
+Una pantalla lo monta así:
+
+```html
+<body data-pagina="vacaciones">
+  ...
+  <div data-sidebar-slot></div>
+  ...
+  <script src="js/sidebar.js" defer></script>
+```
+
+`data-pagina` dice cuál de las entradas se marca como actual. Si está dentro
+de un grupo, el grupo se abre solo.
+
+**Para cambiar el menú se toca `MENU`, arriba de `js/sidebar.js`, y nada
+más.** Cada entrada es un enlace suelto, una sección con su rótulo o un grupo
+desplegable; las que todavía no tienen pantalla van con `href: null` y se
+dibujan apagadas, para que se vea el alcance del menú sin fingir que llevan a
+alguna parte.
+
+Los iconos salen de `assets/icons/_sprite-nav.svg`, con prefijo `nav-` para no
+chocar con el sprite `i-` que cada pantalla trae inline.
+
+Que el menú se pinte con JS es una decisión de la maqueta, que no tiene
+compilador. En la intranet de verdad lo normal sería un parcial del servidor o
+un componente del framework; lo que hay que respetar es el marcado que sale de
+ahí, que es el que está documentado en `css/sistema/05-sidebar.css`.
 
 ## Las plantillas
 
@@ -144,5 +179,8 @@ producción.
 - [ ] Decidir el corte por año del panel y borrar el andamio
 - [ ] Confirmar la licencia de Highcharts con TI
 - [ ] Un gerente aparece como RUT (`10982345`): le falta el nombre en el maestro
-- [ ] Enlazar las pantallas entre sí para poder navegar el prototipo completo
+- [ ] Diseñar la navegación completa en teléfono: abajo solo caben los
+      enlaces sueltos, y las secciones con grupos no aparecen
+- [ ] Pantallas de Mi Perfil, Colaboradores en vacaciones y los tres grupos
+      de Tickets, que en el menú están pero todavía no existen
 - [ ] Plantillas sin datos del resto de las pantallas
