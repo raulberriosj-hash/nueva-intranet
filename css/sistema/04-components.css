@@ -1,0 +1,2485 @@
+/* ==========================================================================
+   04 · COMPONENTES
+   Cada bloque es independiente y se nombra en BEM:
+     .c-bloque __elemento --modificador
+   ========================================================================== */
+
+/* ==========================================================================
+   AVATAR
+   ========================================================================== */
+
+.c-avatar {
+  display: block;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  object-fit: cover;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.c-avatar--md {
+  width: 32px;
+  height: 32px;
+}
+
+.c-avatar--lg {
+  width: 40px;
+  height: 40px;
+}
+
+/* Sin foto: iniciales. En una lista de equipo casi nunca hay foto de todos. */
+.c-avatar--iniciales {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-text-heading);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* ==========================================================================
+   DIVISOR
+   ========================================================================== */
+
+.c-divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-divider);
+  border: 0;
+}
+
+.c-divider--thick {
+  height: 2px;
+  border-radius: 2px;
+}
+
+
+/* ==========================================================================
+   BOTÓN DE ICONO REDONDO 
+   ========================================================================== */
+
+.c-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--c-neutral-700);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+}
+
+.c-iconbtn:hover {
+  background-color: var(--color-state-hover);
+}
+.c-iconbtn:active {
+  background-color: var(--color-state-pressed);
+}
+.c-iconbtn .c-icon {
+  width: 17px;
+  height: 17px;
+}
+
+/* ==========================================================================
+   TÍTULO DE PÁGINA
+   ========================================================================== */
+
+.c-pagetitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.c-pagetitle__text {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 479px) {
+  .c-pagetitle__text {
+    font-size: 1.25rem;
+  } /* 20 · evita que parta en dos */
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.c-sidebar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: var(--size-bottomnav);
+  padding: 0 var(--space-xs);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* En teléfono la barra inferior muestra solo navegación */
+.c-sidebar__profile,
+.c-sidebar__divider,
+.c-sidebar__spacer,
+.c-sidebar__toggle {
+  display: none;
+}
+
+.c-sidebar__nav {
+  display: contents;
+}
+
+@media (min-width: 768px) {
+  .c-sidebar {
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    z-index: 10;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--space-lg);
+    width: var(--size-sidebar-collapsed);
+    height: 100vh;
+    height: 100dvh;
+    padding: var(--space-lg);
+    border-top: 0;
+    border-right: 1px solid var(--color-border-subtle);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+
+  .c-sidebar__profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+  }
+
+  .c-sidebar__identity {
+    display: none;
+  }
+
+  .c-sidebar__divider {
+    display: block;
+  }
+
+  .c-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .c-sidebar__spacer {
+    display: block;
+    flex: 1;
+  }
+
+  .c-sidebar__footer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Botón de plegar/desplegar, pisando el borde derecho */
+  .c-sidebar__toggle {
+    position: absolute;
+    top: 34px;
+    right: -15px;
+    display: flex;
+    padding: 6px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-sm);
+  }
+
+  .c-sidebar__toggle .c-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    transform: rotate(-90deg);
+  }
+}
+
+/* --- Variante expandida -------------------------------------------- */
+
+@media (min-width: 768px) {
+  .c-sidebar--expanded {
+    width: var(--size-sidebar-expanded);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .c-sidebar--expanded .c-sidebar__profile {
+    justify-content: flex-start;
+    gap: var(--space-xs);
+    height: auto;
+  }
+
+  .c-sidebar--expanded .c-sidebar__identity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    min-width: 0;
+  }
+
+  .c-sidebar--expanded .c-sidebar__nav {
+    align-items: stretch;
+  }
+
+  .c-sidebar--expanded .c-navlink__label {
+    display: block;
+  }
+
+  .c-sidebar--expanded .c-sidebar__toggle .c-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.c-sidebar__org {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--c-corporate-600);
+}
+
+.c-sidebar__user {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ITEM DE NAVEGACIÓN
+   ========================================================================== */
+
+.c-navlink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  transition: background-color var(--transition-fast);
+}
+
+.c-navlink:hover {
+  background-color: var(--color-nav-hover);
+}
+.c-navlink:active {
+  background-color: var(--color-nav-pressed);
+}
+
+.c-navlink[aria-current="page"] {
+  background-color: var(--color-nav-selected);
+}
+
+.c-navlink__label {
+  display: none;
+  flex: 1;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-heading);
+  text-align: left;
+}
+
+.c-navlink:active .c-navlink__label,
+.c-navlink[aria-current="page"] .c-navlink__label {
+  color: var(--color-text-primary);
+}
+
+/* Cerrar sesión */
+.c-navlink--logout {
+  padding: var(--space-2xs) var(--space-xs);
+}
+.c-navlink--logout .c-icon {
+  width: 20px;
+  height: 20px;
+}
+.c-navlink--logout .c-navlink__label {
+  color: var(--color-text-danger);
+}
+
+/* ==========================================================================
+   TILE DE BALANCE
+   ========================================================================== */
+
+.c-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--tile-bg);
+}
+
+.c-tile--info {
+  --tile-bg: var(--color-info-bg);
+  --tile-border: var(--color-info-border);
+  --tile-accent: var(--color-info-accent);
+  --tile-value: var(--color-info-text);
+}
+
+.c-tile--success {
+  --tile-bg: var(--color-success-bg);
+  --tile-border: var(--color-success-border);
+  --tile-accent: var(--color-success-border);
+  --tile-value: var(--color-success-text);
+}
+
+.c-tile--warning {
+  --tile-bg: var(--color-warning-bg);
+  --tile-border: var(--color-warning-border);
+  --tile-accent: var(--color-warning-border);
+  --tile-value: var(--color-warning-text);
+}
+
+.c-tile__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.c-tile__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--tile-accent);
+  border-radius: var(--radius-full);
+  color: var(--tile-accent);
+}
+
+.c-tile__bubble .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: inherit;
+}
+
+.c-tile__label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.25;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+}
+
+.c-tile__value {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--tile-value);
+}
+
+.c-tile__number {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-flat);
+}
+
+.c-tile__unit {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.2;
+}
+
+.c-tile__desc {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  color: var(--c-corporate-950);
+}
+
+/* ==========================================================================
+   TARJETA CONTENEDORA  ·  panel de nueva solicitud
+   ========================================================================== */
+
+.c-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-lg);
+}
+
+.c-card__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.c-card__title {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+.c-card__copy {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--color-text-heading);
+}
+
+/* ==========================================================================
+   BADGE SÓLIDO  ·  contador de días a utilizar
+   Variantes: sin modificador (sin dato) · --right (cabe) · --wrong (excede)
+   ========================================================================== */
+
+.c-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background-color: var(--color-badge-empty);
+  color: var(--color-text-inverse);
+}
+
+.c-badge--right {
+  background-color: var(--color-badge-ok);
+}
+.c-badge--wrong {
+  background-color: var(--color-badge-over);
+}
+
+/* ==========================================================================
+   BADGE DE ESTADO (drawer)  ·  pendiente / aprobado / rechazado
+   ========================================================================== */
+
+.c-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.2;
+  /* En el drawer el rótulo va en caja alta. Lo hace el CSS y no el texto,
+     así el dato que llega puede ser el mismo que usa la tabla. */
+  text-transform: uppercase;
+  white-space: nowrap;
+  background-color: var(--status-bg);
+  color: var(--status-text);
+}
+
+.c-status--aprobado {
+  --status-bg: var(--color-success-bg);
+  --status-text: var(--color-success-text);
+}
+.c-status--pendiente {
+  --status-bg: var(--color-warning-bg-soft);
+  --status-text: var(--color-warning-text);
+}
+.c-status--rechazado {
+  --status-bg: var(--color-danger-bg);
+  --status-text: var(--color-danger-text);
+}
+
+/* ==========================================================================
+   CAMPO DE SOLICITUD
+   Es el disparador de un desplegable, no un <select> nativo: el diseño
+   apila etiqueta y valor dentro de la misma caja, cosa que un <select>
+   no puede renderizar. Va como <button> con aria-haspopup="listbox".
+   ========================================================================== */
+
+.c-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-sm);
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.c-field:hover {
+  background-color: var(--color-state-hover);
+}
+.c-field:hover .c-field__icon {
+  background-color: var(--c-blue-200);
+}
+
+.c-field:active {
+  background-color: var(--color-state-pressed);
+}
+.c-field:active .c-field__icon {
+  background-color: var(--c-blue-300);
+}
+
+.c-field:focus-visible .c-field__icon {
+  background-color: var(--c-corporate-200);
+}
+
+.c-field__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-icon-muted);
+  transition: background-color var(--transition-fast);
+}
+
+.c-field__icon .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: inherit;
+}
+
+.c-field__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.c-field__label {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-field__value {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.c-field__value--placeholder {
+  font-weight: var(--fw-regular);
+  color: var(--color-text-secondary);
+}
+
+.c-field__chevron {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  flex-shrink: 0;
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   CAMPO DE TEXTO LARGO  ·  comentario
+   ========================================================================== */
+
+.c-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.c-notes:focus-within {
+  background-color: var(--color-state-hover);
+}
+
+.c-notes__label {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-notes__hint {
+  font-weight: var(--fw-regular);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text-secondary);
+}
+
+.c-notes__input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 0;
+  resize: vertical;
+}
+
+.c-notes__input:focus-visible {
+  outline: none;
+}
+.c-notes__input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   BOTÓN DE ACCIÓN PRINCIPAL
+   ========================================================================== */
+
+.c-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  width: 100%;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-action-text);
+  background-color: var(--color-action-bg);
+  transition: background-color var(--transition-fast);
+}
+
+.c-submit .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: currentColor;
+}
+
+.c-submit:hover {
+  background-color: var(--color-action-bg-hover);
+}
+.c-submit:active {
+  background-color: var(--color-action-bg-pressed);
+}
+
+.c-submit:disabled {
+  cursor: not-allowed;
+  font-weight: var(--fw-bold);
+  color: var(--color-action-text-disabled);
+  background-color: var(--color-action-bg-disabled);
+}
+
+.c-submit:disabled .c-icon {
+  color: var(--color-border);
+}
+
+/* ==========================================================================
+   CABECERA DE SECCIÓN
+   ========================================================================== */
+
+.c-sectionhead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.c-sectionhead__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+
+/* ==========================================================================
+   CAMPO EN MODO FILTRO
+   ========================================================================== */
+
+.c-field--filter {
+  width: auto;
+  max-width: 240px;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-field--filter .c-field__content {
+  flex: 0 1 auto;
+}
+
+/* ==========================================================================
+   BOTÓN DE CIERRE
+   ========================================================================== */
+
+.c-closebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-sm);
+  color: var(--color-border);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.c-closebtn:hover {
+  background-color: var(--color-state-hover);
+  color: var(--color-text-primary);
+}
+
+.c-closebtn:active {
+  background-color: var(--color-state-pressed);
+}
+
+.c-closebtn .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: inherit;
+}
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+
+.c-modal {
+  width: calc(100% - var(--space-xl));
+  max-width: var(--size-modal-md);
+  max-height: calc(100dvh - var(--space-xl));
+  padding: 0;
+  overflow: auto;
+  background-color: var(--color-surface);
+  border: 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
+  color: var(--color-text-primary);
+}
+
+
+.c-modal::backdrop {
+  background-color: var(--color-overlay);
+}
+
+/* Modal angosto, para los que solo piden una confirmación */
+.c-modal--sm {
+  max-width: var(--size-modal-sm);
+}
+
+/* --- Variante drawer -----------------------------------------------    */
+
+.c-drawer {
+  width: 100%;
+  max-width: var(--size-modal-sm);
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  border-radius: 0;
+  translate: 0 0;
+}
+
+.c-drawer[open] {
+  transition: translate var(--transition-base);
+}
+.c-drawer[open]::backdrop {
+  transition: opacity var(--transition-base);
+}
+
+/* Entra con @starting-style, no con @keyframes: así el estado normal ya es el
+   correcto y, si el navegador no lo soporta, aparece en su sitio sin animar. */
+@starting-style {
+  .c-drawer[open] {
+    translate: 100% 0;
+  }
+  .c-drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+
+/* En teléfono ocupa todo el ancho */
+@media (max-width: 539px) {
+  .c-drawer {
+    max-width: 100%;
+  }
+}
+
+.c-drawer .c-modal__body {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Drawer ancho, para contenido de informe */
+.c-drawer--lg {
+  max-width: var(--size-modal-lg);
+}
+
+/* Con cabecera propia el drawer se reparte en dos: la cabecera queda fija y
+   solo el cuerpo scrollea. */
+.c-drawer:has(> .c-modal__header) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c-drawer:has(> .c-modal__header) .c-modal__body {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+.c-drawer__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+  flex-shrink: 0;
+}
+
+.c-drawer__pos {
+  padding: 0 var(--space-3xs);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+/* En teléfono el nombre necesita el ancho más que el contador */
+@media (max-width: 479px) {
+  .c-drawer__pos {
+    display: none;
+  }
+}
+
+.c-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.c-modal__title {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.c-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background-color: var(--color-surface-muted);
+}
+
+.c-modal__body--plain {
+  gap: var(--space-md);
+  background-color: var(--color-surface);
+}
+
+.c-modal__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.c-modal__summaryText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.c-modal__range {
+  font-size: 2rem; /* 32 */
+  font-weight: var(--fw-bold);
+  line-height: 1.15;
+  color: var(--color-text-heading);
+}
+
+@media (max-width: 479px) {
+  .c-modal__range {
+    font-size: var(--fs-h1);
+  }
+}
+
+/* ==========================================================================
+   LISTA DE DETALLE
+   ========================================================================== */
+
+.c-detaillist {
+  overflow: hidden;
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-detaillist__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.c-detaillist__row:last-child {
+  border-bottom: 0;
+}
+
+.c-detaillist__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-icon-muted);
+}
+
+.c-detaillist__icon .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: inherit;
+}
+
+.c-detaillist__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.c-detaillist__label {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-detaillist__value {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.c-detaillist__note {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   ESTADO VACÍO
+   ========================================================================== */
+
+.c-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.c-empty__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-full);
+  color: var(--color-icon-muted);
+}
+
+.c-empty__bubble .c-icon {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  color: inherit;
+}
+
+.c-empty__title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+}
+
+.c-empty__text {
+  max-width: 44ch;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+/* Variante compacta, para cuando el vacío es solo del filtro */
+.c-empty--compact {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* ==========================================================================
+   AVISO EN LÍNEA
+   ========================================================================== */
+
+.c-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  padding: var(--space-xs);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  background-color: var(--color-danger-bg);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger-text);
+}
+
+.c-notice .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  margin-top: 1px;
+  color: inherit;
+}
+
+/* ==========================================================================
+   DESPLEGABLE
+   ========================================================================== */
+
+.c-select {
+  position: relative;
+}
+
+.c-select .c-field {
+  width: 100%;
+}
+
+.c-select--filter .c-field {
+  width: 100%;
+}
+
+/* --- Panel flotante compartido (lista y calendario) ------------------- */
+
+.c-popover {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + var(--space-3xs));
+  left: 0;
+  min-width: 100%;
+  padding: var(--space-3xs);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card-lg);
+}
+
+.c-popover:has(.c-calendar) {
+  min-width: auto;
+  width: max-content;
+}
+
+.c-popover--fin {
+  left: auto;
+  right: 0;
+}
+
+.c-popover--arriba {
+  top: auto;
+  bottom: calc(100% + var(--space-3xs));
+}
+
+/* --- Lista de opciones ------------------------------------------------ */
+
+.c-select__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 264px;
+  overflow-y: auto;
+}
+
+.c-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  width: 100%;
+  padding: var(--space-2xs) var(--space-xs);
+  text-align: left;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.c-select__option:hover {
+  background-color: var(--color-state-hover);
+}
+
+.c-select__option[aria-selected="true"] {
+  background-color: var(--color-state-selected);
+  font-weight: var(--fw-bold);
+}
+
+.c-select__option.is-activa {
+  background-color: var(--color-nav-hover);
+}
+.c-select__option[aria-selected="true"].is-activa {
+  background-color: var(--color-nav-pressed);
+}
+
+/* ==========================================================================
+   CALENDARIO
+   ========================================================================== */
+
+.c-calendar {
+  width: 276px;
+  padding: var(--space-3xs);
+}
+
+.c-calendar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-2xs) var(--space-2xs);
+}
+
+.c-calendar__month {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  text-transform: capitalize;
+}
+
+.c-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.c-calendar__dow {
+  padding: var(--space-3xs) 0;
+  text-align: center;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-calendar__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.c-calendar__day:hover:not(:disabled) {
+  background-color: var(--color-state-hover);
+}
+
+.c-calendar__day--rango {
+  background-color: var(--c-blue-100);
+}
+
+.c-calendar__day--hoy {
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.c-calendar__day[aria-pressed="true"] {
+  background-color: var(--color-action-bg);
+  color: var(--color-action-text);
+  font-weight: var(--fw-bold);
+}
+
+.c-calendar__day:disabled {
+  color: var(--color-border);
+  cursor: not-allowed;
+}
+
+.c-calendar__day--fuera {
+  visibility: hidden;
+}
+
+/* Botones de mes, más chicos que los del historial */
+.c-iconbtn--sm {
+  width: 28px;
+  height: 28px;
+}
+.c-iconbtn--sm .c-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* ==========================================================================
+   PAGINACIÓN
+   ========================================================================== */
+
+.c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  padding-top: var(--space-2xs);
+}
+
+.c-pagination__note {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-secondary);
+}
+
+.c-pagination__nav {
+  display: flex;
+  gap: var(--space-2xs);
+}
+
+
+/* ==========================================================================
+   TABLA DEL HISTORIAL
+
+   <table> de verdad para que el lector de pantalla anuncie cada celda con su
+   encabezado. Las cuatro columnas iguales las hace `table-layout: fixed`.
+
+   La fila entera es clicable: el enlace del rango se estira sobre ella con un
+   ::after, así queda un solo punto de tabulación por fila.
+   ========================================================================== */
+
+.c-table {
+  width: 100%;
+  border-collapse: separate;      /* separate, para que el radio recorte bien */
+  border-spacing: 0;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  table-layout: fixed;
+}
+
+.c-table th,
+.c-table td {
+  padding: var(--space-md) 0;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-table-border);
+}
+
+.c-table th:first-child,
+.c-table td:first-child { padding-left: var(--space-lg); }
+
+.c-table th:last-child,
+.c-table td:last-child { padding-right: var(--space-lg); }
+
+.c-table th + th,
+.c-table td + td { padding-left: var(--space-md); }
+
+/* La última fila no lleva línea: ya está el borde de la tabla */
+.c-table tbody tr:last-child td { border-bottom: 0; }
+
+/* --- Cabecera --------------------------------------------------------- */
+
+.c-table thead th {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+  background-color: var(--color-table-head-bg);
+}
+
+/* --- Celdas ----------------------------------------------------------- */
+
+.c-table__rango {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.c-table__dias,
+.c-table__aprobador {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.c-table__dias,
+.c-table__estado { text-align: center; }
+
+/* --- Fila ------------------------------------------------------------- */
+
+.c-table__row {
+  position: relative;
+  background-color: var(--color-surface);
+  transition: background-color var(--transition-fast);
+}
+
+.c-table__row:hover { background-color: var(--color-table-row-hover); }
+.c-table__row:active { background-color: var(--color-table-row-pressed); }
+
+.c-table__row:has(.c-table__link:hover)  { background-color: var(--color-table-row-hover); }
+.c-table__row:has(.c-table__link:active) { background-color: var(--color-table-row-pressed); }
+
+.c-table__row:has(.c-table__link:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-focus-ring);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+.c-table__link:focus-visible { outline: none; }
+
+/* La solicitud pendiente va destacada, como en el diseño */
+.c-table__row--pendiente .c-table__rango,
+.c-table__row--pendiente .c-table__dias { font-weight: var(--fw-bold); }
+
+/* Las rechazadas van atenuadas; la etiqueta de estado conserva su fuerza */
+.c-table__row--rechazado :is(.c-table__rango, .c-table__dias, .c-table__aprobador) {
+  opacity: var(--opacity-row-muted);
+}
+
+/* --- Enlace estirado -------------------------------------------------- */
+
+.c-table__link {
+  color: inherit;
+  font: inherit;
+}
+
+.c-table__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+
+/* ==========================================================================
+   ETIQUETA DE ESTADO (tabla)
+   No intercambiable con .c-status del drawer: esquina de 8 en vez de píldora
+   y tono más suave.
+   ========================================================================== */
+
+.c-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-3xs) 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  white-space: nowrap;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+.c-tag--aprobado  { --tag-bg: var(--color-tag-ok-bg);   --tag-text: var(--color-tag-ok-text); }
+.c-tag--pendiente { --tag-bg: var(--color-tag-wait-bg); --tag-text: var(--color-tag-wait-text); }
+.c-tag--rechazado { --tag-bg: var(--color-tag-no-bg);   --tag-text: var(--color-tag-no-text); }
+
+/* Estado contractual de la persona, no de una solicitud */
+.c-tag--activo   { --tag-bg: var(--color-tag-ok-bg);   --tag-text: var(--color-tag-ok-text); }
+.c-tag--inactivo { --tag-bg: var(--c-neutral-200);     --tag-text: var(--color-text-secondary); }
+
+
+/* ==========================================================================
+   TABLA EN TELÉFONO
+   Bajo 768px cada fila pasa a bloque y las celdas muestran su encabezado
+   con ::before, tomado del atributo data-col.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .c-table,
+  .c-table tbody,
+  .c-table tr,
+  .c-table td { display: block; width: 100%; }
+
+  .c-table thead { display: none; }
+
+  .c-table__row {
+    padding: var(--space-md) var(--space-md) var(--space-xs);
+    border-bottom: 1px solid var(--color-table-border);
+  }
+
+  .c-table tbody tr:last-child { border-bottom: 0; }
+
+  .c-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-3xs) 0;
+    border-bottom: 0;
+    text-align: left;
+  }
+
+  .c-table td::before {
+    content: attr(data-col);
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-black);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .c-table th:first-child,
+  .c-table td:first-child,
+  .c-table th:last-child,
+  .c-table td:last-child { padding-left: 0; padding-right: 0; }
+
+  .c-table th + th,
+  .c-table td + td { padding-left: 0; }
+
+  .c-table__dias,
+  .c-table__estado { text-align: right; }
+}
+
+
+/* ==========================================================================
+   BOTÓN DE ACCIÓN COMPACTO
+
+   El sistema tenía solo .c-submit (bloque, ancho completo), .c-iconbtn
+   (redondo) y .c-closebtn. Faltaba un botón normal de etiqueta corta, que
+   es lo que pide una tabla con acciones por fila.
+
+   Jerarquía: el afirmativo va sólido y el destructivo va fantasma, para que
+   en una tabla densa no compitan dos bloques de color por fila.
+   ========================================================================== */
+
+.c-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3xs);
+  padding: var(--space-2xs) var(--space-xs);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.c-btn .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: currentColor;
+}
+
+.c-btn:disabled {
+  cursor: not-allowed;
+  background-color: var(--color-action-bg-disabled);
+  border-color: transparent;
+  color: var(--color-action-text-disabled);
+}
+
+/* Afirmativo. Usa el tono 700 y no el 600: con blanco encima da 5:1 y pasa AA */
+.c-btn--aprobar {
+  background-color: var(--c-success-700);
+  color: var(--color-text-inverse);
+}
+.c-btn--aprobar:hover:not(:disabled)  { background-color: var(--c-success-900); }
+.c-btn--aprobar:active:not(:disabled) { background-color: var(--c-success-900); }
+
+/* Destructivo, en fantasma: el peso visual lo lleva el afirmativo */
+.c-btn--rechazar {
+  background-color: transparent;
+  border-color: var(--color-border-subtle);
+  color: var(--c-error-700);
+}
+.c-btn--rechazar:hover:not(:disabled) {
+  background-color: var(--c-error-100);
+  border-color: var(--c-error-100);
+}
+.c-btn--rechazar:active:not(:disabled) { background-color: var(--c-error-200); }
+
+/* Neutro, para cancelar */
+.c-btn--neutro {
+  background-color: transparent;
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-heading);
+}
+.c-btn--neutro:hover:not(:disabled)  { background-color: var(--color-state-hover); }
+.c-btn--neutro:active:not(:disabled) { background-color: var(--color-state-pressed); }
+
+.c-btn--bloque { width: 100%; }
+
+
+/* ==========================================================================
+   FILA DE ACCIONES
+   ========================================================================== */
+
+.c-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.c-acciones--fin { justify-content: flex-end; }
+
+/* Dentro de una fila de tabla las acciones tienen que quedar POR ENCIMA del
+   enlace estirado, si no el clic en el botón abre el detalle. */
+.c-table .c-acciones {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==========================================================================
+   PERSONA  ·  avatar + nombre para celdas de tabla
+   ========================================================================== */
+
+.c-persona {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.c-persona__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.c-persona__nombre {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.c-persona__cargo {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   CONTADOR COMPACTO
+
+   Versión liviana del tile de balance, para pantallas donde el dato es
+   contexto y no el contenido principal. Misma familia de color que el tile
+   —fondo tenue, borde del tono fuerte, burbuja blanca con el icono— pero en
+   píldora y en una línea, así cabe en la cabecera de una sección sin
+   robarle protagonismo a lo que viene abajo.
+   ========================================================================== */
+
+.c-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: 6px var(--space-xs) 6px 6px;
+  background-color: var(--stat-bg);
+  border: 1px solid var(--stat-border);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.c-stat--info {
+  --stat-bg: var(--color-info-bg);
+  --stat-border: var(--color-info-border);
+  --stat-accent: var(--color-info-accent);
+  --stat-numero: var(--color-info-text);
+}
+
+.c-stat--warning {
+  --stat-bg: var(--color-warning-bg);
+  --stat-border: var(--color-warning-border);
+  --stat-accent: var(--color-warning-border);
+  --stat-numero: var(--color-warning-text);
+}
+
+.c-stat--success {
+  --stat-bg: var(--color-success-bg);
+  --stat-border: var(--color-success-border);
+  --stat-accent: var(--color-success-border);
+  --stat-numero: var(--color-success-text);
+}
+
+.c-stat__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--stat-accent);
+  border-radius: var(--radius-full);
+  color: var(--stat-accent);
+}
+
+.c-stat__bubble .c-icon {
+  width: 12px;
+  height: 12px;
+  color: inherit;
+}
+
+.c-stat__numero {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  color: var(--stat-numero);
+}
+
+.c-stat__label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  color: var(--color-text-heading);
+}
+
+/* Agrupados en la cabecera de sección */
+.c-sectionhead__stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+
+/* ==========================================================================
+   CONCILIACIÓN DE SALDO
+
+   Muestra la aritmética, no dos cifras sueltas: de dónde sale el saldo
+   calculado y en cuánto se aparta del que tiene cargado el sistema. Esa
+   diferencia es la razón por la que RRHH abre el informe.
+   ========================================================================== */
+
+.c-recon {
+  overflow: hidden;
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-recon__row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding: 10px var(--space-md);
+}
+
+.c-recon__op {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-secondary);
+}
+
+.c-recon__label {
+  font-size: var(--fs-base);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+}
+
+.c-recon__num {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+/* Resultado de la suma */
+.c-recon__row--total {
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.c-recon__row--total .c-recon__label {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.c-recon__row--total .c-recon__num {
+  font-size: var(--fs-lg);
+}
+
+/* El dato que se vino a buscar. Usar --ok cuando la diferencia es 0. */
+.c-recon__row--diff {
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-md);
+  border-top: 1px solid var(--color-border-subtle);
+  background-color: var(--color-danger-bg);
+}
+
+.c-recon__row--diff :is(.c-recon__label, .c-recon__num) {
+  font-weight: var(--fw-bold);
+  color: var(--color-danger-text);
+}
+
+.c-recon__row--diff .c-recon__num {
+  font-size: var(--fs-lg);
+}
+
+.c-recon__row--ok {
+  background-color: var(--color-success-bg);
+}
+
+.c-recon__row--ok :is(.c-recon__label, .c-recon__num) {
+  color: var(--color-success-text);
+}
+
+
+/* ==========================================================================
+   PERIODOS
+
+   Saldo por periodo anual. En rejilla y no en tabla porque son dos datos por
+   fila y así se ve de un vistazo en qué años quedó parado el saldo.
+   ========================================================================== */
+
+.c-periodos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: var(--space-2xs);
+}
+
+.c-periodos__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2xs) var(--space-xs);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.c-periodos__periodo {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-periodos__dias {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+}
+
+/* Periodo sin saldo: sigue visible, pero no compite */
+.c-periodos__item--vacio {
+  background-color: var(--color-surface-sunken);
+}
+
+.c-periodos__item--vacio .c-periodos__dias {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-secondary);
+}
+
+
+/* ==========================================================================
+   REGISTRO
+
+   Lista de movimientos históricos. Reemplaza a una tabla de ocho columnas:
+   dentro de un drawer no cabe sin scroll horizontal, y los datos secundarios
+   se leen mejor como una línea de metadatos que como celdas.
+   ========================================================================== */
+
+.c-records {
+  padding: 0 var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-record {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.c-record:last-child {
+  border-bottom: 0;
+}
+
+.c-record__main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.c-record__rango {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.c-record__dias {
+  margin-right: auto;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.c-record__meta {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-loose);
+  color: var(--color-text-secondary);
+}
+
+.c-record__obs {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-loose);
+  color: var(--color-text-primary);
+}
+
+
+/* ==========================================================================
+   CABECERA DE SUBSECCIÓN
+
+   Para las secciones de dentro de un drawer o una card. El contador va en la
+   cabecera para saber qué hay antes de recorrer la lista.
+   ========================================================================== */
+
+.c-subhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-2xs);
+}
+
+.c-subhead__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+}
+
+.c-subhead__count {
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+
+/* ==========================================================================
+   LÍNEA DE METADATOS
+   ========================================================================== */
+
+.c-metaline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.c-metaline__sep {
+  color: var(--color-border);
+}
+
+/* Apilada no deja separadores colgando al final de una línea */
+@media (max-width: 539px) {
+  .c-metaline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3xs);
+  }
+
+  .c-metaline__sep {
+    display: none;
+  }
+}
+
+
+/* ==========================================================================
+   BARRA DE COMPOSICIÓN
+
+   Un total partido en tramos. Cada segmento lleva su proporción en el estilo
+   en línea (--parte) porque viene del dato, no del diseño.
+   ========================================================================== */
+
+.c-stack {
+  display: flex;
+  overflow: hidden;
+  height: 28px;
+  border-radius: var(--radius-sm);
+}
+
+.c-stack__parte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: var(--parte, 1);
+  min-width: 0;
+  padding: 0 var(--space-3xs);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: var(--parte-bg);
+  color: var(--parte-text);
+}
+
+.c-stack__parte--corriente { --parte-bg: var(--c-blue-200);    --parte-text: var(--c-blue-900); }
+.c-stack__parte--porvencer { --parte-bg: var(--c-warning-200); --parte-text: var(--c-warning-900); }
+.c-stack__parte--vencido   { --parte-bg: var(--c-error-500);   --parte-text: var(--color-text-inverse); }
+
+
+/* ==========================================================================
+   LEYENDA
+   ========================================================================== */
+
+.c-legend {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.c-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.c-legend__marca {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background-color: var(--marca, var(--color-border));
+}
+
+
+/* ==========================================================================
+   GRÁFICO
+
+   Solo el área de dibujo y su cabecera opcional para la leyenda. El título y
+   la descripción los pone .c-bloque. Lo de dentro de .c-chart__plot es una
+   maqueta en CSS; ahí va la librería de gráficos.
+   ========================================================================== */
+
+.c-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.c-chart__plot {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2xs);
+  height: 132px;
+}
+
+
+/* ==========================================================================
+   BARRAS
+
+   Maqueta de gráfico de barras en CSS. La altura de cada barra va en línea
+   (--alto) porque viene del dato.
+   ========================================================================== */
+
+.c-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.c-bars__barras {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+}
+
+.c-bars__barra {
+  flex: 1;
+  min-width: 0;
+  max-width: 56px;
+  height: var(--alto, 0%);
+  border-radius: 3px 3px 0 0;
+  background-color: var(--barra, var(--c-corporate-500));
+}
+
+.c-bars__pie {
+  font-size: var(--fs-xs);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-secondary);
+}
+
+/* Al destacar una serie el resto se atenúa, que es lo que hace legible un
+   gráfico de once series. */
+.c-bars__barra:hover,
+.c-bars__grupo:hover .c-bars__barra {
+  opacity: 1;
+}
+
+.c-bars__grupo {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+
+/* ==========================================================================
+   PANEL PLEGABLE
+
+   <details> nativo: sin JavaScript y accesible. Para lo que es seguimiento y
+   no trabajo del día.
+   ========================================================================== */
+
+.c-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.c-panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-heading);
+  cursor: pointer;
+  list-style: none;
+}
+
+.c-panel__head::-webkit-details-marker { display: none; }
+
+.c-panel__head:hover { background-color: var(--color-state-hover); }
+
+.c-panel__chevron {
+  flex-shrink: 0;
+  rotate: 0deg;
+  color: var(--color-icon-muted);
+  transition: rotate var(--transition-fast);
+}
+
+.c-panel[open] .c-panel__chevron { rotate: 90deg; }
+
+.c-panel__nota {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  color: var(--color-text-secondary);
+}
+
+.c-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 0 var(--space-md) var(--space-md);
+}
+
+
+/* ==========================================================================
+   COMPONENTES DEL PANEL
+   ========================================================================== */
+
+/* Variantes de tile que la v2 dejó sin uso ------------------------- */
+
+.c-tile--danger {
+  --tile-bg: var(--color-danger-bg);
+  --tile-border: var(--color-danger-border);
+  --tile-accent: var(--color-danger-border);
+  --tile-value: var(--color-danger-text);
+}
+
+.c-tile--neutro {
+  --tile-bg: var(--color-surface);
+  --tile-border: var(--color-border-subtle);
+  --tile-accent: var(--color-icon-muted);
+  --tile-value: var(--color-text-primary);
+}
+
+.c-tile--neutro .c-tile__desc { color: var(--color-text-secondary); }
+
+.c-notice--warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+
+/* Ranking ---------------------------------------------------------- */
+
+.c-rank {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0 var(--space-lg);
+}
+
+.c-rank__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.c-rank__pos {
+  width: 18px;
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--color-text-secondary);
+}
+
+.c-rank__nombre {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-link);
+}
+
+.c-rank__dias {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+/* Fila de grupo plegable */
+
+.c-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+
+.c-grupo__chevron {
+  flex-shrink: 0;
+  rotate: 0deg;
+  color: var(--color-icon-muted);
+  transition: rotate var(--transition-fast);
+}
+
+.c-grupo[aria-expanded="true"] .c-grupo__chevron { rotate: 90deg; }
+
+.c-grupo__nombre {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+.c-grupo__cuenta {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 767px) {
+  .c-table td .c-grupo { width: auto; flex: 1; }
+}
+
+.c-table .c-subfila td { background-color: var(--color-surface-sunken); }
+
+.c-subfila__nombre {
+  padding-left: var(--space-lg);
+  font-size: var(--fs-base);
+  color: var(--color-text-heading);
+}
+
+
+.c-stack__leyenda { margin-top: var(--space-2xs); }
+
+
+/* ==========================================================================
+   SECCIÓN
+
+   Tarjeta grande que agrupa todo lo que responde a una misma pregunta. Lleva
+   número, título y un párrafo que dice qué estás mirando y por qué importa,
+   antes de cualquier gráfico. Dentro van bloques planos, sin tarjeta propia:
+   la sección es el contenedor, no cada pieza.
+   ========================================================================== */
+
+.c-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.c-seccion__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3xs) var(--space-md);
+}
+
+.c-seccion__orden {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  grid-row: 1 / 3;
+  flex-shrink: 0;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  background-color: var(--c-corporate-700);
+  border-radius: var(--radius-full);
+  color: var(--color-text-inverse);
+}
+
+.c-seccion__titulo {
+  align-self: center;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+/* Medida de lectura: pasado ~70 caracteres el ojo pierde la línea */
+.c-seccion__intro {
+  max-width: 70ch;
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
+  color: var(--color-text-heading);
+}
+
+.c-seccion__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+@media (max-width: 539px) {
+  .c-seccion { padding: var(--space-md); }
+  .c-seccion__head { grid-template-columns: minmax(0, 1fr); }
+  .c-seccion__orden { grid-row: auto; }
+}
+
+
+/* ==========================================================================
+   BLOQUE
+
+   Una pieza dentro de una sección: su título, el contenido y la lectura.
+   Plano a propósito —la tarjeta es la sección— y separado del anterior por
+   una línea en vez de por un borde completo.
+   ========================================================================== */
+
+.c-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.c-bloque + .c-bloque {
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-divider);
+}
+
+.c-bloque__titulo {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+}
+
+.c-bloque__desc {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+}
+
+
+/* ==========================================================================
+   LECTURA
+
+   Qué concluir de lo que acabas de ver, en una frase. Va debajo de cada
+   gráfico: una etiqueta de eje dice qué se midió, esto dice qué significa.
+   ========================================================================== */
+
+.c-lectura {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  padding: var(--space-xs);
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.c-lectura .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--c-corporate-700);
+}
+
+.c-lectura__texto {
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+}
+
+.c-lectura__texto strong {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-strong);
+}
+
+
+/* ==========================================================================
+   GLOSARIO
+
+   Cada cifra del panel depende de una definición. Dejarlas escritas evita que
+   dos áreas lean el mismo número de dos maneras.
+   ========================================================================== */
+
+.c-glosario {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .c-glosario { grid-template-columns: repeat(2, 1fr); }
+}
+
+.c-glosario__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+}
+
+.c-glosario__termino {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.c-glosario__def {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+}
+
+
+/* --- Gráfico dentro de una sección: sin tarjeta propia ----------------- */
+
+.c-seccion .c-chart {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+}

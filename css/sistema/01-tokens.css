@@ -1,0 +1,253 @@
+:root {
+  /* ======================================================================
+     1. COLOR — PRIMITIVOS
+     ====================================================================== */
+
+  /* --- Corporativo -------------------------------------------------- */
+  --c-corporate-200: #a2f9ff;
+  --c-corporate-500: #00bfd6;
+  --c-corporate-600: #039bb7;
+  --c-corporate-700: #0a7c94;
+  --c-corporate-800: #126378;
+  --c-corporate-950: #063646;
+
+  /* --- Azul de apoyo ------------------------------------------------ */
+  --c-blue-50: #f4fcff;
+  --c-blue-100: #e9f8fe;
+  --c-blue-200: #c9eefd;
+  --c-blue-300: #9be0fc;
+  --c-blue-600: #245a93;
+  --c-blue-900: #061b37;
+
+  /* --- Neutros ------------------------------------------------------ */
+  --c-neutral-0: #ffffff;
+  --c-neutral-50: #f8fbfc;
+  --c-neutral-100: #f1f7f9;
+  --c-neutral-200: #e3ebef;
+  --c-neutral-300: #ccdae0;
+  --c-neutral-400: #96acb6;
+  --c-neutral-500: #6b8490;
+  --c-neutral-600: #567080;
+  --c-neutral-700: #354953;
+  --c-neutral-800: #1f303a;
+  --c-neutral-900: #101e29;
+
+  /* --- Semáforo ----------------------------------------------------- */
+  --c-success-100: #dcfce7;
+  --c-success-200: #bbf7d0;
+  --c-success-600: #16a34a;
+  --c-success-700: #15803d;
+  --c-success-900: #14532d;
+
+  --c-warning-100: #fdedc8;
+  --c-warning-200: #fada8d;
+  --c-warning-500: #ef8711;
+  --c-warning-700: #af440e;
+  --c-warning-900: #752c12;
+
+  --c-error-100: #fee2e2;
+  --c-error-200: #ffc9c9;
+  --c-error-500: #f24b4b;
+  --c-error-600: #de2424;
+  --c-error-700: #bb1a1a;
+  --c-error-900: #801c1c;
+  --c-error-text: #d55f5a;
+
+  /* ======================================================================
+     2. COLOR — SEMÁNTICOS
+     ====================================================================== */
+
+  /* --- Superficies -------------------------------------------------- */
+  --color-bg-page: var(--c-blue-100);
+  --color-surface: var(--c-neutral-0);
+  --color-surface-subtle: var(--c-neutral-200);
+  --color-surface-sunken: var(--c-neutral-50); /* tarjeta de detalle   */
+  --color-surface-muted: var(--c-neutral-100); /* cuerpo de los modales */
+
+  /* --- Bordes y separadores ----------------------------------------- */
+  --color-border: var(--c-neutral-400);
+  --color-border-subtle: var(--c-neutral-300);
+  --color-divider: var(--c-neutral-200);
+
+  /* --- Texto -------------------------------------------------------- */
+  --color-text-primary: var(--c-neutral-800);
+  --color-text-heading: var(--c-neutral-700);
+  --color-text-strong: var(--c-neutral-900);
+  --color-text-secondary: var(--c-neutral-600);
+  --color-text-inverse: var(--c-neutral-0);
+  --color-text-link: var(--c-corporate-700);
+  --color-text-danger: var(--c-error-text);
+
+  /* --- Iconos ------------------------------------------------------- */
+  --color-icon: var(--c-neutral-700);
+  --color-icon-muted: var(--c-neutral-500);
+  --color-icon-inverse: var(--c-neutral-0);
+
+  /* --- Interacción ---------------------------------------------------      */
+  --color-state-hover: var(--c-blue-50);
+  --color-state-pressed: var(--c-blue-200);
+  --color-state-focus: var(--c-blue-200);
+  --color-state-selected: var(--c-blue-200);
+
+  /* El sidebar va sobre blanco, así que arranca un escalón más arriba */
+  --color-nav-hover: var(--c-blue-100);
+  --color-nav-pressed: var(--c-blue-300);
+  --color-nav-selected: var(--c-blue-200);
+
+  /* Anillo de foco */
+  --color-focus-ring: var(--c-corporate-700);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* --- Acción primaria ---------------------------------------------- */
+  --color-action-bg: var(--c-corporate-600);
+  --color-action-bg-hover: var(--c-corporate-700);
+  --color-action-bg-pressed: var(--c-corporate-800);
+  --color-action-text: var(--c-neutral-0);
+  --color-action-bg-disabled: var(--c-neutral-200);
+  --color-action-text-disabled: var(--c-neutral-500);
+
+  /* --- Modales ------------------------------------------------------ */
+  --color-overlay: rgb(16 30 41 / 0.55);
+
+  /* --- Estados semánticos -------------------- */
+  --color-info-bg: var(--c-blue-200);
+  --color-info-border: var(--c-corporate-600);
+  --color-info-text: var(--c-corporate-950);
+  --color-info-accent: var(--c-corporate-700);
+
+  --color-success-bg: var(--c-success-200);
+  --color-success-border: var(--c-success-600);
+  --color-success-text: var(--c-success-900);
+
+  --color-warning-bg: var(--c-warning-200);
+  --color-warning-bg-soft: var(--c-warning-100);
+  --color-warning-border: var(--c-warning-500);
+  --color-warning-text: var(--c-warning-900);
+
+  --color-danger-bg: var(--c-error-200);
+  --color-danger-border: var(--c-error-500);
+  --color-danger-text: var(--c-error-900);
+  --color-danger-solid: var(--c-error-500);
+
+  /* --- Badge de días ------------------------------------------------- */
+  --color-badge-empty: var(--c-neutral-400);
+  --color-badge-ok: var(--c-success-600);
+  --color-badge-over: var(--color-danger-solid);
+
+  /* --- Tabla -------------------------------------------------------- */
+  --color-table-head-bg:   var(--c-neutral-100);
+  --color-table-border:    var(--c-neutral-300);
+  --color-table-row-hover:   var(--color-state-hover);
+  --color-table-row-pressed: var(--color-state-pressed);
+
+  --color-tag-ok-bg:     var(--c-success-100);
+  --color-tag-ok-text:   var(--c-success-700);
+  --color-tag-wait-bg:   var(--c-warning-100);
+  --color-tag-wait-text: var(--c-warning-700);
+  --color-tag-no-bg:     var(--c-error-100);
+  --color-tag-no-text:   var(--c-error-700);
+
+  /* Las filas rechazadas van atenuadas */
+  --opacity-row-muted: 0.6;
+
+  /* --- Color del icono de la tarjeta de historial -------------------- */
+  --color-status-icon-aprobada: var(--c-success-700);
+  --color-status-icon-rechazada: var(--c-neutral-900);
+  --color-status-icon-pendiente: var(--color-icon);
+
+  /* ======================================================================
+     3. TIPOGRAFÍA
+     ====================================================================== */
+
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* Escala. rem para que respete el tamaño de fuente del navegador                         */
+  --fs-display: 2.5rem; /* 40 · cifra de balance            */
+  --fs-h1: 1.75rem; /* 28 · título de página            */
+  --fs-h2: 1.5rem; /* 24 · título de sección y de card */
+  --fs-lg: 1rem; /* 16 · fechas de card, unidad      */
+  --fs-md: 0.875rem; /* 14 · botón, links de nav         */
+  --fs-base: 0.8125rem; /* 13 · valor de campo              */
+  --fs-sm: 0.75rem; /* 12 · body small, metadatos       */
+  --fs-xs: 0.6875rem; /* 11 · nota de paginación, badge   */
+  --fs-2xs: 0.625rem; /* 10 · labels y badges en caja alta*/
+
+  --lh-flat: 0.95; /* cifra grande */
+  --lh-tight: 1.2;
+  --lh-snug: 1.33; /* 24/32, 14/20 */
+  --lh-normal: 1.45;
+  --lh-loose: 1.5; /* 12/18 */
+
+  --ls-tight: -0.02em; /* -0.28px en 14 · links de nav */
+  --ls-normal: 0;
+  --ls-wide: 0.04em; /* 0.5px en 12                  */
+  --ls-caps: 0.06em; /* 0.72px en 12 · labels de tile*/
+
+  /* ======================================================================
+     4. ESPACIADO
+     ====================================================================== */
+
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-sm: 14px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ======================================================================
+     5. RADIOS
+     ====================================================================== */
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* ======================================================================
+     6. SOMBRAS
+     ====================================================================== */
+
+  --shadow-button: 0 2px 2px -1px rgb(0 0 0 / 0.25);
+  --shadow-card: 0 2px 8px 0 rgb(36 48 71 / 0.1);
+  --shadow-card-lg: 0 10px 24px -10px rgb(36 48 71 / 0.1);
+  --shadow-modal:
+    0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
+
+  /* ======================================================================
+     7. MEDIDAS DE LAYOUT
+     ====================================================================== */
+
+  --size-sidebar-collapsed: 92px;
+  --size-sidebar-expanded: 256px;
+  --size-bottomnav: 64px; /* barra inferior en móvil */
+  --size-content-max: 1440px;
+  --size-modal-sm: 500px; /* detalle de solicitud */
+  --size-modal-md: 800px; /* confirmación         */
+  --size-modal-lg: 720px; /* drawer de informe    */
+
+  --icon-xs: 13px;
+  --icon-sm: 16px;
+  --icon-md: 18px;
+  --icon-lg: 24px;
+  --icon-xl: 36px;
+
+  --tap-target: 44px;
+
+  /* ======================================================================
+     8. MOVIMIENTO
+     ====================================================================== */
+
+  --transition-fast: 120ms ease-out;
+  --transition-base: 180ms ease-out;
+}

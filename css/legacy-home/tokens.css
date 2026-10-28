@@ -1,0 +1,65 @@
+:root {
+  --color-support-cta-50: #f9fdff;
+  --color-support-cta-200: #e9f8fe;
+  --color-support-cta-300: #c9eefd;
+  --color-support-cta-400: #9be0fc;
+  --color-support-cta-500: #4eafde;
+  --color-support-cta-700: #245a93;
+  --color-support-cta-800: #194573;
+  --color-support-cta-900: #061b37;
+
+  /* ---- Tipografía --------------------------------------------------------- */
+  --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --text-heading-h2-bold-size: 20px;
+  --text-heading-h2-bold-line-height: 28px;
+  --text-heading-h2-bold-weight: 700;
+  --text-heading-h2-bold-tracking: 0.5px;
+
+  --text-heading-h3-section-size: 16px;
+  --text-heading-h3-section-line-height: 18px;
+  --text-heading-h3-section-weight: 700;
+  --text-heading-h3-section-tracking: 0.5px;
+
+  --text-label-medium-bold-size: 16px;
+  --text-label-medium-bold-line-height: 16px;
+  --text-label-medium-bold-weight: 700;
+  --text-label-medium-bold-tracking: 0;
+
+  --text-label-small-size: 12px;
+  --text-label-small-line-height: 16px;
+  --text-label-small-weight: 400;
+  --text-label-small-tracking: 0;
+
+  --text-label-small-bold-size: 12px;
+  --text-label-small-bold-line-height: 18px;
+  --text-label-small-bold-weight: 700;
+  --text-label-small-bold-tracking: 0.5px;
+
+  --text-body-small-size: 12px;
+  --text-body-small-line-height: 18px;
+  --text-body-small-weight: 400;
+  --text-body-small-tracking: 0.5px;
+
+  /* ---- Espaciado ------------------------------------------------------- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-xl: 24px;
+
+  /* ---- Radios ------------------------------------------------------------ */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-full: 999px;
+
+  /* ---- Sombras ------------------------------------------------------------ */
+  --shadow-button: 0px 2px 2px -1px rgba(0, 0, 0, 0.25);
+
+  /* ---- Transiciones --------------------------------------------------------
+     */
+  --transition-fast: 150ms ease-out;
+  --transition-slide: 500ms ease;
+}

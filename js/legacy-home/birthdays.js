@@ -1,0 +1,116 @@
+// ============================================================================
+// Cumpleaños — INTEGRACIÓN PENDIENTE CON LA BASE DE DATOS DEL EQUIPO.
+//
+// Esta sección hoy pinta datos de ejemplo (MOCK_BIRTHDAYS) para poder
+// visualizar el diseño. Para conectarla a la base de datos real, el único
+// punto que hay que tocar es fetchBirthdays(): reemplazar su cuerpo por la
+// llamada real (fetch a una API REST, GraphQL, SDK del backend, etc.) que
+// devuelva datos con la misma forma. El resto del archivo (render, estado
+// vacío, manejo de errores) ya está listo para consumir esa forma de datos
+// sin más cambios.
+//
+// Contrato esperado — fetchBirthdays() debe devolver (o resolver, si es
+// async) un objeto:
+//   {
+//     today: [{ name: "Juan Muñoz", date: "20 de Enero", gender: "male" }, ...],
+//     team:  [{ name: "Josefa Pino", date: "20 de Enero", gender: "female" }, ...],
+//   }
+// - "today": cumpleaños de toda la empresa que caen hoy.
+// - "team": cumpleaños del equipo del usuario (puede incluir próximas fechas,
+//   no solo las de hoy).
+// - "gender": "male" | "female". Define qué avatar genérico se muestra
+//   (img-boy / img-girl). Si el backend ya tiene una foto de perfil real,
+//   se puede mandar "avatar" con esa URL y tiene prioridad sobre "gender".
+// - Ambas listas deben venir ya filtradas/ordenadas por el backend; este
+//   script solo se encarga de pintarlas en el DOM.
+// ============================================================================
+
+const MOCK_BIRTHDAYS = {
+  today: [
+    { name: "Juan Muñoz", date: "20 de Enero", gender: "male" },
+    { name: "Daniela Torres", date: "20 de Enero", gender: "female" },
+    { name: "Mario Tapia", date: "20 de Enero", gender: "male" },
+  ],
+  team: [
+    { name: "Josefa Pino", date: "20 de Enero", gender: "female" },
+    { name: "Matías Tobar", date: "20 de Enero", gender: "male" },
+  ],
+};
+
+const GENDER_AVATARS = {
+  male: "assets/home/img-boy.png",
+  female: "assets/home/img-girl.png",
+};
+
+const DEFAULT_AVATAR = GENDER_AVATARS.male;
+
+// TODO(backend): reemplazar por la llamada real, por ejemplo:
+//   async function fetchBirthdays() {
+//     const res = await fetch("/api/birthdays");
+//     if (!res.ok) throw new Error("No se pudo cargar cumpleaños");
+//     return res.json();
+//   }
+async function fetchBirthdays() {
+  return MOCK_BIRTHDAYS;
+}
+
+function renderBirthdayList(listElement, birthdays, emptyMessage) {
+  if (!listElement) return;
+
+  listElement.innerHTML = "";
+
+  if (!birthdays || birthdays.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "list__row list__row--empty";
+    empty.textContent = emptyMessage;
+    listElement.appendChild(empty);
+    return;
+  }
+
+  birthdays.forEach((person) => {
+    const item = document.createElement("li");
+    item.className = "list__row";
+
+    const personEl = document.createElement("span");
+    personEl.className = "list__row__person";
+
+    const avatar = document.createElement("img");
+    avatar.className = "avatar";
+    avatar.src = person.avatar || GENDER_AVATARS[person.gender] || DEFAULT_AVATAR;
+    avatar.alt = "";
+    personEl.appendChild(avatar);
+
+    const name = document.createElement("span");
+    name.className = "list__row__name";
+    name.textContent = person.name;
+    personEl.appendChild(name);
+
+    item.appendChild(personEl);
+
+    if (person.date) {
+      const date = document.createElement("span");
+      date.className = "list__row__date";
+      date.textContent = person.date;
+      item.appendChild(date);
+    }
+
+    listElement.appendChild(item);
+  });
+}
+
+async function initBirthdays() {
+  const todayList = document.querySelector("[data-birthdays-today]");
+  const teamList = document.querySelector("[data-birthdays-team]");
+
+  try {
+    const { today, team } = await fetchBirthdays();
+    renderBirthdayList(todayList, today, "No hay cumpleaños hoy.");
+    renderBirthdayList(teamList, team, "Sin cumpleaños próximos en tu equipo.");
+  } catch (error) {
+    renderBirthdayList(todayList, [], "No se pudieron cargar los cumpleaños.");
+    renderBirthdayList(teamList, [], "No se pudieron cargar los cumpleaños.");
+    console.error("Error al cargar cumpleaños:", error);
+  }
+}
+
+initBirthdays();

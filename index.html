@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="assets/home/favicon.svg" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intranet Inelcom Chile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/legacy-home/tokens.css" />
+    <link rel="stylesheet" href="css/legacy-home/components.css" />
+    <link rel="stylesheet" href="css/legacy-home/screen.css" />
+    <script src="js/legacy-home/slider.js" defer></script>
+    <script src="js/legacy-home/holidays.js" defer></script>
+    <script src="js/legacy-home/birthdays.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <div class="main-container">
+        <main class="page-content">
+          <h1 class="sr-only">Panel principal — Intranet Inelcom</h1>
+
+          <header class="header">
+            <div class="header__background" aria-hidden="true">
+              <img src="assets/home/img-edificioinelcom.png" alt="" />
+            </div>
+            <div class="header__content">
+              <div class="header__top">
+                <img
+                  class="header__logo"
+                  src="assets/home/header-logo.svg"
+                  alt="Inelcom Chile"
+                />
+                <div class="header__actions">
+                  <!-- Nombre y avatar hardcodeados como placeholder de diseño.
+                       Deberían venir de la sesión/usuario autenticado. -->
+                  <button type="button" class="btn btn--fab btn--profile">
+                    <img class="avatar" src="assets/home/img-boy.png" alt="" />
+                    <span class="btn--fab__label"
+                      >Raúl Gabriel Berríos Jofré</span
+                    >
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn--fab"
+                    aria-label="Cerrar sesión"
+                  >
+                    <img class="icon" src="assets/home/ic-logout.svg" alt="" />
+                  </button>
+                </div>
+              </div>
+              <div class="header__buttons">
+                <button type="button" class="btn btn--header">
+                  <span class="btn--header__label">Mis Vacaciones</span>
+                  <img
+                    class="icon icon--lg"
+                    src="assets/home/img-vacaciones.png"
+                    alt=""
+                  />
+                </button>
+                <button type="button" class="btn btn--header">
+                  <span class="btn--header__label">Agendar Sala</span>
+                  <img class="icon icon--lg" src="assets/home/img-sala.png" alt="" />
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Botones listos para definir sus rutas-->
+          <nav class="quick-access" aria-label="Accesos rápidos">
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-oc.png"
+                alt=""
+              />
+              <span class="btn--card__label">Orden de Compra</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-vacation.png"
+                alt=""
+              />
+              <span class="btn--card__label">Solicitud de Vacaciones</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-vacacionpersona.png"
+                alt=""
+              />
+              <span class="btn--card__label">Personal en Vacaciones</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-vacacioncalendario.png"
+                alt=""
+              />
+              <span class="btn--card__label"
+                >Días de Vacaciones Colaboradores</span
+              >
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-reclutamiento.png"
+                alt=""
+              />
+              <span class="btn--card__label">Reclutamiento y Selección</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-reclutamiento-activos.png"
+                alt=""
+              />
+              <span class="btn--card__label">Reclutamientos Activos</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-solicitudes.png"
+                alt=""
+              />
+              <span class="btn--card__label">Base de Datos Postulantes</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-credencial.png"
+                alt=""
+              />
+              <span class="btn--card__label">Gestión de Credenciales</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-computer.png"
+                alt=""
+              />
+              <span class="btn--card__label">Entrega de Equipos</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-phone.png"
+                alt=""
+              />
+              <span class="btn--card__label">Entrega de Teléfonos</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-licencia.png"
+                alt=""
+              />
+              <span class="btn--card__label">Licencias Medicas</span>
+            </button>
+            <button type="button" class="btn btn--card">
+              <img
+                class="icon icon--md"
+                src="assets/home/img-redirect-licenciaactiva.png"
+                alt=""
+              />
+              <span class="btn--card__label">Licencias medicas Activas</span>
+            </button>
+          </nav>
+
+          <div class="main-content">
+            <div class="content-column">
+              <section
+                class="slider"
+                aria-roledescription="carrusel"
+                aria-label="Anuncios destacados"
+              >
+                <div class="slider__viewport">
+                  <div class="slider__track">
+                    <div class="slider__slide">
+                      <img
+                        src="assets/home/slider/madison-coffee.jpg"
+                        alt="Madison Coffee: 20% de descuento de lunes a domingo en toda la carta (excepto promociones y café en grano). San Pío X 2449, a pasos de Edificio Inelcom."
+                      />
+                    </div>
+                    <div class="slider__slide">
+                      <img
+                        src="assets/home/slider/metlife-reembolso.jpg"
+                        alt="MetLife: reembolso de gastos médicos. Revisa el manual paso a paso aquí."
+                      />
+                    </div>
+                    <div class="slider__slide">
+                      <img
+                        src="assets/home/slider/buen-trato.jpg"
+                        alt="Inelcom Chile: ¿Qué es Buen Trato? No subimos el tono, nada sexual: miradas, comentarios, gestos, ni pelambres, ni burlas, ni ofensas. Ni siquiera en broma. Conoce las herramientas para tu equipo de trabajo."
+                      />
+                    </div>
+                    <div class="slider__slide">
+                      <img
+                        src="assets/home/slider/seguro-complementario.jpg"
+                        alt="Nuevo Seguro Complementario MetLife. Formulario: actualiza tus cargas antes del 31 de mayo."
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="slider__nav slider__nav--prev"
+                    aria-label="Anuncio anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    class="slider__nav slider__nav--next"
+                    aria-label="Anuncio siguiente"
+                  >
+                    ›
+                  </button>
+                </div>
+                <div class="slider__dots"></div>
+              </section>
+
+              <div class="content-sections">
+                <section
+                  class="card card--birthdays"
+                  aria-labelledby="birthdays-heading"
+                >
+                  <h2 class="section-header" id="birthdays-heading">
+                    <img class="icon" src="assets/home/ic-cake.svg" alt="" />
+                    Cumpleaños Hoy
+                  </h2>
+                  <ul
+                    class="list"
+                    data-birthdays-today
+                    aria-labelledby="birthdays-heading"
+                    aria-live="polite"
+                  ></ul>
+
+                  <hr class="divider" />
+
+                  <h2 class="section-header" id="team-birthdays-heading">
+                    <img class="icon" src="assets/home/ic-celebration.svg" alt="" />
+                    Cumpleaños de mi equipo
+                  </h2>
+                  <ul
+                    class="list"
+                    data-birthdays-team
+                    aria-labelledby="team-birthdays-heading"
+                    aria-live="polite"
+                  ></ul>
+                </section>
+
+                <section
+                  class="card card--holidays"
+                  aria-labelledby="holidays-heading"
+                >
+                  <h2 class="section-header" id="holidays-heading">
+                    <img class="icon" src="assets/home/ic-calendar.svg" alt="" />
+                    Próximos Festivos
+                  </h2>
+                  <ul class="list" data-holidays-list aria-live="polite"></ul>
+                </section>
+              </div>
+
+              <section
+                class="card card--benefits"
+                aria-labelledby="benefits-heading"
+              >
+                <h2 class="section-header" id="benefits-heading">
+                  <img class="icon" src="assets/home/ic-handshake.svg" alt="" />
+                  Beneficios
+                </h2>
+                <div class="benefits-list">
+                  <a
+                    href="https://www.cajalosandes.cl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn--card"
+                  >
+                    <img
+                      class="icon icon--md icon--auto-width"
+                      src="assets/home/img-logo-cajalosandes.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">Caja los Andes</span>
+                  </a>
+                  <a
+                    href="https://www.scotiabankchile.cl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn--card"
+                  >
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-logo-scotiabank.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">Scotiabank</span>
+                  </a>
+                  <a
+                    href="https://betterfly.com/es-cl/plataforma-betterfly/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn--card"
+                  >
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-logo-betterfly.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">BetterFly</span>
+                  </a>
+                  <a
+                    href="https://www.metlife.cl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn--card"
+                  >
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-logo-metlife.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">Metlife</span>
+                  </a>
+                  <a
+                    href="https://www.mundoachs.cl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn--card"
+                  >
+                    <img
+                      class="icon icon--md icon--auto-width"
+                      src="assets/home/img-logo-achs.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">ACHS</span>
+                  </a>
+                </div>
+              </section>
+            </div>
+
+            <aside
+              class="sidebar-right"
+              aria-label="Tickets, beneficios e información"
+            >
+              <section
+                class="card card--tickets"
+                aria-labelledby="tickets-heading"
+              >
+                <h2 class="section-header" id="tickets-heading">
+                  <img class="icon" src="assets/home/ic-help.svg" alt="" />
+                  Enviar Tickets
+                </h2>
+                <div class="ticket-list">
+                  <button type="button" class="btn btn--ticket">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-ticket-soporte.png"
+                      alt=""
+                    />
+                    <span class="btn--ticket__label">Solicitar Soporte</span>
+                    <img class="icon" src="assets/home/ic-arrow.svg" alt="" />
+                  </button>
+                  <button type="button" class="btn btn--ticket">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-ticket-desarrollo.png"
+                      alt=""
+                    />
+                    <span class="btn--ticket__label"
+                      >Solicitar Desarrollo</span
+                    >
+                    <img class="icon" src="assets/home/ic-arrow.svg" alt="" />
+                  </button>
+                  <button type="button" class="btn btn--ticket">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-ticket-rrhh.png"
+                      alt=""
+                    />
+                    <span class="btn--ticket__label"
+                      >Solicitar a Recursos Humanos</span
+                    >
+                    <img class="icon" src="assets/home/ic-arrow.svg" alt="" />
+                  </button>
+                  <button type="button" class="btn btn--ticket">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-ticket-infraestructura.png"
+                      alt=""
+                    />
+                    <span class="btn--ticket__label"
+                      >Solicitar a Infraestructura</span
+                    >
+                    <img class="icon" src="assets/home/ic-arrow.svg" alt="" />
+                  </button>
+                </div>
+              </section>
+
+              <button type="button" class="btn btn--feature">
+                <span class="btn--feature__content">
+                  <span class="btn--feature__title"
+                    >Procedimientos DataCenter</span
+                  >
+                  <span class="btn--feature__subtitle">Acceso SharePoint</span>
+                </span>
+                <img
+                  class="btn--feature__image"
+                  src="assets/home/img-sharepoint.png"
+                  alt=""
+                />
+              </button>
+
+              <button type="button" class="btn btn--feature">
+                <span class="btn--feature__content">
+                  <span class="btn--feature__title"
+                    >Listado de Beneficios Caja los Andes</span
+                  >
+                  <span class="btn--feature__subtitle"
+                    >Julio - Agosto 2026</span
+                  >
+                </span>
+                <img
+                  class="btn--feature__image"
+                  src="assets/home/img-cajalosandes-benefit.png"
+                  alt=""
+                />
+              </button>
+
+              <section class="card card--info" aria-labelledby="info-heading">
+                <h2 class="section-header" id="info-heading">
+                  <img class="icon" src="assets/home/ic-book.svg" alt="" />
+                  Información Inelcom
+                </h2>
+                <div class="info-list">
+                  <button type="button" class="btn btn--card">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-inelcom-building.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">Quienes Somos</span>
+                  </button>
+                  <button type="button" class="btn btn--card">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-inelcom-book.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label">Reglamento Interno</span>
+                  </button>
+                  <button type="button" class="btn btn--card">
+                    <img
+                      class="icon icon--md"
+                      src="assets/home/img-inelcom-megaphone.png"
+                      alt=""
+                    />
+                    <span class="btn--card__label"
+                      >Comunicaciones Internas</span
+                    >
+                  </button>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+
+      <nav class="sidebar" aria-label="Navegación principal">
+        <a class="sidebar__logo" href="index.html" aria-label="Inicio Inelcom">
+          <img src="assets/home/img-logo.png" alt="Inelcom" />
+        </a>
+        <button
+          type="button"
+          class="btn btn--icon-sidebar"
+          aria-label="Mi perfil"
+        >
+          <img class="icon" src="assets/home/ic-sidebar-user.svg" alt="" />
+        </button>
+        <button
+          type="button"
+          class="btn btn--icon-sidebar"
+          aria-label="Vacaciones"
+        >
+          <img class="icon" src="assets/home/ic-sidebar-vacation.svg" alt="" />
+        </button>
+        <button
+          type="button"
+          class="btn btn--icon-sidebar"
+          aria-label="Agendar sala"
+        >
+          <img class="icon" src="assets/home/ic-sidebar-chair.svg" alt="" />
+        </button>
+        <button
+          type="button"
+          class="btn btn--icon-sidebar"
+          aria-label="Enviar ticket de ayuda"
+        >
+          <img class="icon" src="assets/home/ic-help.svg" alt="" />
+        </button>
+      </nav>
+    </div>
+  </body>
+</html>

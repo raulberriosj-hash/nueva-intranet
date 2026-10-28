@@ -1,0 +1,28 @@
+/* ==========================================================================
+   05 · PANTALLA — MIS VACACIONES
+   Lo que es exclusivo de esta vista y no pertenece a ningún componente.
+   ========================================================================== */
+
+.s-vacaciones__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.s-vacaciones__columnTitle {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+.s-vacaciones__form {
+  max-width: 492px;
+  width: 100%;
+}
+
+@media (min-width: 1280px) {
+  .s-vacaciones__form {
+    max-width: none;
+  }
+}

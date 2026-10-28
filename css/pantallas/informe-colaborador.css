@@ -1,0 +1,36 @@
+/* ==========================================================================
+   SALDOS DE VACACIONES (RRHH)
+
+   Solo lo propio de esta pantalla: anchos de columna y alineación de cifras.
+   Todo lo demás sale de 04-components.css.
+   ========================================================================== */
+
+/* El nombre se lleva el ancho: es lo que identifica la fila en una lista de
+   seiscientas personas. Las cifras necesitan poco y van alineadas a la derecha. */
+.s-saldos__col--persona    { width: 28%; }
+.s-saldos__col--rut        { width: 8%; }
+.s-saldos__col--ingreso    { width: 9%; }
+.s-saldos__col--tomados    { width: 9%; }
+.s-saldos__col--generados  { width: 9%; }
+.s-saldos__col--sistema    { width: 9%; }
+.s-saldos__col--real       { width: 9%; }
+.s-saldos__col--diferencia { width: 10%; }
+.s-saldos__col--detalle    { width: 9%; }
+
+/* Las cifras se comparan en vertical: a la derecha y con ancho fijo de dígito */
+.s-saldos__num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.s-saldos__num--fuerte {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+}
+
+.s-saldos__detalle { text-align: right; }
+
+@media (max-width: 767px) {
+  .s-saldos__num,
+  .s-saldos__detalle { text-align: right; }
+}

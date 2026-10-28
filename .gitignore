@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Herramientas de IA
+.claude/
+
+# Dependencias y builds (por si alguna vez entran)
+node_modules/
+dist/
+build/

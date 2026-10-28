@@ -1,0 +1,46 @@
+/* ==========================================================================
+   06 · PANTALLA — APROBACIONES (jefatura)
+   Lo exclusivo de esta vista. Solo la carga jefatura.html.
+   ========================================================================== */
+
+/* La tabla de aprobaciones tiene seis columnas y no pesan lo mismo:
+   el nombre necesita aire y los días casi nada. */
+.s-aprob__col--persona   { width: 23%; }
+.s-aprob__col--rango     { width: 20%; }
+.s-aprob__col--dias      { width: 8%; }
+.s-aprob__col--reemplazo { width: 16%; }
+.s-aprob__col--estado    { width: 12%; }
+.s-aprob__col--acciones  { width: 21%; }
+
+/* En teléfono la tabla se apila (lo resuelve .c-table) y los anchos sobran */
+@media (max-width: 767px) {
+  .s-aprob__col--persona,
+  .s-aprob__col--rango,
+  .s-aprob__col--dias,
+  .s-aprob__col--reemplazo,
+  .s-aprob__col--estado,
+  .s-aprob__col--acciones { width: auto; }
+}
+
+/* Las acciones van a la derecha en escritorio y a lo ancho en teléfono */
+.s-aprob__acciones { justify-content: flex-end; }
+
+/* Entre 768 y 1200 los dos botones no caben uno al lado del otro: seis
+   columnas con acciones necesitan más ancho del que hay. En esa franja se
+   apilan, que entra siempre y no obliga a recortar las etiquetas. */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .s-aprob__acciones {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .s-aprob__acciones .c-btn {
+    padding: 6px var(--space-2xs);
+    font-size: var(--fs-sm);
+  }
+}
+
+@media (max-width: 767px) {
+  .s-aprob__acciones { justify-content: stretch; }
+  .s-aprob__acciones .c-btn { flex: 1; }
+}

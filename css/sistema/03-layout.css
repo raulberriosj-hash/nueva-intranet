@@ -1,0 +1,183 @@
+/* ==========================================================================
+   03 · LAYOUT
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Armazón de la aplicación
+   -------------------------------------------------------------------------- */
+
+.l-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.l-main {
+  flex: 1;
+  min-width: 0; /* deja que el grid se encoja */
+}
+
+.l-app:has(> .c-sidebar) .l-main {
+  padding-bottom: var(--size-bottomnav);
+}
+
+@media (min-width: 768px) {
+  .l-app {
+    flex-direction: row;
+  }
+  .l-app:has(> .c-sidebar) .l-main {
+    padding-bottom: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Cabecera de página
+   -------------------------------------------------------------------------- */
+
+.l-header {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.l-header__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+@media (min-width: 768px) {
+  .l-header {
+    padding: var(--space-md) var(--space-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Cuerpo de página
+   -------------------------------------------------------------------------- */
+
+.l-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+}
+
+@media (min-width: 768px) {
+  .l-body {
+    padding: var(--space-lg) var(--space-lg) var(--space-xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sección genérica: un título y su contenido
+   -------------------------------------------------------------------------- */
+
+.l-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.l-section__title {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla de tiles de balance
+   -------------------------------------------------------------------------- */
+
+.l-balance {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xs);
+}
+
+@media (min-width: 480px) {
+  .l-balance {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+  /* Con tres tiles el último ocupa la fila entera; con dos no aplica. */
+  .l-balance:has(> :nth-child(3)) > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 768px) {
+  /* auto-fit: se adapta al número de tiles que haya. */
+  .l-balance {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+  /* Desde acá ya caben los tres en fila: se anula el span de arriba. */
+  .l-balance:has(> :nth-child(3)) > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Columna de formulario y columna de historial
+   -------------------------------------------------------------------------- */
+
+.l-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.l-split__divider {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .l-split {
+    grid-template-columns: 492px 2px 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  .l-split__divider {
+    display: block;
+    align-self: stretch;
+    margin-block: var(--space-xl);
+    background-color: var(--color-border-subtle);
+    border-radius: var(--radius-full);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Fila de filtros del historial
+   -------------------------------------------------------------------------- */
+
+.l-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.l-filters > * {
+  width: 100%;
+  max-width: none;
+}
+
+@media (min-width: 480px) {
+  .l-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+  .l-filters > * {
+    width: auto;
+    max-width: 240px;
+  }
+}
+
