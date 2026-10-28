@@ -128,18 +128,18 @@ function renderHolidays() {
 
   getUpcomingHolidays(10).forEach((holiday) => {
     const item = document.createElement("li");
-    item.className = "list__row";
+    item.className = "s-inicio__fila";
 
     const person = document.createElement("span");
-    person.className = "list__row__person";
+    person.className = "s-inicio__persona";
 
     const name = document.createElement("span");
-    name.className = "list__row__name";
+    name.className = "s-inicio__nombre";
     name.textContent = holiday.name;
     person.appendChild(name);
 
     const date = document.createElement("span");
-    date.className = "list__row__date";
+    date.className = "s-inicio__fecha";
     date.textContent = formatHolidayDate(holiday.date);
 
     item.appendChild(person);

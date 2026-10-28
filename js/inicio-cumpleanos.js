@@ -61,7 +61,7 @@ function renderBirthdayList(listElement, birthdays, emptyMessage) {
 
   if (!birthdays || birthdays.length === 0) {
     const empty = document.createElement("li");
-    empty.className = "list__row list__row--empty";
+    empty.className = "s-inicio__fila s-inicio__fila--vacia";
     empty.textContent = emptyMessage;
     listElement.appendChild(empty);
     return;
@@ -69,19 +69,19 @@ function renderBirthdayList(listElement, birthdays, emptyMessage) {
 
   birthdays.forEach((person) => {
     const item = document.createElement("li");
-    item.className = "list__row";
+    item.className = "s-inicio__fila";
 
     const personEl = document.createElement("span");
-    personEl.className = "list__row__person";
+    personEl.className = "s-inicio__persona";
 
     const avatar = document.createElement("img");
-    avatar.className = "avatar";
+    avatar.className = "c-avatar";
     avatar.src = person.avatar || GENDER_AVATARS[person.gender] || DEFAULT_AVATAR;
     avatar.alt = "";
     personEl.appendChild(avatar);
 
     const name = document.createElement("span");
-    name.className = "list__row__name";
+    name.className = "s-inicio__nombre";
     name.textContent = person.name;
     personEl.appendChild(name);
 
@@ -89,7 +89,7 @@ function renderBirthdayList(listElement, birthdays, emptyMessage) {
 
     if (person.date) {
       const date = document.createElement("span");
-      date.className = "list__row__date";
+      date.className = "s-inicio__fecha";
       date.textContent = person.date;
       item.appendChild(date);
     }

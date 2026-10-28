@@ -1,0 +1,540 @@
+/* ==========================================================================
+   PANTALLA — INICIO
+
+   Lo exclusivo del home. Todo lo que el sistema ya resolvía salió de acá y
+   ahora lo pone el marcado con las clases de siempre:
+
+     .app             → .l-app          .card          → .c-card
+     .main-container  → .l-main         .section-header→ .c-card__title
+     .page-content    → .l-body         .divider       → .c-divider
+     .sr-only         → .u-visually-hidden             .icon → .c-icon
+     .btn--icon-sidebar → lo pinta js/sidebar.js        .avatar → .c-avatar
+
+   Queda solo lo que ninguna otra pantalla tiene: el hero, la rejilla de
+   accesos rápidos, el carrusel de anuncios, las listas de cumpleaños y
+   festivos, los botones de ticket y los dos banners.
+
+   Como el resto de las hojas, no declara ni un color ni un tamaño de letra:
+   todo sale de 01-tokens.css. Los únicos valores literales son medidas de
+   imágenes e ilustraciones, que no son tokens de diseño.
+   ========================================================================== */
+
+/* ==========================================================================
+   ORDEN EN TELÉFONO
+
+   Los contenedores de columna usan display:contents en móvil: no generan
+   caja, así que sus hijos se aplanan dentro de .l-body y compiten por
+   `order` junto al hero y a los accesos. Así los tickets suben antes que
+   cumpleaños, festivos y beneficios.
+
+   Los `order` hacen falta en TODOS los anchos, no solo en móvil: a partir
+   de 1024 estos contenedores vuelven a ser cajas (ver el media query del
+   final) y sin un orden consistente se desordenarían también ahí.
+   ========================================================================== */
+
+.s-inicio__hero { order: 1; }
+.s-inicio__accesos { order: 2; }
+.s-inicio__contenido { order: 3; }
+.s-inicio__carrusel { order: 3; }
+.s-inicio__tarjetas { order: 4; }
+.s-inicio__card--tickets { order: 4; }
+.s-inicio__card--cumple { order: 5; max-height: 350px; overflow-y: auto; }
+.s-inicio__card--festivos { order: 6; }
+.s-inicio__banner { order: 7; }
+.s-inicio__card--beneficios { order: 8; }
+.s-inicio__card--info { order: 9; }
+
+.s-inicio__contenido,
+.s-inicio__columna,
+.s-inicio__tarjetas,
+.s-inicio__lateral {
+  display: contents;
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.s-inicio__hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-6);
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-image: linear-gradient(
+    to right,
+    var(--c-blue-support-200),
+    var(--c-blue-support-400)
+  );
+}
+
+.s-inicio__fondo {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 45%;
+  min-width: 320px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.s-inicio__fondo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s-inicio__heroContenido {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.s-inicio__heroTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* El logotipo tiene una proporción fija y no es un icono del sistema */
+.s-inicio__logo {
+  width: 173px;
+  height: 31px;
+}
+
+.s-inicio__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* --- Pastilla de perfil y botón de salir ------------------------------- */
+
+.s-inicio__perfil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-button);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__perfil:hover { background-color: var(--color-state-hover); }
+.s-inicio__perfil:active { background-color: var(--color-state-pressed); }
+
+.s-inicio__perfilNombre {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-wide);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* --- Los dos destacados del hero --------------------------------------- */
+
+.s-inicio__destacados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.s-inicio__destacado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  text-align: center;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-button);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__destacado:hover { background-color: var(--color-state-hover); }
+.s-inicio__destacado:active { background-color: var(--color-state-pressed); }
+
+.s-inicio__destacadoLabel {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-none);
+  color: var(--color-text-link);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ACCESOS RÁPIDOS
+   ========================================================================== */
+
+.s-inicio__accesos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.s-inicio__acceso {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 96px;
+  max-width: 150px;
+  padding: var(--space-3);
+  text-align: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__acceso:hover { background-color: var(--color-state-hover); }
+.s-inicio__acceso:active { background-color: var(--color-state-pressed); }
+
+.s-inicio__accesoLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   CARRUSEL DE ANUNCIOS
+   js/inicio-carrusel.js detecta las láminas y genera los puntos solo:
+   agregar un anuncio es sumar una lámina con su <img>.
+   ========================================================================== */
+
+.s-inicio__carrusel { width: 100%; }
+
+.s-inicio__viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 536;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.s-inicio__pista {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 500ms ease;
+}
+
+.s-inicio__lamina {
+  flex: 1 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.s-inicio__lamina img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s-inicio__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  translate: 0 -50%;
+  color: var(--color-text-link);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-button);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__nav:hover { background-color: var(--color-state-hover); }
+.s-inicio__nav:active { background-color: var(--color-state-pressed); }
+.s-inicio__nav--prev { left: var(--space-3); }
+.s-inicio__nav--next { right: var(--space-3); }
+
+.s-inicio__nav .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: currentColor;
+}
+
+.s-inicio__puntos {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+}
+
+.s-inicio__punto {
+  display: block;
+  width: var(--space-2);
+  height: var(--space-2);
+  background-color: var(--c-blue-support-200);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__punto:hover { background-color: var(--c-blue-support-300); }
+.s-inicio__punto--activo { background-color: var(--color-text-link); }
+
+/* ==========================================================================
+   TARJETAS
+   El contenedor y el título los pone el sistema (.c-card, .c-card__title).
+   Acá solo el icono que acompaña al título.
+   ========================================================================== */
+
+.s-inicio__titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ==========================================================================
+   LISTAS DE CUMPLEAÑOS Y FESTIVOS
+   ========================================================================== */
+
+.s-inicio__lista {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.s-inicio__fila {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__fila:hover { background-color: var(--color-state-hover); }
+
+.s-inicio__fila--vacia {
+  justify-content: center;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+  font-style: italic;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.s-inicio__fila--vacia:hover { background-color: transparent; }
+
+.s-inicio__persona {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.s-inicio__nombre {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-wide);
+  color: var(--color-text-primary);
+}
+
+.s-inicio__fecha {
+  flex-shrink: 0;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-wide);
+  text-align: right;
+  white-space: nowrap;
+  color: var(--color-text-heading);
+}
+
+/* ==========================================================================
+   BOTONES DE TICKET
+   ========================================================================== */
+
+.s-inicio__tickets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.s-inicio__ticket {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__ticket:hover { background-color: var(--color-state-hover); }
+.s-inicio__ticket:active { background-color: var(--color-state-pressed); }
+
+.s-inicio__ticketLabel {
+  flex: 1;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-text-link);
+}
+
+/* ==========================================================================
+   BANNERS (SharePoint, Caja los Andes)
+   ========================================================================== */
+
+.s-inicio__banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-6);
+  overflow: hidden;
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.s-inicio__banner:hover { background-color: var(--color-state-hover); }
+.s-inicio__banner:active { background-color: var(--color-state-pressed); }
+
+.s-inicio__bannerTexto {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.s-inicio__bannerTitulo {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-link);
+}
+
+.s-inicio__bannerSub {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-wide);
+  color: var(--color-text-primary);
+}
+
+/* Ilustración de proporción fija; no es un icono del sistema */
+.s-inicio__bannerImagen {
+  flex-shrink: 0;
+  width: 70px;
+  height: 73px;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   REJILLAS DE BENEFICIOS E INFORMACIÓN
+   ========================================================================== */
+
+.s-inicio__rejilla {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.s-inicio__rejilla .s-inicio__acceso {
+  min-width: 120px;
+}
+
+/* ==========================================================================
+   ILUSTRACIONES
+
+   Son PNG de producto, no iconos: el sistema no publica estos tamaños.
+   --md acompaña a los accesos y a los tickets, --lg a los destacados del
+   hero y --auto a los logotipos de convenio, que traen su propia relación
+   de aspecto.
+   ========================================================================== */
+
+.s-inicio__ilus {
+  display: block;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.s-inicio__ilus--lg {
+  width: 60px;
+  height: 60px;
+}
+
+.s-inicio__ilus--auto {
+  width: auto;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   ESCRITORIO
+   A los 1024 los contenedores vuelven a ser cajas y el contenido se parte
+   en dos columnas.
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+  .s-inicio__contenido {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .s-inicio__columna {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .s-inicio__tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+
+  .s-inicio__tarjetas > .c-card {
+    flex: 1 1 320px;
+    min-width: 280px;
+  }
+
+  .s-inicio__lateral {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 500px;
+    min-width: 0;
+  }
+}

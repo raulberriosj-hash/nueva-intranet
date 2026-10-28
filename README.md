@@ -10,7 +10,7 @@ como referencia de marcado, estilos y comportamiento.
 
 | Archivo | Pantalla | Estado |
 |---|---|---|
-| [`index.html`](index.html) | Home de la intranet | Comparte tokens y menú · su marcado sigue siendo el antiguo |
+| [`index.html`](index.html) | Home de la intranet | Al día |
 | [`mis-vacaciones.html`](mis-vacaciones.html) | Solicitud de vacaciones del colaborador | Al día |
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
 | [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
@@ -47,12 +47,12 @@ Y entrar a <http://localhost:8000>.
 │   │   ├── 03-layout.css         armazón de página (.l-*)
 │   │   ├── 04-components.css     componentes (.c-*)
 │   │   └── 05-sidebar.css        el menú lateral
-│   ├── pantallas/              lo propio de cada pantalla
-│   │   ├── mis-vacaciones.css
-│   │   ├── aprobaciones.css
-│   │   ├── informe-colaborador.css
-│   │   └── panel-rrhh.css
-│   └── legacy-home/            el CSS viejo, solo lo usa index.html
+│   └── pantallas/              lo propio de cada pantalla
+│       ├── inicio.css
+│       ├── mis-vacaciones.css
+│       ├── aprobaciones.css
+│       ├── informe-colaborador.css
+│       └── panel-rrhh.css
 │
 ├── js/
 │   ├── sidebar.js              EL MENÚ · una sola copia para todas
@@ -60,7 +60,9 @@ Y entrar a <http://localhost:8000>.
 │   ├── mis-vacaciones.js       interacciones del prototipo
 │   ├── panel-rrhh.js           gráficos y tablas del panel
 │   ├── panel-rrhh-datos.js     datos de muestra · DESECHABLE
-│   └── legacy-home/            JS viejo, solo lo usa index.html
+│   ├── inicio-carrusel.js      el carrusel de anuncios del home
+│   ├── inicio-cumpleanos.js    cumpleaños · PENDIENTE DE BACKEND
+│   └── inicio-festivos.js      festivos legales de Chile
 │
 └── assets/
     ├── icons/                  SVG sueltos, el sprite y _sprite-nav.svg
@@ -105,13 +107,14 @@ Figma no publica como variables.
 Nomenclatura BEM con prefijo por capa: `l-` armazón, `c-` componente,
 `u-` utilidad, `s-` pantalla. El panel usa su propio espacio, `bi-`.
 
-**El home comparte los tokens pero no los componentes.** `index.html` es de
-julio y conserva su propio `components.css` y `screen.css`. Lo que cambió es
-que `legacy-home/tokens.css` ya no declara valores: es un adaptador que apunta
-cada nombre viejo a su token del sistema. Así el home usa el mismo color, el
-mismo espaciado, los mismos radios y la misma escala tipográfica que el resto,
-sin tocar su maquetación. Migrar su marcado a las clases `.c-*` y `.l-*` sigue
-pendiente.
+**Las cinco pantallas usan el mismo sistema.** El home era de julio y traía
+sus propias clases; su marcado ya está migrado: `.app` → `.l-app`,
+`.page-content` → `.l-body`, `.card` → `.c-card`, `.section-header` →
+`.c-card__title`, `.icon` → `.c-icon`, y así. Lo que ninguna otra pantalla
+tiene —el hero, los accesos rápidos, el carrusel, las listas de cumpleaños y
+festivos, los botones de ticket y los banners— vive en
+`css/pantallas/inicio.css` con el prefijo `s-`, igual que el resto de las
+hojas de pantalla.
 
 ## El menú
 
@@ -215,8 +218,6 @@ se vuelve a generar `01-tokens.css`.
 
 ## Pendientes
 
-- [ ] Migrar el marcado del home a las clases `.c-*` y `.l-*`; los tokens ya
-      los comparte
 - [ ] Decidir el corte por año del panel y borrar el andamio
 - [ ] Confirmar la licencia de Highcharts con TI
 - [ ] Un gerente aparece como RUT (`10982345`): le falta el nombre en el maestro
