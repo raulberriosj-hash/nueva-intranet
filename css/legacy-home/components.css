@@ -240,15 +240,17 @@ botones Enviar Tickets
 /* --------------------------------------------------------------------------
    Encabezado de sección (ícono + título)
    -------------------------------------------------------------------------- */
+/* Cabecera de tarjeta: va al mismo escalón que .c-card__title del resto
+   de las pantallas, para que la jerarquía se lea igual en todas. */
 .section-header {
   display: flex;
   align-items: center;
   gap: var(--home-space-sm);
   margin: 0;
-  font-size: var(--text-heading-h3-section-size);
-  line-height: var(--text-heading-h3-section-line-height);
-  font-weight: var(--text-heading-h3-section-weight);
-  letter-spacing: var(--text-heading-h3-section-tracking);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-normal);
   color: var(--color-support-cta-700);
 }
 
@@ -269,7 +271,7 @@ botones Enviar Tickets
   align-items: center;
   gap: var(--home-space-md);
   padding: var(--home-space-xs);
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   background-color: var(--color-support-cta-50);
   transition: background-color var(--home-transition-fast);
 }

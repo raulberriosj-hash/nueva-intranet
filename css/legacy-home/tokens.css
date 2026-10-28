@@ -1,65 +1,112 @@
+/* ==========================================================================
+   HOME · ADAPTADOR AL DESIGN SYSTEM
+
+   Esta hoja ya no declara ningún valor. El home es de julio y tiene sus
+   propios nombres de variable repartidos por `components.css` y
+   `screen.css`; en vez de reescribir esas dos hojas de arriba abajo, acá
+   cada nombre viejo se apunta a su token de 01-tokens.css.
+
+   Resultado: el home usa exactamente el mismo color, el mismo espaciado,
+   los mismos radios y la misma escala tipográfica que el resto de las
+   pantallas, sin tocar su maquetación.
+
+   Es un puente, no un destino. Cuando se migre el home de verdad, estas
+   dos hojas y este archivo se borran y el marcado pasa a usar las clases
+   .c-* y .l-* del sistema.
+
+   SE CARGA DESPUÉS de css/sistema/01-tokens.css.
+   ========================================================================== */
+
 :root {
-  --color-support-cta-50: #f9fdff;
-  --color-support-cta-200: #e9f8fe;
-  --color-support-cta-300: #c9eefd;
-  --color-support-cta-400: #9be0fc;
-  --color-support-cta-500: #4eafde;
-  --color-support-cta-700: #245a93;
-  --color-support-cta-800: #194573;
-  --color-support-cta-900: #061b37;
+  /* ======================================================================
+     COLOR
+     La paleta del home era la familia "blue support" del sistema con otra
+     numeración. Calzaba casi exacta; lo único que se mueve es el 50, que
+     pasa de #f9fdff al #f4fcff del sistema.
+     ====================================================================== */
 
-  /* ---- Tipografía --------------------------------------------------------- */
-  --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-support-cta-50: var(--c-blue-support-50);
+  --color-support-cta-200: var(--c-blue-support-100);
+  --color-support-cta-300: var(--c-blue-support-200);
+  --color-support-cta-400: var(--c-blue-support-300);
+  --color-support-cta-500: var(--c-blue-support-400);
+  --color-support-cta-700: var(--c-blue-support-600);
+  --color-support-cta-800: var(--c-blue-support-700);
+  --color-support-cta-900: var(--c-blue-support-900);
 
-  --text-heading-h2-bold-size: 20px;
-  --text-heading-h2-bold-line-height: 28px;
-  --text-heading-h2-bold-weight: 700;
-  --text-heading-h2-bold-tracking: 0.5px;
+  /* ======================================================================
+     TIPOGRAFÍA
+     Los seis estilos del home, resueltos contra la escala del sistema.
+     Los interlineados estaban en px y pasan a proporción, que es como los
+     publica el Design System.
+     ====================================================================== */
 
-  --text-heading-h3-section-size: 16px;
-  --text-heading-h3-section-line-height: 18px;
-  --text-heading-h3-section-weight: 700;
-  --text-heading-h3-section-tracking: 0.5px;
+  --font-family-base: var(--font-sans);
 
-  --text-label-medium-bold-size: 16px;
-  --text-label-medium-bold-line-height: 16px;
-  --text-label-medium-bold-weight: 700;
-  --text-label-medium-bold-tracking: 0;
+  /* Título de bloque · era 20/28/700/0.5px */
+  --text-heading-h2-bold-size: var(--fs-xl);
+  --text-heading-h2-bold-line-height: var(--lh-snug);
+  --text-heading-h2-bold-weight: var(--fw-bold);
+  --text-heading-h2-bold-tracking: var(--ls-wide);
 
-  --text-label-small-size: 12px;
-  --text-label-small-line-height: 16px;
-  --text-label-small-weight: 400;
-  --text-label-small-tracking: 0;
+  /* Título de sección · era 16/18/700/0.5px */
+  --text-heading-h3-section-size: var(--fs-base);
+  --text-heading-h3-section-line-height: var(--lh-tight);
+  --text-heading-h3-section-weight: var(--fw-bold);
+  --text-heading-h3-section-tracking: var(--ls-wide);
 
-  --text-label-small-bold-size: 12px;
-  --text-label-small-bold-line-height: 18px;
-  --text-label-small-bold-weight: 700;
-  --text-label-small-bold-tracking: 0.5px;
+  /* Etiqueta grande · era 16/16/700/0 */
+  --text-label-medium-bold-size: var(--fs-base);
+  --text-label-medium-bold-line-height: var(--lh-none);
+  --text-label-medium-bold-weight: var(--fw-bold);
+  --text-label-medium-bold-tracking: var(--ls-normal);
 
-  --text-body-small-size: 12px;
-  --text-body-small-line-height: 18px;
-  --text-body-small-weight: 400;
-  --text-body-small-tracking: 0.5px;
+  /* Etiqueta chica · era 12/16/400/0 */
+  --text-label-small-size: var(--fs-xs);
+  --text-label-small-line-height: var(--lh-snug);
+  --text-label-small-weight: var(--fw-regular);
+  --text-label-small-tracking: var(--ls-normal);
 
-  /* ---- Espaciado ------------------------------------------------------- */
-  --home-space-xs: 4px;
-  --home-space-sm: 8px;
-  --home-space-md: 12px;
-  --home-space-xl: 24px;
+  /* Etiqueta chica en negrita · era 12/18/700/0.5px */
+  --text-label-small-bold-size: var(--fs-xs);
+  --text-label-small-bold-line-height: var(--lh-normal);
+  --text-label-small-bold-weight: var(--fw-bold);
+  --text-label-small-bold-tracking: var(--ls-wide);
 
-  /* ---- Radios ------------------------------------------------------------ */
-  --radius-xs: 4px;
-  --home-radius-sm: 8px;
-  --home-radius-md: 16px;
-  --home-radius-lg: 20px;
-  --radius-xl: 32px;
-  --home-radius-full: 999px;
+  /* Texto chico · era 12/18/400/0.5px */
+  --text-body-small-size: var(--fs-xs);
+  --text-body-small-line-height: var(--lh-normal);
+  --text-body-small-weight: var(--fw-regular);
+  --text-body-small-tracking: var(--ls-wide);
 
-  /* ---- Sombras ------------------------------------------------------------ */
-  --home-shadow-button: 0px 2px 2px -1px rgba(0, 0, 0, 0.25);
+  /* ======================================================================
+     ESPACIADO
+     ====================================================================== */
 
-  /* ---- Transiciones --------------------------------------------------------
-     */
-  --home-transition-fast: 150ms ease-out;
+  --home-space-xs: var(--space-1); /* 4  */
+  --home-space-sm: var(--space-2); /* 8  */
+  --home-space-md: var(--space-3); /* 12 */
+  --home-space-xl: var(--space-6); /* 24 */
+
+  /* ======================================================================
+     RADIOS
+     El home tenía un escalón de 20 que el sistema no publica: va al 16,
+     igual que en el resto de las pantallas. --radius-xs y --radius-xl se
+     borraron de acá: los da el sistema y antes lo estaban pisando.
+     ====================================================================== */
+
+  --home-radius-sm: var(--radius-md); /* 8     */
+  --home-radius-md: var(--radius-lg); /* 16    */
+  --home-radius-lg: var(--radius-lg); /* 20→16 */
+  --home-radius-full: var(--radius-pill);
+
+  /* ======================================================================
+     SOMBRA Y MOVIMIENTO
+     ====================================================================== */
+
+  --home-shadow-button: var(--shadow-button);
+  --home-transition-fast: var(--transition-fast);
+
+  /* El carrusel de beneficios; no es un token del sistema */
   --transition-slide: 500ms ease;
 }

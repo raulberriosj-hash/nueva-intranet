@@ -10,7 +10,7 @@ como referencia de marcado, estilos y comportamiento.
 
 | Archivo | Pantalla | Estado |
 |---|---|---|
-| [`index.html`](index.html) | Home de la intranet | CSS antiguo, pendiente de migrar · ya comparte el menú |
+| [`index.html`](index.html) | Home de la intranet | Comparte tokens y menú · su marcado sigue siendo el antiguo |
 | [`mis-vacaciones.html`](mis-vacaciones.html) | Solicitud de vacaciones del colaborador | Al día |
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
 | [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
@@ -82,18 +82,36 @@ siempre en orden y después el CSS de la pantalla:
 <link rel="stylesheet" href="css/pantallas/mis-vacaciones.css" />
 ```
 
-Los colores y tamaños salen siempre de `01-tokens.css`. El CSS de pantalla no
-declara valores propios: solo compone con las variables. Si hace falta un valor
-que el sistema no publica, va declarado arriba del archivo con el comentario
-`PENDIENTE DE TOKENIZAR` y una nota de dónde salió.
+`01-tokens.css` sale de las **variables** del archivo de Figma
+[Design System inelcom](https://www.figma.com/design/v0IxFJxFoUWsXnlqkvCkW9/Design-System-inelcom),
+no de sus estilos: 76 colores, 13 espacios, 6 radios y 29 de tipografía.
+
+**Es el único archivo del repositorio que declara un valor.** Todas las demás
+hojas —las del sistema, las de pantalla y las del home— componen con sus
+variables. Si una hoja necesita un valor que no está, el sitio donde agregarlo
+es el archivo de Figma, no la hoja.
+
+El archivo tiene dos capas. Una pantalla usa la segunda:
+
+| | |
+|---|---|
+| Primitivas | el valor tal como está en Figma, con el mismo nombre: `corporate/500` → `--c-corporate-500` |
+| Semánticas | para qué sirve: `--color-bg-page`, `--color-text-primary`, `--color-tag-ok-bg` |
+
+Al final hay un tercer bloque, marcado como **fuera del Design System**: anchos
+de sidebar y de modal, tamaños de icono, sombras, foco y transiciones, que
+Figma no publica como variables.
 
 Nomenclatura BEM con prefijo por capa: `l-` armazón, `c-` componente,
 `u-` utilidad, `s-` pantalla. El panel usa su propio espacio, `bi-`.
 
-**El home va aparte.** `index.html` es de julio y trae su propio
-`tokens.css` / `components.css` / `screen.css`, anteriores al sistema de arriba.
-Funciona, pero no comparte variables con el resto. Migrarlo está pendiente y no
-es un cambio menor: la pantalla va a cambiar de aspecto.
+**El home comparte los tokens pero no los componentes.** `index.html` es de
+julio y conserva su propio `components.css` y `screen.css`. Lo que cambió es
+que `legacy-home/tokens.css` ya no declara valores: es un adaptador que apunta
+cada nombre viejo a su token del sistema. Así el home usa el mismo color, el
+mismo espaciado, los mismos radios y la misma escala tipográfica que el resto,
+sin tocar su maquetación. Migrar su marcado a las clases `.c-*` y `.l-*` sigue
+pendiente.
 
 ## El menú
 
@@ -173,9 +191,32 @@ Los gráficos son [Highcharts](https://www.highcharts.com/) 11.4.8, desde CDN.
 **Es de licencia comercial**: hay que confirmarlo con TI antes de usarlo en
 producción.
 
+## Lo que no calzaba con el sistema
+
+Al ajustar las pantallas al Design System hubo cinco tamaños de letra, un
+radio y un espacio que las pantallas usaban y el sistema no publica. Se
+resolvieron ajustando la pantalla al sistema, no al revés:
+
+| | Estaba | Quedó |
+|---|---|---|
+| Rótulos en caja alta | 10 px | 12 px (`--fs-xs`) |
+| Notas y badges | 11 px | 12 px (`--fs-xs`) |
+| Valor de campo | 13 px | 14 px (`--fs-sm`) |
+| Título de página | 28 px | 30 px (`--fs-3xl`) |
+| Cifra de balance | 40 px | 36 px (`--fs-4xl`) |
+| Tarjetas y modales | radio 12 | radio 16 (`--radius-lg`) |
+| Un espacio suelto | 14 px | 16 px (`--space-4`) |
+
+También los pesos: el sistema llega a 700, así que lo que estaba en 800 y 900
+bajó a 700.
+
+Si alguno de estos escalones debería existir, se agrega al archivo de Figma y
+se vuelve a generar `01-tokens.css`.
+
 ## Pendientes
 
-- [ ] Migrar el home al sistema de `css/sistema/`
+- [ ] Migrar el marcado del home a las clases `.c-*` y `.l-*`; los tokens ya
+      los comparte
 - [ ] Decidir el corte por año del panel y borrar el andamio
 - [ ] Confirmar la licencia de Highcharts con TI
 - [ ] Un gerente aparece como RUT (`10982345`): le falta el nombre en el maestro

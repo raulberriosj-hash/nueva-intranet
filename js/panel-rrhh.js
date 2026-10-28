@@ -119,7 +119,7 @@
     vence: tok("--c-warning-500"),
     anterior: tok("--c-error-500"),
     efectivo: tok("--c-success-600"),
-    transito: tok("--c-blue-600"),
+    transito: tok("--c-blue-support-600"),
     tinta: tok("--color-text-primary"),
     suave: tok("--color-text-heading"),
     tenue: tok("--color-text-secondary"),
@@ -149,10 +149,10 @@
     },
     // Once series, once tonos, todos del archivo de tokens
     colors: [
-      tok("--c-corporate-600"), tok("--c-blue-600"),    tok("--c-success-600"),
+      tok("--c-corporate-600"), tok("--c-blue-support-600"),    tok("--c-success-600"),
       tok("--c-warning-500"),   tok("--c-error-500"),   tok("--c-corporate-800"),
       tok("--c-neutral-500"),   tok("--c-success-700"), tok("--c-warning-700"),
-      tok("--c-error-700"),     tok("--c-blue-900"),
+      tok("--c-error-700"),     tok("--c-blue-support-900"),
     ],
     chart: {
       backgroundColor: "transparent",
@@ -179,7 +179,7 @@
     tooltip: {
       backgroundColor: COLOR.tinta,
       borderWidth: 0,
-      borderRadius: parseInt(tok("--radius-sm"), 10),
+      borderRadius: parseInt(tok("--radius-md"), 10),
       shadow: false,
       style: { color: tok("--color-text-inverse"), fontSize: FS_CHICO },
       // Fuera del gráfico: el de once series tapaba medio dibujo

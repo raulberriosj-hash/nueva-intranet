@@ -274,8 +274,8 @@ body {
   box-shadow: var(--home-shadow-button);
   color: var(--color-support-cta-700);
   font-family: inherit;
-  font-size: 20px;
-  line-height: 1;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-none);
   cursor: pointer;
   transition: background-color var(--home-transition-fast);
 }

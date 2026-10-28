@@ -1,25 +1,78 @@
+/* ==========================================================================
+   TOKENS · INELCOM Design System
+
+   Generado desde las VARIABLES del archivo de Figma "Design System inelcom"
+   (v0IxFJxFoUWsXnlqkvCkW9), no desde sus estilos. Son cuatro colecciones:
+
+     INELCOM/Colors      76 variables
+     INELCOM/Spacing     13
+     INELCOM/Radius       6
+     INELCOM/Typography  29
+
+   Este archivo es la ÚNICA fuente de color, espacio, radio y tipografía de
+   todo el repositorio. Ninguna hoja de más abajo declara un valor propio:
+   todas componen con estas variables.
+
+   DOS CAPAS
+     1. PRIMITIVAS   el valor tal como está en Figma, con el mismo nombre
+                     (corporate/500 → --c-corporate-500)
+     2. SEMÁNTICAS   para qué sirve cada una en pantalla
+                     (--color-bg-page, --color-text-primary…)
+
+   Una pantalla usa la capa 2. La capa 1 se toca solo cuando cambia el
+   archivo de Figma.
+
+   LO QUE NO VIENE DEL DESIGN SYSTEM
+   Al final hay un bloque con medidas de implementación —anchos de sidebar y
+   de modal, tamaños de icono, sombras, foco y transiciones— que Figma no
+   publica como variables. Van marcadas y aparte, para que se note cuáles
+   son del sistema y cuáles las pusimos nosotros.
+   ========================================================================== */
+
 :root {
   /* ======================================================================
-     1. COLOR — PRIMITIVOS
+     1. PRIMITIVAS · COLOR            INELCOM/Colors
      ====================================================================== */
 
-  /* --- Corporativo -------------------------------------------------- */
+  /* --- Corporativo --------------------------------------------------- */
+  --c-corporate-50: #ebffff;
+  --c-corporate-100: #cefdff;
   --c-corporate-200: #a2f9ff;
+  --c-corporate-300: #63f1fd;
+  --c-corporate-400: #1ce0f4;
   --c-corporate-500: #00bfd6;
   --c-corporate-600: #039bb7;
   --c-corporate-700: #0a7c94;
   --c-corporate-800: #126378;
+  --c-corporate-900: #145265;
   --c-corporate-950: #063646;
 
-  /* --- Azul de apoyo ------------------------------------------------ */
-  --c-blue-50: #f4fcff;
-  --c-blue-100: #e9f8fe;
-  --c-blue-200: #c9eefd;
-  --c-blue-300: #9be0fc;
-  --c-blue-600: #245a93;
-  --c-blue-900: #061b37;
+  /* --- Support (morado) ---------------------------------------------- */
+  --c-support-50: #ecefff;
+  --c-support-100: #dde2ff;
+  --c-support-200: #c2c9ff;
+  --c-support-300: #9ca5ff;
+  --c-support-400: #7577ff;
+  --c-support-500: #6c63ff;
+  --c-support-600: #5036f5;
+  --c-support-700: #452ad8;
+  --c-support-800: #3825ae;
+  --c-support-900: #312689;
+  --c-support-950: #1e1650;
 
-  /* --- Neutros ------------------------------------------------------ */
+  /* --- Blue support ---------------------------------------------------
+     Ojo: el sistema no publica el 800 de esta familia. */
+  --c-blue-support-50: #f4fcff;
+  --c-blue-support-100: #e9f8fe;
+  --c-blue-support-200: #c9eefd;
+  --c-blue-support-300: #9be0fc;
+  --c-blue-support-400: #4eafde;
+  --c-blue-support-500: #357eb2;
+  --c-blue-support-600: #245a93;
+  --c-blue-support-700: #194573;
+  --c-blue-support-900: #061b37;
+
+  /* --- Neutros -------------------------------------------------------- */
   --c-neutral-0: #ffffff;
   --c-neutral-50: #f8fbfc;
   --c-neutral-100: #f1f7f9;
@@ -27,79 +80,166 @@
   --c-neutral-300: #ccdae0;
   --c-neutral-400: #96acb6;
   --c-neutral-500: #6b8490;
-  --c-neutral-600: #567080;
+  --c-neutral-600: #495d67;
   --c-neutral-700: #354953;
   --c-neutral-800: #1f303a;
   --c-neutral-900: #101e29;
+  --c-neutral-950: #030c16;
 
-  /* --- Semáforo ----------------------------------------------------- */
+  /* --- Semáforo ------------------------------------------------------- */
+  --c-success-50: #f0fdf4;
   --c-success-100: #dcfce7;
   --c-success-200: #bbf7d0;
+  --c-success-300: #86efac;
+  --c-success-400: #4ade80;
+  --c-success-500: #22c55e;
   --c-success-600: #16a34a;
   --c-success-700: #15803d;
+  --c-success-800: #166534;
   --c-success-900: #14532d;
+  --c-success-950: #052e16;
 
+  --c-warning-50: #fef9ec;
   --c-warning-100: #fdedc8;
   --c-warning-200: #fada8d;
+  --c-warning-300: #f7c052;
+  --c-warning-400: #f5a623;
   --c-warning-500: #ef8711;
+  --c-warning-600: #d3630c;
   --c-warning-700: #af440e;
+  --c-warning-800: #8f3411;
   --c-warning-900: #752c12;
+  --c-warning-950: #431505;
 
+  --c-error-50: #fef2f2;
   --c-error-100: #fee2e2;
   --c-error-200: #ffc9c9;
+  --c-error-300: #fda4a4;
+  --c-error-400: #fa6f6f;
   --c-error-500: #f24b4b;
   --c-error-600: #de2424;
   --c-error-700: #bb1a1a;
+  --c-error-800: #9b1919;
   --c-error-900: #801c1c;
-  --c-error-text: #d55f5a;
+  --c-error-950: #460909;
 
   /* ======================================================================
-     2. COLOR — SEMÁNTICOS
+     2. PRIMITIVAS · ESPACIO          INELCOM/Spacing
      ====================================================================== */
 
-  /* --- Superficies -------------------------------------------------- */
-  --color-bg-page: var(--c-blue-100);
+  --space-half: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ======================================================================
+     3. PRIMITIVAS · RADIO            INELCOM/Radius
+     ====================================================================== */
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* ======================================================================
+     4. PRIMITIVAS · TIPOGRAFÍA       INELCOM/Typography
+
+     La familia no es una variable de Figma: el sistema la da por sentada.
+     Es lo único de esta sección que no sale del archivo.
+     ====================================================================== */
+
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-base: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 30px;
+  --fs-4xl: 36px;
+  --fs-5xl: 48px;
+  --fs-6xl: 60px;
+  --fs-7xl: 72px;
+  --fs-8xl: 96px;
+  --fs-9xl: 128px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-none: 1;
+  --lh-tight: 1.25;
+  --lh-snug: 1.375;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.625;
+  --lh-loose: 2;
+
+  --ls-tighter: -0.05em;
+  --ls-tight: -0.025em;
+  --ls-normal: 0;
+  --ls-wide: 0.025em;
+  --ls-wider: 0.05em;
+  --ls-widest: 0.1em;
+
+  /* ======================================================================
+     5. SEMÁNTICAS · para qué sirve cada color en pantalla
+     ====================================================================== */
+
+  /* --- Superficies ---------------------------------------------------- */
+  --color-bg-page: var(--c-blue-support-100);
   --color-surface: var(--c-neutral-0);
   --color-surface-subtle: var(--c-neutral-200);
-  --color-surface-sunken: var(--c-neutral-50); /* tarjeta de detalle   */
+  --color-surface-sunken: var(--c-neutral-50); /* tarjeta de detalle    */
   --color-surface-muted: var(--c-neutral-100); /* cuerpo de los modales */
 
-  /* --- Bordes y separadores ----------------------------------------- */
+  /* --- Bordes y separadores -------------------------------------------- */
   --color-border: var(--c-neutral-400);
   --color-border-subtle: var(--c-neutral-300);
   --color-divider: var(--c-neutral-200);
 
-  /* --- Texto -------------------------------------------------------- */
+  /* --- Texto ------------------------------------------------------------ */
   --color-text-primary: var(--c-neutral-800);
   --color-text-heading: var(--c-neutral-700);
   --color-text-strong: var(--c-neutral-900);
   --color-text-secondary: var(--c-neutral-600);
   --color-text-inverse: var(--c-neutral-0);
   --color-text-link: var(--c-corporate-700);
-  --color-text-danger: var(--c-error-text);
+  --color-text-danger: var(--c-error-600);
 
-  /* --- Iconos ------------------------------------------------------- */
+  /* --- Iconos ----------------------------------------------------------- */
   --color-icon: var(--c-neutral-700);
   --color-icon-muted: var(--c-neutral-500);
   --color-icon-inverse: var(--c-neutral-0);
 
-  /* --- Interacción ---------------------------------------------------      */
-  --color-state-hover: var(--c-blue-50);
-  --color-state-pressed: var(--c-blue-200);
-  --color-state-focus: var(--c-blue-200);
-  --color-state-selected: var(--c-blue-200);
+  /* --- Interacción ------------------------------------------------------ */
+  --color-state-hover: var(--c-blue-support-50);
+  --color-state-pressed: var(--c-blue-support-200);
+  --color-state-focus: var(--c-blue-support-200);
+  --color-state-selected: var(--c-blue-support-200);
 
   /* El sidebar va sobre blanco, así que arranca un escalón más arriba */
-  --color-nav-hover: var(--c-blue-100);
-  --color-nav-pressed: var(--c-blue-300);
-  --color-nav-selected: var(--c-blue-200);
+  --color-nav-hover: var(--c-blue-support-100);
+  --color-nav-pressed: var(--c-blue-support-300);
+  --color-nav-selected: var(--c-blue-support-200);
 
-  /* Anillo de foco */
   --color-focus-ring: var(--c-corporate-700);
-  --focus-ring-width: 2px;
-  --focus-ring-offset: 2px;
 
-  /* --- Acción primaria ---------------------------------------------- */
+  /* --- Acción primaria -------------------------------------------------- */
   --color-action-bg: var(--c-corporate-600);
   --color-action-bg-hover: var(--c-corporate-700);
   --color-action-bg-pressed: var(--c-corporate-800);
@@ -107,11 +247,11 @@
   --color-action-bg-disabled: var(--c-neutral-200);
   --color-action-text-disabled: var(--c-neutral-500);
 
-  /* --- Modales ------------------------------------------------------ */
+  /* --- Modales ---------------------------------------------------------- */
   --color-overlay: rgb(16 30 41 / 0.55);
 
-  /* --- Estados semánticos -------------------- */
-  --color-info-bg: var(--c-blue-200);
+  /* --- Estados ---------------------------------------------------------- */
+  --color-info-bg: var(--c-blue-support-200);
   --color-info-border: var(--c-corporate-600);
   --color-info-text: var(--c-corporate-950);
   --color-info-accent: var(--c-corporate-700);
@@ -130,124 +270,72 @@
   --color-danger-text: var(--c-error-900);
   --color-danger-solid: var(--c-error-500);
 
-  /* --- Badge de días ------------------------------------------------- */
+  /* --- Badge de días ---------------------------------------------------- */
   --color-badge-empty: var(--c-neutral-400);
   --color-badge-ok: var(--c-success-600);
   --color-badge-over: var(--color-danger-solid);
 
-  /* --- Tabla -------------------------------------------------------- */
-  --color-table-head-bg:   var(--c-neutral-100);
-  --color-table-border:    var(--c-neutral-300);
-  --color-table-row-hover:   var(--color-state-hover);
+  /* --- Tabla ------------------------------------------------------------ */
+  --color-table-head-bg: var(--c-neutral-100);
+  --color-table-border: var(--c-neutral-300);
+  --color-table-row-hover: var(--color-state-hover);
   --color-table-row-pressed: var(--color-state-pressed);
 
-  --color-tag-ok-bg:     var(--c-success-100);
-  --color-tag-ok-text:   var(--c-success-700);
-  --color-tag-wait-bg:   var(--c-warning-100);
+  --color-tag-ok-bg: var(--c-success-100);
+  --color-tag-ok-text: var(--c-success-700);
+  --color-tag-wait-bg: var(--c-warning-100);
   --color-tag-wait-text: var(--c-warning-700);
-  --color-tag-no-bg:     var(--c-error-100);
-  --color-tag-no-text:   var(--c-error-700);
+  --color-tag-no-bg: var(--c-error-100);
+  --color-tag-no-text: var(--c-error-700);
 
   /* Las filas rechazadas van atenuadas */
   --opacity-row-muted: 0.6;
 
-  /* --- Color del icono de la tarjeta de historial -------------------- */
+  /* --- Icono de la tarjeta de historial --------------------------------- */
   --color-status-icon-aprobada: var(--c-success-700);
   --color-status-icon-rechazada: var(--c-neutral-900);
   --color-status-icon-pendiente: var(--color-icon);
 
   /* ======================================================================
-     3. TIPOGRAFÍA
+     6. FUERA DEL DESIGN SYSTEM
+
+     Medidas de implementación que Figma no publica como variables. Si
+     alguna debiera ser del sistema, el sitio donde agregarla es el archivo
+     de Figma, no este bloque.
      ====================================================================== */
 
-  --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-
-  --fw-regular: 400;
-  --fw-medium: 500;
-  --fw-bold: 700;
-  --fw-extrabold: 800;
-  --fw-black: 900;
-
-  /* Escala. rem para que respete el tamaño de fuente del navegador                         */
-  --fs-display: 2.5rem; /* 40 · cifra de balance            */
-  --fs-h1: 1.75rem; /* 28 · título de página            */
-  --fs-h2: 1.5rem; /* 24 · título de sección y de card */
-  --fs-lg: 1rem; /* 16 · fechas de card, unidad      */
-  --fs-md: 0.875rem; /* 14 · botón, links de nav         */
-  --fs-base: 0.8125rem; /* 13 · valor de campo              */
-  --fs-sm: 0.75rem; /* 12 · body small, metadatos       */
-  --fs-xs: 0.6875rem; /* 11 · nota de paginación, badge   */
-  --fs-2xs: 0.625rem; /* 10 · labels y badges en caja alta*/
-
-  --lh-flat: 0.95; /* cifra grande */
-  --lh-tight: 1.2;
-  --lh-snug: 1.33; /* 24/32, 14/20 */
-  --lh-normal: 1.45;
-  --lh-loose: 1.5; /* 12/18 */
-
-  --ls-tight: -0.02em; /* -0.28px en 14 · links de nav */
-  --ls-normal: 0;
-  --ls-wide: 0.04em; /* 0.5px en 12                  */
-  --ls-caps: 0.06em; /* 0.72px en 12 · labels de tile*/
-
-  /* ======================================================================
-     4. ESPACIADO
-     ====================================================================== */
-
-  --space-3xs: 4px;
-  --space-2xs: 8px;
-  --space-xs: 12px;
-  --space-sm: 14px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-
-  /* ======================================================================
-     5. RADIOS
-     ====================================================================== */
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-full: 999px;
-
-  /* ======================================================================
-     6. SOMBRAS
-     ====================================================================== */
-
-  --shadow-button: 0 2px 2px -1px rgb(0 0 0 / 0.25);
-  --shadow-card: 0 2px 8px 0 rgb(36 48 71 / 0.1);
-  --shadow-card-lg: 0 10px 24px -10px rgb(36 48 71 / 0.1);
-  --shadow-modal:
-    0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
-
-  /* ======================================================================
-     7. MEDIDAS DE LAYOUT
-     ====================================================================== */
-
+  /* --- Medidas de layout ------------------------------------------------ */
   --size-sidebar-collapsed: 92px;
   --size-sidebar-expanded: 256px;
   --size-bottomnav: 64px; /* barra inferior en móvil */
   --size-content-max: 1440px;
-  --size-modal-sm: 500px; /* detalle de solicitud */
-  --size-modal-md: 800px; /* confirmación         */
-  --size-modal-lg: 720px; /* drawer de informe    */
+  --size-modal-sm: 500px; /* detalle de solicitud  */
+  --size-modal-md: 800px; /* confirmación          */
+  --size-modal-lg: 720px; /* drawer de informe     */
+  --size-modal-xl: 1040px; /* detalle de un tramo  */
 
+  /* --- Iconos ----------------------------------------------------------- */
   --icon-xs: 13px;
   --icon-sm: 16px;
   --icon-md: 18px;
   --icon-lg: 24px;
   --icon-xl: 36px;
 
+  /* Área mínima de toque en teléfono */
   --tap-target: 44px;
 
-  /* ======================================================================
-     8. MOVIMIENTO
-     ====================================================================== */
+  /* --- Sombras ---------------------------------------------------------- */
+  --shadow-button: 0 2px 2px -1px rgb(0 0 0 / 0.25);
+  --shadow-card: 0 2px 8px 0 rgb(36 48 71 / 0.1);
+  --shadow-card-lg: 0 10px 24px -10px rgb(36 48 71 / 0.1);
+  --shadow-modal:
+    0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
 
+  /* --- Foco ------------------------------------------------------------- */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* --- Movimiento ------------------------------------------------------- */
   --transition-fast: 120ms ease-out;
   --transition-base: 180ms ease-out;
 }

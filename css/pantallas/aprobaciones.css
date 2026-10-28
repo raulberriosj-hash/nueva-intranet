@@ -35,8 +35,8 @@
     gap: 6px;
   }
   .s-aprob__acciones .c-btn {
-    padding: 6px var(--space-2xs);
-    font-size: var(--fs-sm);
+    padding: 6px var(--space-2);
+    font-size: var(--fs-xs);
   }
 }
 

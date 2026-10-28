@@ -39,7 +39,7 @@
   position: sticky;
   top: 0;
   z-index: 15;
-  padding: var(--space-md);
+  padding: var(--space-4);
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-divider);
 }
@@ -48,12 +48,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-xs);
+  gap: var(--space-3);
 }
 
 @media (min-width: 768px) {
   .l-header {
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-4) var(--space-6);
   }
 }
 
@@ -64,13 +64,13 @@
 .l-body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4) var(--space-8);
 }
 
 @media (min-width: 768px) {
   .l-body {
-    padding: var(--space-lg) var(--space-lg) var(--space-xl);
+    padding: var(--space-6) var(--space-6) var(--space-8);
   }
 }
 
@@ -81,11 +81,11 @@
 .l-section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-4);
 }
 
 .l-section__title {
-  font-size: var(--fs-h2);
+  font-size: var(--fs-2xl);
   font-weight: var(--fw-bold);
   line-height: var(--lh-snug);
   color: var(--color-text-primary);
@@ -98,13 +98,13 @@
 .l-balance {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-xs);
+  gap: var(--space-3);
 }
 
 @media (min-width: 480px) {
   .l-balance {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
+    gap: var(--space-4);
   }
   /* Con tres tiles el último ocupa la fila entera; con dos no aplica. */
   .l-balance:has(> :nth-child(3)) > :last-child {
@@ -116,7 +116,7 @@
   /* auto-fit: se adapta al número de tiles que haya. */
   .l-balance {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-lg);
+    gap: var(--space-6);
   }
   /* Desde acá ya caben los tres en fila: se anula el span de arriba. */
   .l-balance:has(> :nth-child(3)) > :last-child {
@@ -131,7 +131,7 @@
 .l-split {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-xl);
+  gap: var(--space-8);
 }
 
 .l-split__divider {
@@ -141,16 +141,16 @@
 @media (min-width: 1280px) {
   .l-split {
     grid-template-columns: 492px 2px 1fr;
-    gap: var(--space-lg);
+    gap: var(--space-6);
     align-items: start;
   }
 
   .l-split__divider {
     display: block;
     align-self: stretch;
-    margin-block: var(--space-xl);
+    margin-block: var(--space-8);
     background-color: var(--color-border-subtle);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-pill);
   }
 }
 
@@ -161,7 +161,7 @@
 .l-filters {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xs);
+  gap: var(--space-2);
 }
 
 .l-filters > * {
@@ -173,7 +173,7 @@
   .l-filters {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--space-md);
+    gap: var(--space-4);
   }
   .l-filters > * {
     width: auto;
