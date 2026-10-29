@@ -20,51 +20,49 @@
    no carga 02-base.css. Para que no dependa de ese reset, lo que necesita
    va acá, acotado al propio menú: fuera de .c-sidebar no toca nada. En las
    pantallas que sí cargan 02-base.css esto repite lo que ya hay.
+
+   TODO VA EN :where(), QUE NO SUMA ESPECIFICIDAD.
+   Es la parte importante. Sin él, `.c-sidebar button` o `.c-sidebar ul`
+   le ganan a las clases de los componentes y los rompen por detrás: ya se
+   llevó por delante el fondo del botón de plegar, el margen de la lista de
+   subcategorías y los estados hover y pressed de los desplegables. Un
+   reset tiene que ser el suelo, no el techo: con :where() cualquier regla
+   de componente le pasa por encima sin pelear.
    ========================================================================== */
 
-.c-sidebar,
-.c-sidebar *,
-.c-sidebar *::before,
-.c-sidebar *::after {
+:where(.c-sidebar, .c-sidebar *, .c-sidebar *::before, .c-sidebar *::after) {
   box-sizing: border-box;
 }
 
+/* Esta no va en :where(): es la familia del menú, no un reset */
 .c-sidebar {
   font-family: var(--font-sans);
 }
 
-.c-sidebar p,
-.c-sidebar ul {
+:where(.c-sidebar p, .c-sidebar ul) {
   margin: 0;
 }
 
-.c-sidebar ul {
+:where(.c-sidebar ul) {
   padding: 0;
   list-style: none;
 }
 
-.c-sidebar a {
+:where(.c-sidebar a) {
   color: inherit;
   text-decoration: none;
 }
 
-/* El botón de plegar se queda fuera: trae su fondo blanco y su borde de
-   04-components, y `.c-sidebar button` —que tiene más especificidad— se los
-   borraba. Por eso se veía translúcido. */
-.c-sidebar button:not(.c-sidebar__toggle) {
-  background: none;
-  border: 0;
-}
-
-.c-sidebar button {
+:where(.c-sidebar button) {
   margin: 0;
   font: inherit;
   color: inherit;
+  background: none;
+  border: 0;
   cursor: pointer;
 }
 
-.c-sidebar svg,
-.c-sidebar img {
+:where(.c-sidebar svg, .c-sidebar img) {
   display: block;
 }
 
@@ -186,10 +184,9 @@
   rotate: 180deg;
 }
 
-/* Va con .c-sidebar delante a propósito: el reset de arriba usa
-   `.c-sidebar ul`, que tiene más especificidad, y si no le ganaba aplastaba
-   el margen y el relleno — con ellos a cero la línea del árbol se dibujaba
-   encima del texto y no se veía. */
+/* Lleva .c-sidebar delante para ganarle a `ul[class]` de 02-base.css, que
+   pone margen y relleno a cero y tiene más especificidad que una clase
+   sola. Sin esto la línea del árbol se dibuja encima del texto. */
 .c-sidebar .c-navgroup__hijos {
   display: none;
   flex-direction: column;
@@ -201,7 +198,7 @@
   padding-left: var(--space-3);
 }
 
-.c-sidebar.c-sidebar--expanded .c-navgroup--abierto .c-navgroup__hijos {
+.c-sidebar--expanded .c-navgroup--abierto .c-navgroup__hijos {
   display: flex;
 }
 
