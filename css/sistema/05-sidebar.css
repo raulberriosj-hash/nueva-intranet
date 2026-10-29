@@ -120,6 +120,16 @@
     overscroll-behavior: contain;
   }
 
+  /* NADA SE ENCOGE: QUE SE DESPLACE.
+     Son items flex en columna, y en cuanto el contenido no cabe el
+     navegador los aplasta en vez de dejar que la caja se desplace. A los
+     <hr> de 2px los dejaba en cero —las separaciones desaparecían en las
+     pantallas donde un grupo está abierto, que son las que más alto
+     ocupan—. Con shrink en cero la caja scrollea, que es lo que toca. */
+  .c-sidebar__scroll > * {
+    flex-shrink: 0;
+  }
+
   .c-sidebar__seccion {
     display: flex;
     flex-direction: column;
