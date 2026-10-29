@@ -48,12 +48,18 @@
   text-decoration: none;
 }
 
+/* El botón de plegar se queda fuera: trae su fondo blanco y su borde de
+   04-components, y `.c-sidebar button` —que tiene más especificidad— se los
+   borraba. Por eso se veía translúcido. */
+.c-sidebar button:not(.c-sidebar__toggle) {
+  background: none;
+  border: 0;
+}
+
 .c-sidebar button {
   margin: 0;
   font: inherit;
   color: inherit;
-  background: none;
-  border: 0;
   cursor: pointer;
 }
 

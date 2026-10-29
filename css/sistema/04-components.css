@@ -183,7 +183,10 @@
     position: sticky;
     top: 0;
     bottom: auto;
-    z-index: 10;
+    /* Por encima de .l-header (15): el botón de plegar sobresale sobre el
+       contenido y con 10 quedaba por debajo de la cabecera blanca de las
+       pantallas que la tienen. */
+    z-index: 20;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -194,7 +197,6 @@
     padding: var(--space-6);
     border-top: 0;
     border-right: 1px solid var(--color-border-subtle);
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
   }
 
   .c-sidebar__profile {
@@ -263,7 +265,6 @@
 @media (min-width: 768px) {
   .c-sidebar--expanded {
     width: var(--size-sidebar-expanded);
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
   }
 
   .c-sidebar--expanded .c-sidebar__profile {
