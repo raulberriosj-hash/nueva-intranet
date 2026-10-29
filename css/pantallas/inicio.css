@@ -492,9 +492,9 @@
    ILUSTRACIONES
 
    Son PNG de producto, no iconos: el sistema no publica estos tamaños.
-   --md acompaña a los accesos y a los tickets, --lg a los destacados del
-   hero y --auto a los logotipos de convenio, que traen su propia relación
-   de aspecto.
+   Sin modificador van las rejillas de enlaces, --md las de Información
+   Inelcom, --lg los destacados del hero y --auto los logotipos de
+   convenio, que traen su propia relación de aspecto.
    ========================================================================== */
 
 .s-inicio__ilus {
@@ -503,6 +503,11 @@
   width: 40px;
   height: 40px;
   object-fit: contain;
+}
+
+.s-inicio__ilus--md {
+  width: 60px;
+  height: 60px;
 }
 
 .s-inicio__ilus--lg {
