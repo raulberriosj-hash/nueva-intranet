@@ -10,9 +10,9 @@
      .sr-only         → .u-visually-hidden             .icon → .c-icon
      .btn--icon-sidebar → lo pinta js/sidebar.js        .avatar → .c-avatar
 
-   Queda solo lo que ninguna otra pantalla tiene: el hero, la rejilla de
-   accesos rápidos, el carrusel de anuncios, las listas de cumpleaños y
-   festivos, los botones de ticket y los dos banners.
+   Queda solo lo que ninguna otra pantalla tiene: el hero, el carrusel de
+   anuncios, las listas de cumpleaños y festivos, las rejillas de enlaces,
+   los botones de ticket y los dos banners.
 
    Como el resto de las hojas, no declara ni un color ni un tamaño de letra:
    todo sale de 01-tokens.css. Los únicos valores literales son medidas de
@@ -33,7 +33,6 @@
    ========================================================================== */
 
 .s-inicio__hero { order: 1; }
-.s-inicio__accesos { order: 2; }
 .s-inicio__contenido { order: 3; }
 .s-inicio__carrusel { order: 3; }
 .s-inicio__tarjetas { order: 4; }
@@ -63,7 +62,9 @@
   width: 100%;
   padding: var(--space-6);
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  /* Figma trae 24 y el sistema no lo publica: queda en 16, como las
+     tarjetas. Si 24 debe existir, el sitio donde agregarlo es el DS. */
+  border-radius: var(--radius-lg);
   background-image: linear-gradient(
     to right,
     var(--c-blue-support-200),
@@ -121,8 +122,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
-  padding: var(--space-3);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   background-color: var(--color-surface);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-button);
@@ -133,12 +134,19 @@
 .s-inicio__perfil:active { background-color: var(--color-state-pressed); }
 
 .s-inicio__perfilNombre {
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-regular);
   line-height: var(--lh-normal);
-  letter-spacing: var(--ls-wide);
   color: var(--color-text-primary);
   white-space: nowrap;
+}
+
+/* El botón de salir del hero va sin borde y un paso más grande que el
+   .c-iconbtn del resto de las pantallas */
+.s-inicio__salir {
+  width: 40px;
+  height: 40px;
+  border-color: transparent;
 }
 
 /* --- Los dos destacados del hero --------------------------------------- */
@@ -155,7 +163,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  padding: var(--space-6);
+  padding: var(--space-4);
   text-align: center;
   background-color: var(--color-surface);
   border-radius: var(--radius-lg);
@@ -167,23 +175,18 @@
 .s-inicio__destacado:active { background-color: var(--color-state-pressed); }
 
 .s-inicio__destacadoLabel {
-  font-size: var(--fs-base);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-none);
-  color: var(--color-text-link);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--c-blue-support-900);
   white-space: nowrap;
 }
 
 /* ==========================================================================
-   ACCESOS RÁPIDOS
+   TARJETAS DE ENLACE
+   Las de Beneficios y las de Información Inelcom. Van dentro de
+   .s-inicio__rejilla.
    ========================================================================== */
-
-.s-inicio__accesos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  width: 100%;
-}
 
 .s-inicio__acceso {
   display: flex;
@@ -300,10 +303,15 @@
    Acá solo el icono que acompaña al título.
    ========================================================================== */
 
+/* El home usa el H4 del Design System (20/Bold), un escalón por debajo del
+   .c-card__title que traen las pantallas de vacaciones */
 .s-inicio__titulo {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  color: var(--color-text-heading);
 }
 
 /* ==========================================================================
@@ -313,6 +321,7 @@
 .s-inicio__lista {
   display: flex;
   flex-direction: column;
+  gap: var(--space-1);
   width: 100%;
 }
 
@@ -349,19 +358,17 @@
 .s-inicio__nombre {
   flex: 1;
   min-width: 0;
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-regular);
   line-height: var(--lh-normal);
-  letter-spacing: var(--ls-wide);
   color: var(--color-text-primary);
 }
 
 .s-inicio__fecha {
   flex-shrink: 0;
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-bold);
   line-height: var(--lh-normal);
-  letter-spacing: var(--ls-wide);
   text-align: right;
   white-space: nowrap;
   color: var(--color-text-heading);
@@ -397,9 +404,15 @@
 .s-inicio__ticketLabel {
   flex: 1;
   font-size: var(--fs-base);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-tight);
-  color: var(--color-text-link);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--color-text-heading);
+}
+
+/* La flecha va en pastilla, igual en los tickets y en los banners */
+.s-inicio__flecha {
+  background-color: var(--c-blue-support-200);
+  border-radius: var(--radius-pill);
 }
 
 /* ==========================================================================
@@ -416,7 +429,7 @@
   overflow: hidden;
   text-align: left;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   transition: background-color var(--transition-fast);
 }
@@ -433,10 +446,16 @@
 }
 
 .s-inicio__bannerTitulo {
-  font-size: var(--fs-xl);
+  font-size: var(--fs-base);
   font-weight: var(--fw-bold);
-  line-height: var(--lh-snug);
-  color: var(--color-text-link);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+}
+
+.s-inicio__bannerPie {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .s-inicio__bannerSub {
@@ -450,8 +469,8 @@
 /* Ilustración de proporción fija; no es un icono del sistema */
 .s-inicio__bannerImagen {
   flex-shrink: 0;
-  width: 70px;
-  height: 73px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
 }
 
@@ -487,8 +506,8 @@
 }
 
 .s-inicio__ilus--lg {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
 }
 
 .s-inicio__ilus--auto {

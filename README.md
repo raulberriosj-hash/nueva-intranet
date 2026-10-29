@@ -111,8 +111,8 @@ Nomenclatura BEM con prefijo por capa: `l-` armazón, `c-` componente,
 sus propias clases; su marcado ya está migrado: `.app` → `.l-app`,
 `.page-content` → `.l-body`, `.card` → `.c-card`, `.section-header` →
 `.c-card__title`, `.icon` → `.c-icon`, y así. Lo que ninguna otra pantalla
-tiene —el hero, los accesos rápidos, el carrusel, las listas de cumpleaños y
-festivos, los botones de ticket y los banners— vive en
+tiene —el hero, el carrusel, las listas de cumpleaños y festivos, las
+rejillas de enlaces, los botones de ticket y los banners— vive en
 `css/pantallas/inicio.css` con el prefijo `s-`, igual que el resto de las
 hojas de pantalla.
 
