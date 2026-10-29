@@ -219,6 +219,26 @@ nada más.
 Los feriados salen de `js/festivos-chile.js` —el mismo archivo que usa la
 lista del home— y se descuentan de los días hábiles.
 
+### Probada con 50 personas
+
+El equipo de muestra son ocho. Con cincuenta —48 tramos, 19 personas con
+vacaciones en un mismo mes— la pantalla se rompía por tres lados:
+
+| | Sin resolver | Ahora |
+|---|---|---|
+| Largo de la página | 4.108 px · 4,6 pantallas | 1.773 px · 2 pantallas |
+| Tabla | 36 filas de corrido | 10 por página |
+| Cabecera de días | se perdía a los 760 px de scroll | pegada arriba |
+
+Lo que se agregó para eso: alto máximo en la línea de tiempo, que se
+desplaza dentro de su tarjeta en vez de estirar la página; la cabecera de
+días pegajosa, porque sin ella las barras no se pueden fechar; paginación
+en la tabla; y un buscador que filtra las dos vistas a la vez, que es la
+única forma de encontrar a alguien en una lista de cincuenta.
+
+Con un equipo chico nada de eso se nota: la tarjeta se encoge sola y la
+paginación no aparece si todo cabe en una página.
+
 ## Lo que no calzaba con el sistema
 
 Al ajustar las pantallas al Design System hubo cinco tamaños de letra, un

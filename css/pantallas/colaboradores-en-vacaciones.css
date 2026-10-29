@@ -14,7 +14,7 @@
 .s-envac {
   --col-persona: 200px;
   --ancho-dia: 26px;
-  --alto-fila: 52px;
+  --alto-fila: 48px;
 }
 
 /* ==========================================================================
@@ -37,15 +37,50 @@
 }
 
 /* ==========================================================================
+   BUSCADOR
+   Filtra las dos vistas a la vez. Compone .c-field, que ya trae el marco
+   y la pastilla del icono.
+   ========================================================================== */
+
+.s-envac__buscador {
+  max-width: 420px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.s-envac__buscador:focus-within {
+  border-color: var(--color-focus-ring);
+}
+
+.s-envac__input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+  background: none;
+  border: 0;
+}
+
+.s-envac__input:focus {
+  outline: none;
+}
+
+/* ==========================================================================
    LÍNEA DE TIEMPO
 
    El scroll horizontal vive acá y no en la página: la columna de personas
    se queda pegada a la izquierda mientras los días se desplazan.
    ========================================================================== */
 
+/* El alto máximo es lo que hace legible un equipo grande: la rejilla se
+   desplaza dentro de la tarjeta en vez de estirar la página, y así la
+   cabecera de días puede quedarse pegada arriba. Con pocas filas la caja
+   se encoge sola. */
 .s-envac__scroll {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  max-height: min(62vh, 560px);
+  overflow: auto;
+  overscroll-behavior: contain;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -67,6 +102,9 @@
 }
 
 .s-envac__fila--cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   min-height: auto;
   background-color: var(--color-table-head-bg);
 }
@@ -90,6 +128,9 @@
 }
 
 .s-envac__rotulo {
+  /* La esquina se queda pegada en los dos ejes, así que va por encima
+     tanto de la cabecera como de la columna de personas */
+  z-index: 4;
   background-color: var(--color-table-head-bg);
   font-size: var(--fs-sm);
   font-weight: var(--fw-bold);

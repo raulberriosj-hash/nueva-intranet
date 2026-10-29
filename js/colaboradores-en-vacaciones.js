@@ -147,6 +147,40 @@
   }
 
   /* ======================================================================
+     FILTRO Y PAGINACIÓN
+
+     Con un equipo chico sobran los dos; con cincuenta personas, no. El
+     buscador filtra las dos vistas a la vez —la línea de tiempo y la
+     tabla— para que no muestren cosas distintas, y la tabla pagina de a
+     diez: o paginación o scroll, nunca las dos.
+     ====================================================================== */
+
+  const POR_PAGINA = 10;
+  let filtro = "";
+  let pagina = 0;
+
+  function sinTildes(texto) {
+    return texto
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
+
+  function coincide(persona) {
+    if (!filtro) return true;
+    return sinTildes(`${persona.nombre} ${persona.cargo}`).includes(filtro);
+  }
+
+  function avisaVacio(caja, hayFiltro) {
+    caja.querySelector(".c-empty__title").textContent = hayFiltro
+      ? "Nadie coincide con la búsqueda"
+      : caja.dataset.titulo;
+    caja.querySelector(".c-empty__text").textContent = hayFiltro
+      ? "Prueba con otro nombre o limpia el buscador."
+      : caja.dataset.texto;
+  }
+
+  /* ======================================================================
      LÍNEA DE TIEMPO
      ====================================================================== */
 
@@ -194,7 +228,9 @@
 
     /* --- Una fila por persona con vacaciones en el mes ----------------- */
 
-    const delMes = TRAMOS.filter((t) => t.desde <= ultimo && t.hasta >= primero);
+    const delMes = TRAMOS.filter(
+      (t) => t.desde <= ultimo && t.hasta >= primero && coincide(t.persona),
+    );
     const porPersona = new Map();
     delMes.forEach((t) => {
       if (!porPersona.has(t.persona.id)) porPersona.set(t.persona.id, []);
@@ -203,6 +239,7 @@
 
     vacio.hidden = porPersona.size > 0;
     grilla.hidden = porPersona.size === 0;
+    if (!vacio.hidden) avisaVacio(vacio, Boolean(filtro));
 
     porPersona.forEach((tramos, id) => {
       const persona = PERSONA.get(id);
@@ -284,12 +321,18 @@
     if (!cuerpo) return;
 
     // En curso primero, y después lo que viene por fecha de salida.
-    const filas = TRAMOS.filter((t) => t.hasta >= HOY).sort(
+    const todas = TRAMOS.filter((t) => t.hasta >= HOY && coincide(t.persona)).sort(
       (a, b) => Number(b.enCurso) - Number(a.enCurso) || a.desde - b.desde,
     );
 
+    const paginas = Math.max(1, Math.ceil(todas.length / POR_PAGINA));
+    pagina = Math.min(Math.max(pagina, 0), paginas - 1);
+    const filas = todas.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA);
+
     cuerpo.innerHTML = "";
-    vacio.hidden = filas.length > 0;
+    vacio.hidden = todas.length > 0;
+    if (!vacio.hidden) avisaVacio(vacio, Boolean(filtro));
+    pintaPaginacion(todas.length, paginas);
 
     filas.forEach((t) => {
       const fila = document.createElement("tr");
@@ -311,6 +354,22 @@
     });
   }
 
+  function pintaPaginacion(total, paginas) {
+    const nav = document.querySelector("[data-paginacion]");
+    const nota = document.querySelector("[data-paginacion-nota]");
+    if (!nav) return;
+
+    // Con una sola página la paginación estorba: no se muestra.
+    nav.hidden = total <= POR_PAGINA;
+    if (nav.hidden) return;
+
+    const desde = pagina * POR_PAGINA + 1;
+    const hasta = Math.min((pagina + 1) * POR_PAGINA, total);
+    nota.textContent = `Mostrando ${desde} a ${hasta} de ${total} tramos`;
+    nav.querySelector('[data-pag="-1"]').disabled = pagina === 0;
+    nav.querySelector('[data-pag="1"]').disabled = pagina >= paginas - 1;
+  }
+
   function etiqueta(tramo) {
     if (tramo.enCurso) {
       const faltan = Math.round((tramo.hasta - HOY) / 86400000);
@@ -329,14 +388,17 @@
      ====================================================================== */
 
   function pintaResumen() {
+    // Las dos cuentan personas, no tramos: quien tenga dos tramos por
+    // delante sigue siendo una persona con vacaciones programadas.
     const enCurso = new Set(TRAMOS.filter((t) => t.enCurso).map((t) => t.persona.id));
-    const unaSemana = suma(HOY, 7);
-    const seVan = TRAMOS.filter((t) => t.desde > HOY && t.desde <= unaSemana).length;
+    const programadas = new Set(
+      TRAMOS.filter((t) => t.desde > HOY).map((t) => t.persona.id),
+    );
 
     const fuera = document.querySelector("[data-stat-fuera]");
-    const proximos = document.querySelector("[data-stat-sevan]");
+    const proximos = document.querySelector("[data-stat-programadas]");
     if (fuera) fuera.textContent = enCurso.size;
-    if (proximos) proximos.textContent = seVan;
+    if (proximos) proximos.textContent = programadas.size;
   }
 
   /* ======================================================================
@@ -348,6 +410,19 @@
     pintaTabla();
     pintaResumen();
   }
+
+  document.querySelector("[data-buscar]")?.addEventListener("input", (e) => {
+    filtro = sinTildes(e.target.value.trim());
+    pagina = 0;
+    pinta();
+  });
+
+  document.querySelectorAll("[data-pag]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      pagina += Number(boton.dataset.pag);
+      pintaTabla();
+    });
+  });
 
   document.querySelector("[data-mes-anterior]")?.addEventListener("click", () => {
     mes = new Date(mes.getFullYear(), mes.getMonth() - 1, 1);

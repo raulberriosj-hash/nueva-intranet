@@ -42,6 +42,13 @@
          la columna, para poder contar días hábiles a ojo.
        · Los días que se cuentan son hábiles de lunes a viernes: el sábado
          es inhábil para vacaciones (artículo 69 del Código del Trabajo).
+       · El buscador filtra las dos vistas a la vez. Si filtrara solo una,
+         las dos mitades de la pantalla dirían cosas distintas.
+       · La línea de tiempo tiene alto máximo y se desplaza dentro de su
+         tarjeta, con la cabecera de días pegada arriba. La tabla pagina
+         de a diez. Las dos cosas salen de probar la pantalla con un
+         equipo de 50 personas; con ocho no se notan.
+       · O paginación o scroll, nunca las dos en la misma lista.
 
      DATOS
      js/colaboradores-en-vacaciones.js trae EQUIPO y TRAMOS de muestra, y
@@ -72,6 +79,11 @@
       <symbol id="i-chevron-left" viewBox="0 0 17 17" fill="none">
         <g id="chevron-left">
         <path d="M10.625 12.75L6.375 8.5L10.625 4.25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path d="M15.7501 15.7501L12.4951 12.4951M14.25 8.25C14.25 11.5637 11.5637 14.25 8.25 14.25C4.93629 14.25 2.25 11.5637 2.25 8.25C2.25 4.93629 4.93629 2.25 8.25 2.25C11.5637 2.25 14.25 4.93629 14.25 8.25Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </g>
       </symbol>
       <symbol id="i-chevron-right" viewBox="0 0 17 17" fill="none">
@@ -121,8 +133,8 @@
                   <span class="c-stat__bubble">
                     <svg class="c-icon" aria-hidden="true"><use href="#i-calendar" /></svg>
                   </span>
-                  <span class="c-stat__numero" data-stat-sevan>0</span>
-                  <span class="c-stat__label">se van esta semana</span>
+                  <span class="c-stat__numero" data-stat-programadas>0</span>
+                  <span class="c-stat__label">con vacaciones programadas</span>
                 </span>
               </div>
 
@@ -140,12 +152,27 @@
               </div>
             </div>
 
+            <label class="c-field s-envac__buscador">
+              <span class="c-field__icon">
+                <svg class="c-icon" aria-hidden="true"><use href="#i-search" /></svg>
+              </span>
+              <span class="u-visually-hidden">Buscar colaborador</span>
+              <input
+                class="s-envac__input"
+                type="search"
+                data-buscar
+                placeholder="Buscar por nombre o cargo"
+              />
+            </label>
+
             <!-- La rejilla la pinta js/colaboradores-en-vacaciones.js -->
             <div class="s-envac__scroll">
               <div class="s-envac__grilla" data-timeline></div>
             </div>
 
-            <div class="c-empty c-empty--compact" data-timeline-vacio hidden>
+            <div class="c-empty c-empty--compact" data-timeline-vacio hidden
+                 data-titulo="Nadie tiene vacaciones este mes"
+                 data-texto="Cuando apruebes una solicitud de tu equipo aparecerá acá.">
               <span class="c-empty__bubble">
                 <svg class="c-icon" aria-hidden="true"><use href="#i-calendar" /></svg>
               </span>
@@ -203,7 +230,23 @@
               <tbody data-tabla></tbody>
             </table>
 
-            <div class="c-empty c-empty--compact" data-tabla-vacia hidden>
+            <nav class="c-pagination" data-paginacion aria-label="Paginación de la tabla" hidden>
+              <p class="c-pagination__note" data-paginacion-nota></p>
+              <div class="c-pagination__nav">
+                <button class="c-iconbtn c-iconbtn--sm" type="button"
+                        data-pag="-1" aria-label="Página anterior">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-left" /></svg>
+                </button>
+                <button class="c-iconbtn c-iconbtn--sm" type="button"
+                        data-pag="1" aria-label="Página siguiente">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-right" /></svg>
+                </button>
+              </div>
+            </nav>
+
+            <div class="c-empty c-empty--compact" data-tabla-vacia hidden
+                 data-titulo="No hay vacaciones en curso ni programadas"
+                 data-texto="Todo tu equipo está trabajando y nadie tiene días aprobados por delante.">
               <span class="c-empty__bubble">
                 <svg class="c-icon c-icon--maleta" aria-hidden="true">
                   <use href="#i-maleta" />
