@@ -79,7 +79,7 @@
               id: "en-vacaciones",
               texto: "Colaboradores en vacaciones",
               icono: "sun",
-              href: null,
+              href: "colaboradores-en-vacaciones.html",
             },
           ],
         },

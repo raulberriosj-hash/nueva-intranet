@@ -1491,6 +1491,11 @@
 .c-tag--activo   { --tag-bg: var(--color-tag-ok-bg);   --tag-text: var(--color-tag-ok-text); }
 .c-tag--inactivo { --tag-bg: var(--c-neutral-200);     --tag-text: var(--color-text-secondary); }
 
+/* Cuándo, no en qué estado: un tramo ya aprobado que está en curso o que
+   todavía no empieza (colaboradores-en-vacaciones.html) */
+.c-tag--curso    { --tag-bg: var(--color-info-bg);  --tag-text: var(--color-info-text); }
+.c-tag--proxima  { --tag-bg: var(--c-neutral-200);  --tag-text: var(--color-text-heading); }
+
 
 /* ==========================================================================
    TABLA EN TELÉFONO

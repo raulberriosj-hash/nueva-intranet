@@ -15,6 +15,7 @@ como referencia de marcado, estilos y comportamiento.
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
 | [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
 | [`panel-rrhh.html`](panel-rrhh.html) | Panel de seguimiento de vacaciones (RRHH) | Al día |
+| [`colaboradores-en-vacaciones.html`](colaboradores-en-vacaciones.html) | Quién está de vacaciones y quién se va (jefatura) | Al día |
 
 ## Cómo verlas
 
@@ -36,6 +37,7 @@ ninguna pantalla depende de pedir archivos al servidor.
 ├── aprobaciones.html
 ├── informe-colaborador.html
 ├── panel-rrhh.html
+├── colaboradores-en-vacaciones.html
 │
 ├── plantillas/                 versiones sin datos, para los devs
 │   └── mis-vacaciones.html
@@ -52,7 +54,8 @@ ninguna pantalla depende de pedir archivos al servidor.
 │       ├── mis-vacaciones.css
 │       ├── aprobaciones.css
 │       ├── informe-colaborador.css
-│       └── panel-rrhh.css
+│       ├── panel-rrhh.css
+│       └── colaboradores-en-vacaciones.css
 │
 ├── js/
 │   ├── sidebar.js              EL MENÚ · una sola copia para todas
@@ -60,9 +63,10 @@ ninguna pantalla depende de pedir archivos al servidor.
 │   ├── mis-vacaciones.js       interacciones del prototipo
 │   ├── panel-rrhh.js           gráficos y tablas del panel
 │   ├── panel-rrhh-datos.js     datos de muestra · DESECHABLE
+│   ├── colaboradores-en-vacaciones.js  línea de tiempo y tabla · datos de muestra
 │   ├── inicio-carrusel.js      el carrusel de anuncios del home
 │   ├── inicio-cumpleanos.js    cumpleaños · PENDIENTE DE BACKEND
-│   └── inicio-festivos.js      festivos legales de Chile
+│   └── festivos-chile.js       feriados legales · los usan el home y el equipo
 │
 └── assets/
     ├── icons/                  SVG sueltos y los dos sprites editables
@@ -197,6 +201,24 @@ Los gráficos son [Highcharts](https://www.highcharts.com/) 11.4.8, desde CDN.
 **Es de licencia comercial**: hay que confirmarlo con TI antes de usarlo en
 producción.
 
+## Colaboradores en vacaciones
+
+La pantalla de la jefatura: quién está fuera hoy y quién se va. Son dos
+vistas del mismo dato, los tramos **ya aprobados**:
+
+- una línea de tiempo del mes, una fila por persona y una columna por día,
+  con una barra por tramo. Así se ven los cruces, que es lo que importa al
+  planificar la cobertura;
+- una tabla con lo que está en curso y lo que viene, en ese orden.
+
+`js/colaboradores-en-vacaciones.js` trae los datos de muestra y los genera
+contados desde hoy, no con fechas fijas: la maqueta no caduca y siempre
+hay algo que mirar. Al conectar el backend se tocan `EQUIPO` y `TRAMOS` y
+nada más.
+
+Los feriados salen de `js/festivos-chile.js` —el mismo archivo que usa la
+lista del home— y se descuentan de los días hábiles.
+
 ## Lo que no calzaba con el sistema
 
 Al ajustar las pantallas al Design System hubo cinco tamaños de letra, un
@@ -226,6 +248,6 @@ se vuelve a generar `01-tokens.css`.
 - [ ] Un gerente aparece como RUT (`10982345`): le falta el nombre en el maestro
 - [ ] Diseñar la navegación completa en teléfono: abajo solo caben los
       enlaces sueltos, y las secciones con grupos no aparecen
-- [ ] Pantallas de Mi Perfil, Colaboradores en vacaciones y los tres grupos
-      de Tickets, que en el menú están pero todavía no existen
+- [ ] Pantallas de Mi Perfil y los tres grupos de Tickets, que en el menú
+      están pero todavía no existen
 - [ ] Plantillas sin datos del resto de las pantallas

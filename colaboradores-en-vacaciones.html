@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colaboradores en vacaciones · Intranet 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/sistema/01-tokens.css" />
+    <link rel="stylesheet" href="css/sistema/02-base.css" />
+    <link rel="stylesheet" href="css/sistema/03-layout.css" />
+    <link rel="stylesheet" href="css/sistema/04-components.css" />
+    <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
+    <link rel="stylesheet" href="css/pantallas/colaboradores-en-vacaciones.css" />
+  </head>
+  <body data-pagina="en-vacaciones" class="s-envac">
+    <!-- ========================================================================
+     COLABORADORES EN VACACIONES · propuesta de diseño, con datos de muestra.
+
+     La ve la jefatura: cuelga de «Vacaciones de tu equipo», junto a
+     Solicitudes y Seguimiento. Muestra solo tramos YA APROBADOS; los
+     pendientes se resuelven en aprobaciones.html.
+
+     DECISIONES DE DISEÑO, para discutir
+       · El calendario es una línea de tiempo —una fila por persona, una
+         columna por día— y no una grilla de mes. La pregunta de una
+         jefatura no es «¿qué día es feriado?» sino «¿cuántos de los míos
+         se van la misma semana?», y los cruces solo se ven así.
+       · En el calendario aparece solo quien tiene vacaciones en el mes que
+         se está mirando. Si se quiere ver el equipo completo, con las
+         filas vacías de quienes se quedan, es cambiar el filtro de
+         pintaCalendario() y nada más.
+       · La tabla lista lo que está en curso y lo que viene, en ese orden.
+         Lo ya terminado vive en el panel de seguimiento.
+       · El tramo que incluye hoy va en el color de acción, más fuerte que
+         el resto: es el dato que se viene a buscar.
+       · Fines de semana, feriados y el día de hoy se marcan en el fondo de
+         la columna, para poder contar días hábiles a ojo.
+       · Los días que se cuentan son hábiles de lunes a viernes: el sábado
+         es inhábil para vacaciones (artículo 69 del Código del Trabajo).
+
+     DATOS
+     js/colaboradores-en-vacaciones.js trae EQUIPO y TRAMOS de muestra, y
+     los genera contados desde hoy para que la maqueta no caduque. Los
+     feriados salen de js/festivos-chile.js, el mismo archivo que usa la
+     lista del home.
+     ======================================================================== -->
+
+    <a class="u-skip-link" href="#contenido">Saltar al contenido</a>
+
+    <!-- Sprite de iconos: se usan con <use href="#i-nombre"> -->
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
+         style="position:absolute;width:0;height:0;overflow:hidden">
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+  </symbol>
+      <symbol id="i-maleta" viewBox="0 0 22.5 36" fill="none">
+        <g>
+        <path d="M6.75 11.25C7.04837 11.25 7.33452 11.3685 7.54549 11.5795C7.75647 11.7905 7.875 12.0766 7.875 12.375V28.125C7.875 28.4234 7.75647 28.7095 7.54549 28.9205C7.33452 29.1315 7.04837 29.25 6.75 29.25C6.45163 29.25 6.16548 29.1315 5.95451 28.9205C5.74353 28.7095 5.625 28.4234 5.625 28.125V12.375C5.625 12.0766 5.74353 11.7905 5.95451 11.5795C6.16548 11.3685 6.45163 11.25 6.75 11.25ZM11.25 11.25C11.5484 11.25 11.8345 11.3685 12.0455 11.5795C12.2565 11.7905 12.375 12.0766 12.375 12.375V28.125C12.375 28.4234 12.2565 28.7095 12.0455 28.9205C11.8345 29.1315 11.5484 29.25 11.25 29.25C10.9516 29.25 10.6655 29.1315 10.4545 28.9205C10.2435 28.7095 10.125 28.4234 10.125 28.125V12.375C10.125 12.0766 10.2435 11.7905 10.4545 11.5795C10.6655 11.3685 10.9516 11.25 11.25 11.25ZM15.75 11.25C16.0484 11.25 16.3345 11.3685 16.5455 11.5795C16.7565 11.7905 16.875 12.0766 16.875 12.375V28.125C16.875 28.4234 16.7565 28.7095 16.5455 28.9205C16.3345 29.1315 16.0484 29.25 15.75 29.25C15.4516 29.25 15.1655 29.1315 14.9545 28.9205C14.7435 28.7095 14.625 28.4234 14.625 28.125V12.375C14.625 12.0766 14.7435 11.7905 14.9545 11.5795C15.1655 11.3685 15.4516 11.25 15.75 11.25Z" fill="currentColor"/>
+        <path d="M7.875 0C7.57663 0 7.29048 0.118526 7.07951 0.329505C6.86853 0.540483 6.75 0.826631 6.75 1.125V6.75H4.5C3.30653 6.75 2.16193 7.22411 1.31802 8.06802C0.474106 8.91193 9.80561e-08 10.0565 9.80561e-08 11.25V29.25C-0.000167649 30.0537 0.214893 30.8427 0.622835 31.5351C1.03078 32.2276 1.61671 32.7981 2.31975 33.1875C2.23526 33.52 2.2277 33.8674 2.29764 34.2033C2.36759 34.5392 2.5132 34.8547 2.7234 35.1259C2.93361 35.3971 3.20287 35.6167 3.51072 35.7682C3.81857 35.9197 4.15691 35.9989 4.5 36C5.09674 36 5.66903 35.7629 6.09099 35.341C6.51295 34.919 6.75 34.3467 6.75 33.75H15.75C15.7509 34.0688 15.8196 34.3838 15.9515 34.6741C16.0834 34.9644 16.2755 35.2233 16.5151 35.4338C16.7546 35.6442 17.0361 35.8013 17.341 35.8947C17.6459 35.9881 17.9671 36.0156 18.2834 35.9754C18.5997 35.9353 18.9039 35.8283 19.1757 35.6617C19.4476 35.4951 19.6809 35.2726 19.8602 35.009C20.0396 34.7454 20.1609 34.4467 20.2161 34.1327C20.2712 33.8186 20.259 33.4965 20.1802 33.1875C20.8833 32.7981 21.4692 32.2276 21.8772 31.5351C22.2851 30.8427 22.5002 30.0537 22.5 29.25V11.25C22.5 10.0565 22.0259 8.91193 21.182 8.06802C20.3381 7.22411 19.1935 6.75 18 6.75H15.75V1.125C15.75 0.826631 15.6315 0.540483 15.4205 0.329505C15.2095 0.118526 14.9234 0 14.625 0L7.875 0ZM13.5 6.75H9V2.25H13.5V6.75ZM20.25 29.25C20.25 29.8467 20.0129 30.419 19.591 30.841C19.169 31.2629 18.5967 31.5 18 31.5H4.5C3.90326 31.5 3.33097 31.2629 2.90901 30.841C2.48705 30.419 2.25 29.8467 2.25 29.25V11.25C2.25 10.6533 2.48705 10.081 2.90901 9.65901C3.33097 9.23705 3.90326 9 4.5 9H18C18.5967 9 19.169 9.23705 19.591 9.65901C20.0129 10.081 20.25 10.6533 20.25 11.25V29.25Z" fill="currentColor"/>
+        </g>
+      </symbol>
+      <symbol id="i-calendar" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path d="M12.3611 1.5V4.5M2.25 7.5H16.25M6.13889 1.5V4.5M16.25 8.50725V4.5C16.25 4.10218 16.0861 3.72064 15.7944 3.43934C15.5027 3.15804 15.107 3 14.6944 3H3.80556C3.393 3 2.99733 3.15804 2.70561 3.43934C2.41389 3.72064 2.25 4.10218 2.25 4.5V15C2.25 15.3978 2.41389 15.7794 2.70561 16.0607C2.99733 16.342 3.393 16.5 3.80556 16.5H10.8056H14.25C15.3546 16.5 16.25 15.6046 16.25 14.5V8.50725Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-chevron-left" viewBox="0 0 17 17" fill="none">
+        <g id="chevron-left">
+        <path d="M10.625 12.75L6.375 8.5L10.625 4.25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 17 17" fill="none">
+        <g id="chevron-right">
+        <path d="M6.375 12.75L10.625 8.5L6.375 4.25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="l-app">
+      <!-- ■■■ INICIO · SIDEBAR — bloque desmontable: bórralo entero si la
+         intranet ya trae su propia navegación. El layout no depende de él. ■■■ -->
+      <!-- El menú lo pinta js/sidebar.js, igual en todas las pantallas -->
+      <div data-sidebar-slot></div>
+      <!-- ■■■ FIN · SIDEBAR ■■■ -->
+
+      <div class="l-main">
+        <header class="l-header">
+          <div class="l-header__content">
+            <div class="c-pagetitle">
+              <svg class="c-icon" aria-hidden="true"><use href="#i-sun" /></svg>
+              <h1 class="c-pagetitle__text">Colaboradores en vacaciones</h1>
+            </div>
+          </div>
+        </header>
+
+        <main class="l-body" id="contenido">
+          <!-- ================================================================
+               LÍNEA DE TIEMPO DEL MES
+               ================================================================ -->
+          <section class="l-section" aria-labelledby="t-calendario">
+            <div class="c-sectionhead">
+              <h2 class="c-sectionhead__title" id="t-calendario">Tu equipo este mes</h2>
+
+              <div class="c-sectionhead__stats">
+                <span class="c-stat c-stat--info">
+                  <span class="c-stat__bubble">
+                    <svg class="c-icon c-icon--maleta" aria-hidden="true">
+                      <use href="#i-maleta" />
+                    </svg>
+                  </span>
+                  <span class="c-stat__numero" data-stat-fuera>0</span>
+                  <span class="c-stat__label">fuera hoy</span>
+                </span>
+
+                <span class="c-stat c-stat--warning">
+                  <span class="c-stat__bubble">
+                    <svg class="c-icon" aria-hidden="true"><use href="#i-calendar" /></svg>
+                  </span>
+                  <span class="c-stat__numero" data-stat-sevan>0</span>
+                  <span class="c-stat__label">se van esta semana</span>
+                </span>
+              </div>
+
+              <div class="s-envac__meses">
+                <button class="c-iconbtn c-iconbtn--sm" type="button"
+                        data-mes-anterior aria-label="Mes anterior">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-left" /></svg>
+                </button>
+                <span class="s-envac__mes" data-timeline-mes aria-live="polite"></span>
+                <button class="c-iconbtn c-iconbtn--sm" type="button"
+                        data-mes-siguiente aria-label="Mes siguiente">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-right" /></svg>
+                </button>
+                <button class="c-btn c-btn--neutro" type="button" data-mes-hoy>Hoy</button>
+              </div>
+            </div>
+
+            <!-- La rejilla la pinta js/colaboradores-en-vacaciones.js -->
+            <div class="s-envac__scroll">
+              <div class="s-envac__grilla" data-timeline></div>
+            </div>
+
+            <div class="c-empty c-empty--compact" data-timeline-vacio hidden>
+              <span class="c-empty__bubble">
+                <svg class="c-icon" aria-hidden="true"><use href="#i-calendar" /></svg>
+              </span>
+              <p class="c-empty__title">Nadie tiene vacaciones este mes</p>
+              <p class="c-empty__text">
+                Cuando apruebes una solicitud de tu equipo aparecerá acá.
+              </p>
+            </div>
+
+            <ul class="s-envac__leyenda">
+              <li>
+                <span class="s-envac__muestra s-envac__muestra--curso"></span>
+                En vacaciones hoy
+              </li>
+              <li>
+                <span class="s-envac__muestra s-envac__muestra--vacaciones"></span>
+                Vacaciones aprobadas
+              </li>
+              <li><span class="s-envac__muestra s-envac__hoy"></span>Hoy</li>
+              <li><span class="s-envac__muestra s-envac__finde"></span>Fin de semana</li>
+              <li><span class="s-envac__muestra s-envac__feriado"></span>Feriado</li>
+            </ul>
+          </section>
+
+          <!-- ================================================================
+               TABLA · en curso y próximas
+               ================================================================ -->
+          <section class="l-section" aria-labelledby="t-tabla">
+            <div class="c-sectionhead">
+              <h2 class="c-sectionhead__title" id="t-tabla">En curso y próximas</h2>
+            </div>
+
+            <table class="c-table">
+              <caption class="u-visually-hidden">
+                Vacaciones aprobadas en curso y programadas del equipo
+              </caption>
+              <colgroup>
+                <col class="s-envac__col--persona" />
+                <col class="s-envac__col--fecha" />
+                <col class="s-envac__col--fecha" />
+                <col class="s-envac__col--dias" />
+                <col class="s-envac__col--reemplazo" />
+                <col class="s-envac__col--estado" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Colaborador</th>
+                  <th scope="col">Desde</th>
+                  <th scope="col">Hasta</th>
+                  <th scope="col" class="c-table__dias">Días hábiles</th>
+                  <th scope="col">Reemplazo</th>
+                  <th scope="col" class="c-table__estado">Estado</th>
+                </tr>
+              </thead>
+              <tbody data-tabla></tbody>
+            </table>
+
+            <div class="c-empty c-empty--compact" data-tabla-vacia hidden>
+              <span class="c-empty__bubble">
+                <svg class="c-icon c-icon--maleta" aria-hidden="true">
+                  <use href="#i-maleta" />
+                </svg>
+              </span>
+              <p class="c-empty__title">No hay vacaciones en curso ni programadas</p>
+              <p class="c-empty__text">
+                Todo tu equipo está trabajando y nadie tiene días aprobados por
+                delante.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="js/sidebar.js" defer></script>
+    <!-- festivos-chile.js va antes: expone getChileHolidays(), que la
+         pantalla usa para marcar feriados y contar días hábiles. -->
+    <script src="js/festivos-chile.js" defer></script>
+    <script src="js/colaboradores-en-vacaciones.js" defer></script>
+  </body>
+</html>

@@ -1,3 +1,18 @@
+// ============================================================================
+// Feriados legales de Chile.
+//
+// Los usan el home (la lista de «Próximos Festivos») y la pantalla de
+// colaboradores en vacaciones, que marca los feriados en la línea de
+// tiempo y los descuenta de los días hábiles. Por eso vive suelto y no
+// dentro de ninguna de las dos.
+//
+// getChileHolidays(año) devuelve [{ date, name }] con los feriados
+// irrenunciables y los móviles ya calculados (Pascua, San Pedro y San
+// Pablo, Encuentro de Dos Mundos).
+//
+// renderHolidays() es lo del home: si no encuentra su lista, no hace nada.
+// ============================================================================
+
 const MONTH_NAMES = [
   "Enero",
   "Febrero",
