@@ -18,14 +18,14 @@ como referencia de marcado, estilos y comportamiento.
 
 ## Cómo verlas
 
-Hay que servirlas por HTTP. Abrir el archivo con doble clic (`file://`) deja los
-gráficos y el sprite de iconos a medias.
+Lo más cómodo es servirlas por HTTP, que es como van a vivir de verdad:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Y entrar a <http://localhost:8000>.
+Y entrar a <http://localhost:8000>. Abrirlas con doble clic también funciona:
+ninguna pantalla depende de pedir archivos al servidor.
 
 ## Estructura
 
@@ -65,7 +65,7 @@ Y entrar a <http://localhost:8000>.
 │   └── inicio-festivos.js      festivos legales de Chile
 │
 └── assets/
-    ├── icons/                  SVG sueltos, el sprite y _sprite-nav.svg
+    ├── icons/                  SVG sueltos y los dos sprites editables
     ├── img/
     └── home/                   imágenes del home
 ```
@@ -140,8 +140,11 @@ desplegable; las que todavía no tienen pantalla van con `href: null` y se
 dibujan apagadas, para que se vea el alcance del menú sin fingir que llevan a
 alguna parte.
 
-Los iconos salen de `assets/icons/_sprite-nav.svg`, con prefijo `nav-` para no
-chocar con el sprite `i-` que cada pantalla trae inline.
+Los iconos van **dentro de `js/sidebar.js`**, con prefijo `nav-` para no chocar
+con el sprite `i-` que cada pantalla trae inline. La copia editable está en
+`assets/icons/_sprite-nav.svg`: es la que hay que tocar para agregar o cambiar
+un icono, y después se pega en el JS. Es la misma relación que `_sprite.svg`
+tiene con los sprites que cada HTML lleva dentro.
 
 Que el menú se pinte con JS es una decisión de la maqueta, que no tiene
 compilador. En la intranet de verdad lo normal sería un parcial del servidor o
