@@ -229,17 +229,27 @@
     flex-direction: column;
   }
 
-  /* Botón de plegar/desplegar, pisando el borde derecho */
+  /* Botón de plegar/desplegar, pisando el borde derecho.
+     El z-index lo pone por encima del contenido: si no, cualquier tarjeta
+     de la página le pasa por encima y deja de poder pulsarse. El aside no
+     recorta —su scroll está en .c-sidebar__scroll—, así que el saliente de
+     15px se ve entero. */
   .c-sidebar__toggle {
     position: absolute;
     top: 34px;
     right: -15px;
+    z-index: 2;
     display: flex;
     padding: 6px;
     background-color: var(--color-surface);
     border: 1px solid var(--color-divider);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    transition: background-color var(--transition-fast);
   }
+
+  .c-sidebar__toggle:hover { background-color: var(--color-state-hover); }
+  .c-sidebar__toggle:active { background-color: var(--color-state-pressed); }
 
   .c-sidebar__toggle .c-icon {
     width: var(--icon-sm);

@@ -94,9 +94,22 @@
 }
 
 @media (min-width: 768px) {
+  /* EL SCROLL VA EN LA CAJA DE DENTRO, NO EN EL <aside>.
+     El botón de plegar sobresale 15px por la derecha del aside. Si el aside
+     es quien se desplaza, ese saliente le genera una barra horizontal y
+     además lo recorta. Con el scroll una capa más adentro, el aside no
+     recorta nada y el botón queda entero y por encima del contenido. */
   .c-sidebar {
-    /* Con tantas entradas el menú ya no cabe de una vez en pantallas
-       bajas, así que se desplaza él solo. */
+    overflow: visible;
+  }
+
+  .c-sidebar__scroll {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-6);
+    min-height: 0;
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
@@ -122,10 +135,14 @@
     gap: var(--space-2);
   }
 
-  /* Plegado solo se ven los iconos: el rótulo de sección sobra y los hijos
-     no tienen dónde ir. */
+  /* Plegado el rótulo se queda, centrado: es lo que separa un bloque del
+     siguiente cuando solo se ven iconos. Los hijos sí se van; se llega a
+     ellos por el menú flotante. */
   .c-sidebar:not(.c-sidebar--expanded) .c-sidebar__label {
-    display: none;
+    /* Se come parte del aire lateral de la barra: con los 24 de cada lado
+       quedan 44 de ancho útil y "Jefatura" no entra, se cortaba. */
+    margin-inline: calc(var(--space-4) * -1);
+    text-align: center;
   }
 
   .c-sidebar:not(.c-sidebar--expanded) .c-navgroup__hijos,
@@ -153,23 +170,32 @@
   rotate: 180deg;
 }
 
-.c-navgroup__hijos {
+/* Va con .c-sidebar delante a propósito: el reset de arriba usa
+   `.c-sidebar ul`, que tiene más especificidad, y si no le ganaba aplastaba
+   el margen y el relleno — con ellos a cero la línea del árbol se dibujaba
+   encima del texto y no se veía. */
+.c-sidebar .c-navgroup__hijos {
   display: none;
   flex-direction: column;
   gap: var(--space-2);
   /* El hueco de la izquierda es donde se dibuja la línea del árbol. El
      icono del padre mide 24 y lleva 12 de aire, así que la línea cae a 24
-     del borde y queda centrada bajo él. */
+     del borde y queda justo bajo él. */
   margin-left: calc(var(--space-3) + var(--icon-lg) / 2);
   padding-left: var(--space-3);
-  border-left: 2px solid var(--color-divider);
 }
 
-.c-sidebar--expanded .c-navgroup--abierto .c-navgroup__hijos {
+.c-sidebar.c-sidebar--expanded .c-navgroup--abierto .c-navgroup__hijos {
   display: flex;
 }
 
-/* El codo que une la línea con cada hijo */
+/* LA LÍNEA Y EL CODO SALEN DE CADA HIJO, NO DEL <ul>.
+   Antes el <ul> traía su propio border-left y encima cada hijo dibujaba el
+   suyo: se veían dos líneas pisadas y el remate del último quedaba tapado
+   con un parche. Ahora ::before es el codo —el tramo que baja hasta la
+   mitad del hijo y gira hacia él— y ::after continúa la bajada hasta el
+   siguiente. El último no lleva ::after, así que la línea termina sola en
+   su codo. */
 .c-navgroup__hijo {
   position: relative;
 }
@@ -186,15 +212,13 @@
   border-bottom-left-radius: var(--radius-md);
 }
 
-/* Al último hijo la línea le llega justo hasta el codo y no sigue de largo */
-.c-navgroup__hijo:last-child::after {
+.c-navgroup__hijo:not(:last-child)::after {
   content: "";
   position: absolute;
   top: 50%;
-  left: calc(var(--space-3) * -1 - 2px);
-  width: 2px;
-  bottom: -2px;
-  background-color: var(--color-surface);
+  bottom: calc(var(--space-2) * -1);
+  left: calc(var(--space-3) * -1);
+  border-left: 2px solid var(--color-divider);
 }
 
 .c-navgroup__hijo .c-navlink {
@@ -227,4 +251,88 @@
   .c-sidebar:not(.c-sidebar--expanded) .c-navgroup--activo .c-navgroup__toggle {
     background-color: var(--color-nav-selected);
   }
+}
+
+/* ==========================================================================
+   CAPA FLOTANTE · con la barra plegada
+
+   La pinta js/sidebar.js colgada del <body>, no del <aside>: dentro de la
+   barra la recortaría su propio scroll. Dos formas: un globo con el nombre
+   del botón, y un menú con los hijos de una categoría.
+   ========================================================================== */
+
+.c-navfloat {
+  position: fixed;
+  z-index: 60;
+  font-family: var(--font-sans);
+}
+
+.c-navfloat[hidden] {
+  display: none;
+}
+
+/* --- Globo ------------------------------------------------------------- */
+
+.c-navfloat--tip {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  white-space: nowrap;
+  color: var(--color-text-inverse);
+  background-color: var(--c-neutral-900);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-lg);
+  pointer-events: none;
+}
+
+/* La punta que lo engancha al icono */
+.c-navfloat--tip::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  translate: 0 -50%;
+  border: 5px solid transparent;
+  border-right-color: var(--c-neutral-900);
+}
+
+/* --- Menú de una categoría --------------------------------------------- */
+
+.c-navfloat--menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 220px;
+  max-width: 280px;
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-lg);
+}
+
+.c-navfloat__titulo {
+  margin: 0;
+  padding: var(--space-1) var(--space-3) var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+  letter-spacing: var(--ls-wide);
+  color: var(--color-text-heading);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+/* Fuera de la barra el texto del enlace sí se ve: es todo lo que hay */
+.c-navfloat .c-navlink__label {
+  display: block;
+}
+
+.c-navfloat .c-navlink {
+  width: 100%;
+}
+
+/* El botón que tiene el menú abierto se queda marcado */
+.c-navlink--flotando {
+  background-color: var(--color-nav-hover);
 }

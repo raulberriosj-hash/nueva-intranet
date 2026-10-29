@@ -171,13 +171,16 @@
         <span class="c-navlink__label">${esc(item.texto)}</span>
         <span class="u-visually-hidden">${esc(item.texto)}</span>`;
 
+    // data-tip es lo que muestra el globo cuando la barra está plegada.
+    const tip = ` data-tip="${esc(item.texto)}"`;
+
     if (!item.href) {
-      return `<span class="c-navlink c-navlink--pendiente" ${extra}
+      return `<span class="c-navlink c-navlink--pendiente"${tip} ${extra}
         title="Pantalla todavía no diseñada">${etiqueta}</span>`;
     }
     return `<a class="c-navlink" href="${esc(ruta(item.href))}"${
       esActiva ? ' aria-current="page"' : ""
-    } ${extra}>${etiqueta}</a>`;
+    }${tip} ${extra}>${etiqueta}</a>`;
   }
 
   // Un grupo desplegable: el botón y, colgando, sus hijos con la línea en
@@ -194,7 +197,8 @@
     // si está desplegado, que el usuario puede cambiar a mano.
     return `<div class="c-navgroup${abierto ? " c-navgroup--abierto c-navgroup--activo" : ""}">
       <button class="c-navlink c-navgroup__toggle" type="button"
-              data-navgroup aria-expanded="${abierto}" aria-controls="${idLista}">
+              data-navgroup="${item.id}" data-tip="${esc(item.texto)}"
+              aria-expanded="${abierto}" aria-controls="${idLista}">
         ${icono(item.icono)}
         <span class="c-navlink__label">${esc(item.texto)}</span>
         <span class="u-visually-hidden">${esc(item.texto)}</span>
@@ -203,6 +207,15 @@
       <ul class="c-navgroup__hijos" id="${idLista}">${hijos}</ul>
     </div>`;
   }
+
+  // id → entrada del menú, para poder armar el flotante de un grupo sin
+  // volver a recorrer MENU.
+  const GRUPOS = {};
+  MENU.forEach((sec) =>
+    sec.items.forEach((item) => {
+      if (item.hijos) GRUPOS[item.id] = item;
+    }),
+  );
 
   function seccion(sec, activa) {
     const cuerpo = sec.items
@@ -222,7 +235,11 @@
   }
 
   function marcado(activa) {
+    // El contenido va en una caja aparte con su propio scroll. Si el scroll
+    // estuviera en el <aside>, el botón de plegar —que sobresale 15px por
+    // la derecha— provocaría una barra horizontal y quedaría recortado.
     return `<aside class="c-sidebar" id="sidebar" aria-label="Navegación principal">
+      <div class="c-sidebar__scroll">
       <div class="c-sidebar__profile">
         <img class="c-avatar c-avatar--lg" src="${esc(ruta(USUARIO.avatar))}" alt="" />
         <span class="c-sidebar__identity">
@@ -241,6 +258,8 @@
           <span class="c-navlink__label">Cerrar Sesión</span>
           <span class="u-visually-hidden">Cerrar sesión</span>
         </a>
+      </div>
+
       </div>
 
       <button class="c-sidebar__toggle" type="button" data-sidebar
@@ -340,9 +359,6 @@
   </symbol>
 </svg>`;
 
-  document.body.insertAdjacentHTML("afterbegin", SPRITE);
-  monta();
-
   function monta() {
     const activa = document.body.dataset.pagina || "";
     hueco.outerHTML = marcado(activa);
@@ -387,22 +403,144 @@
       const ahora = !barra.classList.contains("c-sidebar--expanded");
       pinta(ahora);
       recuerda(ahora);
+      cierra();
     });
 
     /* --- Grupos desplegables -------------------------------------------- */
 
     barra.querySelectorAll("[data-navgroup]").forEach((boton) => {
       boton.addEventListener("click", () => {
-        // Plegado no hay sitio para los hijos: el clic lo que hace es abrir
-        // el menú, y el grupo queda desplegado.
+        // Plegado no hay sitio para los hijos: en vez de abrir la barra
+        // entera, se fija el menú flotante y se puede elegir desde ahí.
         if (!barra.classList.contains("c-sidebar--expanded")) {
-          pinta(true);
-          recuerda(true);
+          flota(boton, true);
+          return;
         }
         const caja = boton.closest(".c-navgroup");
         const abierto = caja.classList.toggle("c-navgroup--abierto");
         boton.setAttribute("aria-expanded", String(abierto));
       });
     });
+
+    conectaFlotante(barra);
   }
+
+  /* ======================================================================
+     CAPA FLOTANTE · globos y submenús de la barra plegada
+
+     Vive colgada del <body> y no del <aside>: dentro de la barra la
+     recortaría su propio scroll, y el requisito es justo que no se corte
+     ni contra la barra ni contra el contenido.
+     ====================================================================== */
+
+  const capa = document.createElement("div");
+  capa.className = "c-navfloat";
+  capa.hidden = true;
+  document.body.appendChild(capa);
+
+  let anclaActual = null;
+  let fijado = false;
+  let cierreDiferido = null;
+
+  function cierra() {
+    clearTimeout(cierreDiferido);
+    capa.hidden = true;
+    capa.innerHTML = "";
+    if (anclaActual) anclaActual.classList.remove("c-navlink--flotando");
+    anclaActual = null;
+    fijado = false;
+  }
+
+  // `fija` es el clic: el menú se queda hasta que se pulse fuera.
+  function flota(ancla, fija = false) {
+    const barra = document.getElementById("sidebar");
+    if (!barra || barra.classList.contains("c-sidebar--expanded")) return;
+    if (window.innerWidth < 768) return; // en teléfono la barra es de abajo
+
+    const grupo = GRUPOS[ancla.dataset.navgroup];
+
+    if (anclaActual === ancla && !capa.hidden) {
+      if (fija) fijado = true;
+      return;
+    }
+
+    clearTimeout(cierreDiferido);
+    if (anclaActual) anclaActual.classList.remove("c-navlink--flotando");
+    anclaActual = ancla;
+    fijado = fija;
+    ancla.classList.add("c-navlink--flotando");
+
+    if (grupo) {
+      capa.className = "c-navfloat c-navfloat--menu";
+      capa.innerHTML =
+        `<p class="c-navfloat__titulo">${esc(grupo.texto)}</p>` +
+        grupo.hijos.map((h) => enlace(h, paginaActiva())).join("");
+    } else {
+      capa.className = "c-navfloat c-navfloat--tip";
+      capa.textContent = ancla.dataset.tip || "";
+    }
+
+    capa.hidden = false;
+    coloca(ancla, barra);
+  }
+
+  function coloca(ancla, barra) {
+    const a = ancla.getBoundingClientRect();
+    const b = barra.getBoundingClientRect();
+    const c = capa.getBoundingClientRect();
+    const aire = 8;
+
+    capa.style.left = `${b.right + aire}px`;
+
+    // Un globo se centra con el icono; un submenú arranca a su altura.
+    let top = capa.classList.contains("c-navfloat--tip")
+      ? a.top + a.height / 2 - c.height / 2
+      : a.top;
+
+    const limite = window.innerHeight - c.height - aire;
+    capa.style.top = `${Math.max(aire, Math.min(top, limite))}px`;
+  }
+
+  function paginaActiva() {
+    return document.body.dataset.pagina || "";
+  }
+
+  function conectaFlotante(barra) {
+    barra.querySelectorAll("[data-tip]").forEach((ancla) => {
+      ancla.addEventListener("mouseenter", () => flota(ancla));
+      ancla.addEventListener("focus", () => flota(ancla));
+      ancla.addEventListener("mouseleave", () => {
+        if (fijado) return;
+        cierreDiferido = setTimeout(cierra, 120);
+      });
+    });
+
+    // Al entrar en el propio menú no se cierra: hay que poder elegir.
+    capa.addEventListener("mouseenter", () => clearTimeout(cierreDiferido));
+    capa.addEventListener("mouseleave", () => {
+      if (!fijado) cierra();
+    });
+
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape") cierra();
+    });
+
+    document.addEventListener("click", (ev) => {
+      if (!fijado) return;
+      if (capa.contains(ev.target) || (anclaActual && anclaActual.contains(ev.target))) return;
+      cierra();
+    });
+
+    // Cualquier cosa que mueva el ancla deja el menú donde no corresponde.
+    window.addEventListener("resize", cierra);
+    window.addEventListener("scroll", cierra, true);
+  }
+
+  /* ======================================================================
+     ARRANQUE
+     Lo último: así todo lo de arriba —LLAVE incluida— ya está definido.
+     ====================================================================== */
+
+  document.body.insertAdjacentHTML("afterbegin", SPRITE);
+  monta();
 })();
