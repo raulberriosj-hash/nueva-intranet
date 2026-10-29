@@ -12,37 +12,34 @@
 // Contrato esperado — fetchBirthdays() debe devolver (o resolver, si es
 // async) un objeto:
 //   {
-//     today: [{ name: "Juan Muñoz", date: "20 de Enero", gender: "male" }, ...],
-//     team:  [{ name: "Josefa Pino", date: "20 de Enero", gender: "female" }, ...],
+//     today: [{ name: "Juan Muñoz", date: "20 de Enero" }, ...],
+//     team:  [{ name: "Josefa Pino", date: "20 de Enero" }, ...],
 //   }
 // - "today": cumpleaños de toda la empresa que caen hoy.
 // - "team": cumpleaños del equipo del usuario (puede incluir próximas fechas,
 //   no solo las de hoy).
-// - "gender": "male" | "female". Define qué avatar genérico se muestra
-//   (img-boy / img-girl). Si el backend ya tiene una foto de perfil real,
-//   se puede mandar "avatar" con esa URL y tiene prioridad sobre "gender".
+// - "avatar": la foto de perfil de la persona. Es opcional: quien no tenga
+//   foto se pinta con el robot de AVATAR_POR_DEFECTO, el mismo que usa el
+//   menú lateral.
 // - Ambas listas deben venir ya filtradas/ordenadas por el backend; este
 //   script solo se encarga de pintarlas en el DOM.
 // ============================================================================
 
 const MOCK_BIRTHDAYS = {
   today: [
-    { name: "Juan Muñoz", date: "20 de Enero", gender: "male" },
-    { name: "Daniela Torres", date: "20 de Enero", gender: "female" },
-    { name: "Mario Tapia", date: "20 de Enero", gender: "male" },
+    { name: "Juan Muñoz", date: "20 de Enero" },
+    { name: "Daniela Torres", date: "20 de Enero" },
+    { name: "Mario Tapia", date: "20 de Enero" },
   ],
   team: [
-    { name: "Josefa Pino", date: "20 de Enero", gender: "female" },
-    { name: "Matías Tobar", date: "20 de Enero", gender: "male" },
+    { name: "Josefa Pino", date: "20 de Enero" },
+    { name: "Matías Tobar", date: "20 de Enero" },
   ],
 };
 
-const GENDER_AVATARS = {
-  male: "assets/home/img-boy.png",
-  female: "assets/home/img-girl.png",
-};
-
-const DEFAULT_AVATAR = GENDER_AVATARS.male;
+// Quien no trae foto de perfil se pinta con este robot, igual que en el
+// menú lateral (js/sidebar.js, USUARIO.avatar).
+const AVATAR_POR_DEFECTO = "assets/img/avatar-placeholder.png";
 
 // TODO(backend): reemplazar por la llamada real, por ejemplo:
 //   async function fetchBirthdays() {
@@ -76,7 +73,7 @@ function renderBirthdayList(listElement, birthdays, emptyMessage) {
 
     const avatar = document.createElement("img");
     avatar.className = "c-avatar";
-    avatar.src = person.avatar || GENDER_AVATARS[person.gender] || DEFAULT_AVATAR;
+    avatar.src = person.avatar || AVATAR_POR_DEFECTO;
     avatar.alt = "";
     personEl.appendChild(avatar);
 
