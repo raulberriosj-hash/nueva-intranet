@@ -1199,10 +1199,13 @@
 
     <script src="js/sidebar.js" defer></script>
     <script src="js/componentes.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/highcharts.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/exporting.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/accessibility.min.js"></script>
-    <script src="js/panel-rrhh-datos.js"></script>
-    <script src="js/panel-rrhh.js"></script>
+    <!-- Todos con defer: sin él, el navegador para de leer la página para
+         ejecutar Highcharts y el menú —que va primero en la fila— no
+         aparecía hasta medio segundo después de la primera pintada. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/highcharts.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/exporting.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/accessibility.min.js" defer></script>
+    <script src="js/panel-rrhh-datos.js" defer></script>
+    <script src="js/panel-rrhh.js" defer></script>
   </body>
 </html>
