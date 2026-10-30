@@ -16,51 +16,8 @@
   "use strict";
 
   /* ======================================================================
-     DOS VERSIONES EN UN MISMO ARCHIVO  ·  andamio, se borra al decidir
-
-     Las tablas abren solo 2026 y 2025 en las dos; lo que cambia es si ese
-     corte alcanza o no al gráfico de periodos:
-
-       panel-rrhh.html              → A · solo las tablas
-       panel-rrhh.html?corte=panel  → B · también el gráfico
-
-     En la B las seis barras pasan a tres: 2026, 2025 y "2024 y anteriores",
-     que junta los 5.644 días que ya no se abren por año. El total no se
-     mueve en ninguna de las dos: sigue siendo el saldo acumulado real.
-
-     Cuando elijas una, esta constante y el `if` de más abajo se borran.
-     ====================================================================== */
-
-  const CORTE_PANEL = new URLSearchParams(location.search).get("corte") === "panel";
-
-  /* ======================================================================
      DATOS  ·  reemplazar por la respuesta del backend
      ====================================================================== */
-
-  // Saldo por periodo de devengo. Vigente = año en curso, vence = el
-  // anterior, que se pierde el 31-12.
-  const PERIODOS = [
-    { name: "2026", y: 41, estado: "vigente" },
-    { name: "2025", y: 3572, estado: "vence" },
-    { name: "2024", y: 3895, estado: "anterior" },
-    { name: "2023", y: 1278, estado: "anterior" },
-    { name: "2022", y: 351, estado: "anterior" },
-    { name: "2021", y: 120, estado: "anterior" },
-  ];
-
-  // Versión B: los años cerrados se juntan en una sola barra, para que las
-  // tres sigan sumando los 9.257 días del indicador.
-  const PERIODOS_VISTA = CORTE_PANEL
-    ? [
-        PERIODOS[0],
-        PERIODOS[1],
-        {
-          name: "2024 y anteriores",
-          y: PERIODOS.slice(2).reduce((suma, p) => suma + p.y, 0),
-          estado: "anterior",
-        },
-      ]
-    : PERIODOS;
 
   const ANTERIORES = {
     semanas: ["Sem 31", "Sem 32", "Sem 33", "Sem 34", "Sem 35", "Sem 36", "Sem 37", "Sem 38"],
@@ -202,27 +159,6 @@
   /* ======================================================================
      GRÁFICOS
      ====================================================================== */
-
-  // El color de cada barra lo decide la antigüedad, no el orden de la serie
-  const tonoPeriodo = {
-    vigente: COLOR.vigente,
-    vence: COLOR.vence,
-    anterior: COLOR.anterior,
-  };
-
-  Highcharts.chart("g-periodos", {
-    chart: { type: "column" },
-    xAxis: { categories: PERIODOS_VISTA.map((p) => p.name) },
-    yAxis: { labels: { format: "{value}" } },
-    legend: { enabled: false },
-    tooltip: { ...sufijoDias, headerFormat: "<span>Periodo {point.key}</span><br>" },
-    series: [
-      {
-        name: "Días de saldo",
-        data: PERIODOS_VISTA.map((p) => ({ y: p.y, color: tonoPeriodo[p.estado] })),
-      },
-    ],
-  });
 
   Highcharts.chart("g-anteriores", {
     chart: { type: "areaspline" },

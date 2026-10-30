@@ -18,7 +18,7 @@
 
    DOS DECISIONES QUE CONVIENE SABER
    · El título de tarjeta va en --fs-base (16) y no en --fs-2xl (24) como
-     .c-card__title. Con siete tarjetas, dos por fila, el 24 las ahoga. El
+     .c-card__title. Con seis tarjetas, dos por fila, el 24 las ahoga. El
      24 se reserva para los títulos de sección, igual que en el resto.
    · Las cabeceras de tabla van en caja normal, como en la tabla de
      jefatura. La caja alta queda para las etiquetas de tile y de filtro,

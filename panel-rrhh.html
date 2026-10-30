@@ -39,9 +39,18 @@
      variables de 01-tokens.css en tiempo de ejecución, así que no hay un
      solo hex duplicado en el JS ni en el HTML.
 
-     ESTRUCTURA · idéntica a la versión anterior del panel
-       Filtros · Indicadores · Tramos · Gráficos de a dos · Gráfico ancho ·
+     ESTRUCTURA
+       Filtros · Indicadores · Tramos · Gráficos de a dos · Gráficos anchos ·
        Tablas de detalle
+
+     ORDEN DE LOS GRÁFICOS
+     Primero los dos que se leen a diario —top 10 y evolución semanal— y
+     después los dos anchos. El de periodos anteriores bajó ahí: es un
+     seguimiento, no lo primero que hay que mirar al entrar.
+
+     No hay gráfico de saldo por periodo: el sistema no va a tener data
+     anterior a 2025, así que las barras por año no dicen nada todavía. El
+     saldo por periodo sigue abierto por colaborador en el informe.
 
      DATOS · DESDE 2021, PERO LAS TABLAS ABREN DOS AÑOS
      El sistema es nuevo y no tiene nada anterior a 2021. Los años son
@@ -59,9 +68,6 @@
      2024 hacia atrás no se muestra, pero SÍ sigue contando en la columna de
      total, que es el saldo acumulado real. Por eso las columnas de año no
      suman el total; es a propósito.
-
-     panel-rrhh.js trae de momento las dos versiones del corte —ver
-     el comentario de arriba de ese archivo— y se elige con ?corte=panel.
 
      Las dos tablas y los cuatro modales de tramo leen el mismo arreglo,
      PERSONAS, que está en panel-rrhh-datos.js y suma exactamente
@@ -605,62 +611,6 @@
             <section class="bi-card">
               <header class="bi-card__head">
                 <div>
-                  <h2 class="bi-card__title">Saldo por periodo</h2>
-                  <p class="bi-card__sub">
-                    Días acumulados según el año en que se generaron
-                  </p>
-                </div>
-              </header>
-              <div class="bi-card__body">
-                <div class="bi-plot" id="g-periodos"></div>
-              </div>
-              <div class="bi-pie">
-                <span class="bi-leyenda">
-                  <span class="bi-leyenda__item"
-                    ><span
-                      class="bi-leyenda__marca"
-                      style="--marca: var(--dash-vigente)"
-                    ></span
-                    >Vigente</span
-                  >
-                  <span class="bi-leyenda__item"
-                    ><span
-                      class="bi-leyenda__marca"
-                      style="--marca: var(--dash-vence)"
-                    ></span
-                    >Vence el 31-12</span
-                  >
-                  <span class="bi-leyenda__item"
-                    ><span
-                      class="bi-leyenda__marca"
-                      style="--marca: var(--dash-anterior)"
-                    ></span
-                    >Periodos anteriores</span
-                  >
-                </span>
-              </div>
-            </section>
-
-            <section class="bi-card">
-              <header class="bi-card__head">
-                <div>
-                  <h2 class="bi-card__title">
-                    Colaboradores con saldo de periodos anteriores
-                  </h2>
-                  <p class="bi-card__sub">Evolución semanal</p>
-                </div>
-              </header>
-              <div class="bi-card__body">
-                <div class="bi-plot" id="g-anteriores"></div>
-              </div>
-            </section>
-          </div>
-
-          <!-- ============ GRÁFICOS · FILA 2 ============ -->
-          <div class="bi-fila bi-fila--2">
-            <section class="bi-card">
-              <header class="bi-card__head">
-                <div>
                   <h2 class="bi-card__title">
                     10 trabajadores con más vacaciones pendientes
                   </h2>
@@ -685,6 +635,23 @@
               </header>
               <div class="bi-card__body">
                 <div class="bi-plot bi-plot--alto" id="g-semanal"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============ -->
+          <div class="bi-fila">
+            <section class="bi-card">
+              <header class="bi-card__head">
+                <div>
+                  <h2 class="bi-card__title">
+                    Colaboradores con saldo de periodos anteriores
+                  </h2>
+                  <p class="bi-card__sub">Evolución semanal</p>
+                </div>
+              </header>
+              <div class="bi-card__body">
+                <div class="bi-plot" id="g-anteriores"></div>
               </div>
             </section>
           </div>
