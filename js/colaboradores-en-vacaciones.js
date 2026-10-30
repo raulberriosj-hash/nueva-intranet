@@ -134,17 +134,9 @@
       reemplazo: t.reemplazo,
       habiles: diasHabiles(desde, hasta),
       enCurso: desde <= HOY && HOY <= hasta,
+      pasada: hasta < HOY,
     };
   }).sort((a, b) => a.desde - b.desde);
-
-  function iniciales(nombre) {
-    return nombre
-      .split(" ")
-      .slice(0, 2)
-      .map((p) => p[0])
-      .join("")
-      .toUpperCase();
-  }
 
   /* ======================================================================
      FILTRO Y PAGINACIÓN
@@ -280,12 +272,10 @@
       return celda;
     }
     celda.innerHTML =
-      `<span class="c-persona">` +
-      `<span class="c-avatar c-avatar--iniciales" aria-hidden="true">${iniciales(nombre)}</span>` +
       `<span class="c-persona__datos">` +
       `<span class="c-persona__nombre">${nombre}</span>` +
       `<span class="c-persona__cargo">${cargo}</span>` +
-      `</span></span>`;
+      `</span>`;
     return celda;
   }
 
@@ -299,6 +289,7 @@
     const el = document.createElement("span");
     el.className = "s-envac__barra";
     if (tramo.enCurso) el.classList.add("s-envac__barra--curso");
+    if (tramo.pasada) el.classList.add("s-envac__barra--pasada");
     if (tramo.desde < primero) el.classList.add("s-envac__barra--sigueIzq");
     if (tramo.hasta > ultimo) el.classList.add("s-envac__barra--sigueDer");
 
@@ -339,12 +330,10 @@
       fila.className = "c-table__row";
       fila.innerHTML =
         `<td data-col="Colaborador">` +
-        `<span class="c-persona">` +
-        `<span class="c-avatar c-avatar--md c-avatar--iniciales" aria-hidden="true">${iniciales(t.persona.nombre)}</span>` +
         `<span class="c-persona__datos">` +
         `<span class="c-persona__nombre">${t.persona.nombre}</span>` +
         `<span class="c-persona__cargo">${t.persona.cargo}</span>` +
-        `</span></span></td>` +
+        `</span></td>` +
         `<td class="c-table__rango" data-col="Desde">${largo(t.desde)}</td>` +
         `<td class="c-table__rango" data-col="Hasta">${largo(t.hasta)}</td>` +
         `<td class="c-table__dias" data-col="Días hábiles">${t.habiles}</td>` +
@@ -371,16 +360,9 @@
   }
 
   function etiqueta(tramo) {
-    if (tramo.enCurso) {
-      const faltan = Math.round((tramo.hasta - HOY) / 86400000);
-      const texto = faltan === 0 ? "vuelve mañana" : `vuelve en ${faltan + 1} días`;
-      return `<span class="c-tag c-tag--curso">Fuera hoy</span>` +
-        `<span class="s-envac__meta">${texto}</span>`;
-    }
-    const faltan = Math.round((tramo.desde - HOY) / 86400000);
-    const texto = faltan === 1 ? "se va mañana" : `se va en ${faltan} días`;
-    return `<span class="c-tag c-tag--proxima">Programada</span>` +
-      `<span class="s-envac__meta">${texto}</span>`;
+    return tramo.enCurso
+      ? `<span class="c-tag c-tag--curso">Fuera hoy</span>`
+      : `<span class="c-tag c-tag--proxima">Programada</span>`;
   }
 
   /* ======================================================================

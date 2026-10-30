@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <link rel="icon" type="image/svg+xml" href="assets/home/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Seguimiento de vacaciones</title>
@@ -339,91 +340,93 @@
             <h2 class="u-visually-hidden" id="t-filtros">Filtros del panel</h2>
 
             <form class="bi-filtros">
-              <div class="bi-filtro">
-                <span class="bi-filtro__icon">
-                  <svg class="c-icon" aria-hidden="true">
-                    <use href="#i-calendar-salida" />
-                  </svg>
-                </span>
-                <span class="bi-filtro__content">
-                  <label class="bi-filtro__label" for="f-desde">Desde</label>
-                  <input
-                    class="bi-filtro__control"
-                    id="f-desde"
-                    type="date"
-                    value="2026-01-01"
-                  />
-                </span>
-              </div>
+              <div class="bi-filtros__campos">
+                <div class="bi-filtro">
+                  <span class="bi-filtro__icon">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-calendar-salida" />
+                    </svg>
+                  </span>
+                  <span class="bi-filtro__content">
+                    <label class="bi-filtro__label" for="f-desde">Desde</label>
+                    <input
+                      class="bi-filtro__control"
+                      id="f-desde"
+                      type="date"
+                      value="2026-01-01"
+                    />
+                  </span>
+                </div>
 
-              <div class="bi-filtro">
-                <span class="bi-filtro__icon">
-                  <svg class="c-icon" aria-hidden="true">
-                    <use href="#i-calendar-regreso" />
-                  </svg>
-                </span>
-                <span class="bi-filtro__content">
-                  <label class="bi-filtro__label" for="f-hasta">Hasta</label>
-                  <input
-                    class="bi-filtro__control"
-                    id="f-hasta"
-                    type="date"
-                    value="2026-10-27"
-                  />
-                </span>
-              </div>
+                <div class="bi-filtro">
+                  <span class="bi-filtro__icon">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-calendar-regreso" />
+                    </svg>
+                  </span>
+                  <span class="bi-filtro__content">
+                    <label class="bi-filtro__label" for="f-hasta">Hasta</label>
+                    <input
+                      class="bi-filtro__control"
+                      id="f-hasta"
+                      type="date"
+                      value="2026-10-27"
+                    />
+                  </span>
+                </div>
 
-              <div class="bi-filtro bi-filtro--select">
-                <span class="bi-filtro__icon">
-                  <svg class="c-icon" aria-hidden="true">
-                    <use href="#i-filter" />
+                <div class="bi-filtro bi-filtro--select">
+                  <span class="bi-filtro__icon">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-filter" />
+                    </svg>
+                  </span>
+                  <span class="bi-filtro__content">
+                    <label class="bi-filtro__label" for="f-centro"
+                      >Centro de costo</label
+                    >
+                    <select class="bi-filtro__control" id="f-centro">
+                      <option>Todos</option>
+                      <option>Administración</option>
+                      <option>COE</option>
+                      <option>Gestores</option>
+                      <option>Ingeniería y Configuración</option>
+                      <option>Repliegue de Planta</option>
+                      <option>TI</option>
+                    </select>
+                  </span>
+                  <svg class="bi-filtro__chevron" aria-hidden="true">
+                    <use href="#i-chevron-down" />
                   </svg>
-                </span>
-                <span class="bi-filtro__content">
-                  <label class="bi-filtro__label" for="f-centro"
-                    >Centro de costo</label
-                  >
-                  <select class="bi-filtro__control" id="f-centro">
-                    <option>Todos</option>
-                    <option>Administración</option>
-                    <option>COE</option>
-                    <option>Gestores</option>
-                    <option>Ingeniería y Configuración</option>
-                    <option>Repliegue de Planta</option>
-                    <option>TI</option>
-                  </select>
-                </span>
-                <svg class="bi-filtro__chevron" aria-hidden="true">
-                  <use href="#i-chevron-down" />
-                </svg>
-              </div>
+                </div>
 
-              <div class="bi-filtro bi-filtro--select">
-                <span class="bi-filtro__icon">
-                  <svg class="c-icon" aria-hidden="true">
-                    <use href="#i-user" />
+                <div class="bi-filtro bi-filtro--select">
+                  <span class="bi-filtro__icon">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-user" />
+                    </svg>
+                  </span>
+                  <span class="bi-filtro__content">
+                    <label class="bi-filtro__label" for="f-gerente"
+                      >Gerente de servicio</label
+                    >
+                    <select class="bi-filtro__control" id="f-gerente">
+                      <option>Todos</option>
+                      <option>Valentina Soledad Carrasco Pinto</option>
+                      <option>Rodrigo Alberto Vergara Cáceres</option>
+                      <option>Marcelo Iván Bustos Rojas</option>
+                      <option>Sebastián Ignacio Quiroz Fuentes</option>
+                      <option>Ricardo Andrés Salgado Villalobos</option>
+                      <option>Tomás Eduardo Maldonado Paredes</option>
+                      <option>Fernanda Isabel Olivares Riquelme</option>
+                      <option>Patricio Hernán Cortés Lagos</option>
+                      <option>Óscar Durán Espinoza</option>
+                    </select>
+                  </span>
+                  <svg class="bi-filtro__chevron" aria-hidden="true">
+                    <use href="#i-chevron-down" />
                   </svg>
-                </span>
-                <span class="bi-filtro__content">
-                  <label class="bi-filtro__label" for="f-gerente"
-                    >Gerente de servicio</label
-                  >
-                  <select class="bi-filtro__control" id="f-gerente">
-                    <option>Todos</option>
-                    <option>Valentina Soledad Carrasco Pinto</option>
-                    <option>Rodrigo Alberto Vergara Cáceres</option>
-                    <option>Marcelo Iván Bustos Rojas</option>
-                    <option>Sebastián Ignacio Quiroz Fuentes</option>
-                    <option>Ricardo Andrés Salgado Villalobos</option>
-                    <option>Tomás Eduardo Maldonado Paredes</option>
-                    <option>Fernanda Isabel Olivares Riquelme</option>
-                    <option>Patricio Hernán Cortés Lagos</option>
-                    <option>Óscar Durán Espinoza</option>
-                  </select>
-                </span>
-                <svg class="bi-filtro__chevron" aria-hidden="true">
-                  <use href="#i-chevron-down" />
-                </svg>
+                </div>
               </div>
 
               <div class="bi-acciones">

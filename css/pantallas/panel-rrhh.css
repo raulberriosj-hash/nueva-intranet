@@ -65,12 +65,22 @@
   gap: var(--space-2);
 }
 
+/* Los campos van en su propio grupo para que, cuando no quepan, se
+   repartan entre ellos y los botones no se queden solos en otra fila. */
+.bi-filtros__campos {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
 .bi-filtro {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-width: 0;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-lg);
@@ -91,8 +101,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   background-color: var(--color-surface-subtle);
   border-radius: var(--radius-md);
@@ -166,13 +176,14 @@
 }
 
 .bi-filtro--select .bi-filtro__control {
-  max-width: 180px;
+  max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .bi-acciones {
   display: flex;
+  flex-shrink: 0;
   gap: var(--space-2);
   margin-left: auto;
 }
@@ -189,7 +200,7 @@
   justify-content: center;
   gap: var(--space-1);
   height: 44px;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-3);
   font-size: var(--fs-sm);
   font-weight: var(--fw-bold);
   line-height: 1.3;

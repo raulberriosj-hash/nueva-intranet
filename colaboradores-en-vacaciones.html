@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <link rel="icon" type="image/svg+xml" href="assets/home/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Colaboradores en vacaciones · Intranet 2.0</title>
@@ -42,6 +43,8 @@
          la columna, para poder contar días hábiles a ojo.
        · Los días que se cuentan son hábiles de lunes a viernes: el sábado
          es inhábil para vacaciones (artículo 69 del Código del Trabajo).
+       · El mes y el buscador van juntos encima de la rejilla: cambiar de
+         mes es la acción principal y en la cabecera quedaba escondida.
        · El buscador filtra las dos vistas a la vez. Si filtrara solo una,
          las dos mitades de la pantalla dirían cosas distintas.
        · La línea de tiempo tiene alto máximo y se desplaza dentro de su
@@ -137,7 +140,9 @@
                   <span class="c-stat__label">con vacaciones programadas</span>
                 </span>
               </div>
+            </div>
 
+            <div class="s-envac__barraFiltros">
               <div class="s-envac__meses">
                 <button class="c-iconbtn c-iconbtn--sm" type="button"
                         data-mes-anterior aria-label="Mes anterior">
@@ -150,20 +155,18 @@
                 </button>
                 <button class="c-btn c-btn--neutro" type="button" data-mes-hoy>Hoy</button>
               </div>
-            </div>
 
-            <label class="c-field s-envac__buscador">
-              <span class="c-field__icon">
+              <label class="s-envac__buscador">
                 <svg class="c-icon" aria-hidden="true"><use href="#i-search" /></svg>
-              </span>
-              <span class="u-visually-hidden">Buscar colaborador</span>
-              <input
-                class="s-envac__input"
-                type="search"
-                data-buscar
-                placeholder="Buscar por nombre o cargo"
-              />
-            </label>
+                <span class="u-visually-hidden">Buscar colaborador</span>
+                <input
+                  class="s-envac__input"
+                  type="search"
+                  data-buscar
+                  placeholder="Buscar por nombre"
+                />
+              </label>
+            </div>
 
             <!-- La rejilla la pinta js/colaboradores-en-vacaciones.js -->
             <div class="s-envac__scroll">
@@ -189,7 +192,11 @@
               </li>
               <li>
                 <span class="s-envac__muestra s-envac__muestra--vacaciones"></span>
-                Vacaciones aprobadas
+                Programadas
+              </li>
+              <li>
+                <span class="s-envac__muestra s-envac__muestra--pasada"></span>
+                Anteriores
               </li>
               <li><span class="s-envac__muestra s-envac__hoy"></span>Hoy</li>
               <li><span class="s-envac__muestra s-envac__finde"></span>Fin de semana</li>

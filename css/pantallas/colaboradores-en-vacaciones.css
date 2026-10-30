@@ -18,8 +18,16 @@
 }
 
 /* ==========================================================================
-   CONTROLES DEL MES
+   BARRA DE CONTROLES
+   El mes primero —es la acción principal— y el buscador al lado.
    ========================================================================== */
+
+.s-envac__barraFiltros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
 
 .s-envac__meses {
   display: flex;
@@ -38,17 +46,31 @@
 
 /* ==========================================================================
    BUSCADOR
-   Filtra las dos vistas a la vez. Compone .c-field, que ya trae el marco
-   y la pastilla del icono.
+   Filtra las dos vistas a la vez.
    ========================================================================== */
 
 .s-envac__buscador {
-  max-width: 420px;
-  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 180px;
+  max-width: 280px;
+  height: 36px;
+  padding-inline: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
 }
 
 .s-envac__buscador:focus-within {
   border-color: var(--color-focus-ring);
+}
+
+.s-envac__buscador .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-icon-muted);
 }
 
 .s-envac__input {
@@ -214,10 +236,18 @@
   border-radius: var(--radius-pill);
 }
 
-/* El tramo que incluye hoy va en el color de acción, que es el más fuerte
-   de la paleta: es el dato que se viene a buscar. */
+/* Tres estados: lo que ya pasó se apaga, lo que viene va en azul y lo que
+   está ocurriendo hoy en morado, que es el único sitio donde aparece. */
 .s-envac__barra--curso {
-  background-color: var(--color-action-bg);
+  background-color: var(--c-support-500);
+}
+
+.s-envac__barra--pasada {
+  background-color: var(--c-neutral-200);
+}
+
+.s-envac__barra--pasada .s-envac__barraTexto {
+  color: var(--color-text-secondary);
 }
 
 /* Si el tramo viene del mes anterior o sigue en el siguiente, ese lado se
@@ -277,7 +307,13 @@
 }
 
 .s-envac__muestra--curso {
-  background-color: var(--color-action-bg);
+  background-color: var(--c-support-500);
+  border-color: transparent;
+  border-radius: var(--radius-pill);
+}
+
+.s-envac__muestra--pasada {
+  background-color: var(--c-neutral-200);
   border-color: transparent;
   border-radius: var(--radius-pill);
 }
@@ -292,22 +328,7 @@
 .s-envac__col--reemplazo { width: 17%; }
 .s-envac__col--estado { width: 15%; }
 
-/* La aclaración que va bajo la etiqueta de estado: «vuelve en 3 días» */
-.s-envac__meta {
-  display: block;
-  margin-top: var(--space-1);
-  font-size: var(--fs-xs);
-  line-height: 1.3;
-  color: var(--color-text-secondary);
-}
-
 @media (max-width: 767px) {
-  .s-envac__meta {
-    display: inline;
-    margin-top: 0;
-    margin-left: var(--space-2);
-  }
-
   /* En teléfono el título se lleva su propia línea: si no, las píldoras del
      resumen lo estrujan a tres palabras por renglón. */
   .s-envac .c-sectionhead__title {
