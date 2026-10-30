@@ -40,7 +40,7 @@
          se arma paso a paso y la diferencia contra el sistema cierra el bloque.
          Esa diferencia es la razón por la que alguien entra acá.
        · Los datos de solo lectura van como texto, no como inputs deshabilitados.
-       · Las tres tablas del modal pasan a listas: ocho columnas no caben en un
+       · Las tablas del modal pasan a listas: ocho columnas no caben en un
          drawer sin scroll horizontal, y acá no hay nada que ordenar ni comparar
          entre filas.
 
@@ -411,7 +411,8 @@
         </p>
 
         <!-- Conciliación: de dónde sale el saldo calculado y en cuánto difiere
-             del que tiene cargado el sistema. Si la diferencia es 0, cambiar
+             del que tiene cargado el sistema, que ya va en la columna "Saldo
+             sistema" de la tabla. Si la diferencia es 0, cambiar
              c-recon__row--diff por c-recon__row--ok. -->
         <section aria-labelledby="t-conciliacion">
           <div class="c-subhead">
@@ -439,24 +440,20 @@
               <span class="c-recon__label">Saldo calculado</span>
               <span class="c-recon__num">73,34</span>
             </div>
-            <div class="c-recon__row">
-              <span class="c-recon__op" aria-hidden="true"></span>
-              <span class="c-recon__label">Saldo cargado en el sistema</span>
-              <span class="c-recon__num">50,04</span>
-            </div>
             <div class="c-recon__row c-recon__row--diff">
               <span class="c-recon__op" aria-hidden="true"></span>
-              <span class="c-recon__label">Diferencia</span>
+              <span class="c-recon__label">Diferencia con el sistema</span>
               <span class="c-recon__num">−23,30</span>
             </div>
           </div>
         </section>
 
-        <!-- Saldo por periodo. Los periodos en cero llevan --vacio. -->
+        <!-- Saldo por periodo. Arranca en 2021: el sistema es nuevo y no tiene
+             nada anterior. Los periodos en cero llevan --vacio. -->
         <section aria-labelledby="t-periodos">
           <div class="c-subhead">
             <h3 class="c-subhead__title" id="t-periodos">Saldo por periodo</h3>
-            <span class="c-subhead__count">11 periodos · 73,34 días</span>
+            <span class="c-subhead__count">6 periodos · 73,34 días</span>
           </div>
 
           <ul class="c-periodos">
@@ -482,26 +479,6 @@
             </li>
             <li class="c-periodos__item c-periodos__item--vacio">
               <span class="c-periodos__periodo">2021</span>
-              <span class="c-periodos__dias">0,00</span>
-            </li>
-            <li class="c-periodos__item c-periodos__item--vacio">
-              <span class="c-periodos__periodo">2020</span>
-              <span class="c-periodos__dias">0,00</span>
-            </li>
-            <li class="c-periodos__item c-periodos__item--vacio">
-              <span class="c-periodos__periodo">2019</span>
-              <span class="c-periodos__dias">0,00</span>
-            </li>
-            <li class="c-periodos__item c-periodos__item--vacio">
-              <span class="c-periodos__periodo">2018</span>
-              <span class="c-periodos__dias">0,00</span>
-            </li>
-            <li class="c-periodos__item c-periodos__item--vacio">
-              <span class="c-periodos__periodo">2017</span>
-              <span class="c-periodos__dias">0,00</span>
-            </li>
-            <li class="c-periodos__item c-periodos__item--vacio">
-              <span class="c-periodos__periodo">2016</span>
               <span class="c-periodos__dias">0,00</span>
             </li>
           </ul>
@@ -565,40 +542,6 @@
               </p>
             </li>
           </ul>
-        </section>
-
-        <!-- Días progresivos: van aparte porque se generan por antigüedad y no
-             se descuentan del mismo saldo. -->
-        <section aria-labelledby="t-progresivos">
-          <div class="c-subhead">
-            <h3 class="c-subhead__title" id="t-progresivos">Días progresivos</h3>
-            <span class="c-subhead__count">2 registros</span>
-          </div>
-
-          <ul class="c-records">
-            <li class="c-record">
-              <p class="c-record__main">
-                <span class="c-record__rango">30 jun 2023</span>
-                <span class="c-record__dias">1 día</span>
-              </p>
-              <p class="c-record__meta">Responsable Francisco Sánchez</p>
-            </li>
-
-            <li class="c-record">
-              <p class="c-record__main">
-                <span class="c-record__rango">12 sep 2025</span>
-                <span class="c-record__dias">1 día</span>
-              </p>
-              <p class="c-record__meta">Responsable Francisco Sánchez</p>
-            </li>
-          </ul>
-
-          <!-- Sin registros va esto en vez de la lista:
-          <div class="c-empty c-empty--compact">
-            <p class="c-empty__title">Sin días progresivos</p>
-            <p class="c-empty__text">Se generan al cumplir diez años de antigüedad.</p>
-          </div>
-          -->
         </section>
 
         <hr class="c-divider" />

@@ -902,8 +902,10 @@
 }
 
 /* Con cabecera propia el drawer se reparte en dos: la cabecera queda fija y
-   solo el cuerpo scrollea. */
-.c-drawer:has(> .c-modal__header) {
+   solo el cuerpo scrollea. Va con [open] porque un `display` propio le gana al
+   `display: none` que el navegador le pone al <dialog> cerrado: sin eso el
+   drawer se dibujaba debajo de la tabla. */
+.c-drawer[open]:has(> .c-modal__header) {
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1955,17 +1957,19 @@
    ========================================================================== */
 
 .c-records {
-  padding: 0 var(--space-4);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-lg);
 }
 
+/* El aire lo pone la fila y no la lista: `ul[class]` de 02-base le gana en
+   especificidad a .c-records y le borra cualquier padding, así que el texto
+   quedaba pegado al borde de la tarjeta. */
 .c-record {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding: var(--space-3) 0;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-divider);
 }
 

@@ -69,6 +69,12 @@ a {
   display: none !important;
 }
 
+/* Y lo mismo con el <dialog> cerrado: cualquier `display` de componente le
+   gana al del navegador y el modal termina dibujado dentro de la página. */
+dialog:not([open]) {
+  display: none;
+}
+
 /* --- Documento ------------------------------------------------------ */
 
 body {
