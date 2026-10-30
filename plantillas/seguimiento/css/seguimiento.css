@@ -147,8 +147,8 @@
   Es lo único de esta sección que no sale del archivo.
   ====================================================================== */
   --font-sans:
-  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-  Arial, sans-serif;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   --fs-xs: 12px;
   --fs-sm: 14px;
   --fs-base: 16px;
@@ -287,7 +287,7 @@
   --shadow-card: 0 2px 8px 0 rgb(36 48 71 / 0.1);
   --shadow-card-lg: 0 10px 24px -10px rgb(36 48 71 / 0.1);
   --shadow-modal:
-  0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
+    0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
   /* --- Foco ------------------------------------------------------------- */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
@@ -476,8 +476,8 @@
   border-radius: var(--radius-md);
   color: var(--color-border);
   transition:
-  background-color var(--transition-fast),
-  color var(--transition-fast);
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .seg .c-closebtn:hover {
@@ -794,8 +794,8 @@
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
   transition:
-  background-color var(--transition-fast),
-  border-color var(--transition-fast);
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .seg .bi-btn .c-icon {
