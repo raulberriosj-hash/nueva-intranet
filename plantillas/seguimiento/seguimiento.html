@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seguimiento de vacaciones · plantilla</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/seguimiento.css" />
+  </head>
+
+  <body>
+    <!-- ========================================================================
+     SEGUIMIENTO DE VACACIONES · PLANTILLA PARA INTEGRAR
+
+     Esto no es una pantalla suelta: es el bloque que se pega dentro de la
+     intranet que ya existe. Lo que va entre {{llaves}} son huecos para el
+     motor de plantillas. Lo que se repite va entre <!- - REPEAT - -> y
+     <!- - /REPEAT - ->: queda una sola fila de ejemplo y el backend la
+     multiplica.
+
+     QUÉ SE COPIA
+     Todo lo que está entre las marcas ░░ INICIO ░░ y ░░ FIN ░░. Nada más.
+     El menú lateral, la cabecera y el título de la pantalla los pone la
+     intranet; acá no van para no duplicarlos.
+
+     LOS TRES ARCHIVOS
+       css/seguimiento.css        se carga en el <head>
+       js/seguimiento-datos.js    lo llena el backend · es el único que se toca
+       js/seguimiento.js          gráficos, tabla y modal · no se toca
+     Los tres van juntos. Ver LEEME.md.
+
+     POR QUÉ NO CHOCA CON LA INTRANET
+       · Todo el CSS cuelga de .seg. Ninguna regla sale de ese contenedor y
+         ninguna hoja de la intranet entra: las reglas de acá tienen más peso
+         dentro del bloque.
+       · Las variables de color y tamaño se declaran en .seg, no en :root.
+       · Los id del HTML y los del sprite van con prefijo seg-.
+
+     HUECOS DEL HTML
+       filtros.desde · filtros.hasta          fechas del rango consultado
+       centro.id · centro.nombre              opciones del centro de costo
+       gerente.id · gerente.nombre            opciones del gerente de servicio
+       kpi.saldoTotal                         días acumulados de toda la empresa
+       kpi.periodosAnteriores                 días de 2024 hacia atrás
+       kpi.pendientes                         días sin tomar ni programar
+       kpi.programadas                        días ya aprobados a futuro
+       tramo.alto · tramo.medio · tramo.bajo  colaboradores en cada tramo
+       tramo.hoy                              colaboradores de vacaciones hoy
+       anio.vigente · anio.vence              los dos años que abren las tablas
+       fila.* (tabla de gerencias)            una fila por gerente de servicio
+       total.*                                la fila de totales de esa tabla
+       pie.gerentes · pie.colaboradores       el conteo del pie de la tabla
+
+     HUECOS DEL JS · van en js/seguimiento-datos.js
+       Los cuatro gráficos y la tabla "Saldo histórico por persona" se pintan
+       desde ese archivo. La tabla de gerencias no: son once filas y se
+       escriben acá, con el REPEAT.
+
+     LO QUE FALTA POR CONECTAR
+       · El botón "Consultar" no manda el formulario: hoy no hay a dónde.
+         Envolverlo en el <form action> de la intranet o atender el submit.
+       · Los dos botones "Excel" no descargan nada todavía.
+       · El tramo "En vacaciones hoy" sale en cero: es el único dato que no
+         depende del saldo sino de quién está ausente en este momento.
+     ======================================================================== -->
+
+    <!-- ░░░░░░░░░░░░░░░░░░░░ INICIO DEL BLOQUE ░░░░░░░░░░░░░░░░░░░░ -->
+    <div class="seg">
+      <!-- Sprite de iconos. Los id llevan prefijo seg- para no chocar con el
+           sprite de la intranet. Se usan con <use href="#seg-i-nombre">. -->
+      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
+           style="position:absolute;width:0;height:0;overflow:hidden">
+        <symbol id="seg-i-maleta" viewBox="0 0 22.5 36" fill="none">
+        <g>
+        <path
+        d="M6.75 11.25C7.04837 11.25 7.33452 11.3685 7.54549 11.5795C7.75647 11.7905 7.875 12.0766 7.875 12.375V28.125C7.875 28.4234 7.75647 28.7095 7.54549 28.9205C7.33452 29.1315 7.04837 29.25 6.75 29.25C6.45163 29.25 6.16548 29.1315 5.95451 28.9205C5.74353 28.7095 5.625 28.4234 5.625 28.125V12.375C5.625 12.0766 5.74353 11.7905 5.95451 11.5795C6.16548 11.3685 6.45163 11.25 6.75 11.25ZM11.25 11.25C11.5484 11.25 11.8345 11.3685 12.0455 11.5795C12.2565 11.7905 12.375 12.0766 12.375 12.375V28.125C12.375 28.4234 12.2565 28.7095 12.0455 28.9205C11.8345 29.1315 11.5484 29.25 11.25 29.25C10.9516 29.25 10.6655 29.1315 10.4545 28.9205C10.2435 28.7095 10.125 28.4234 10.125 28.125V12.375C10.125 12.0766 10.2435 11.7905 10.4545 11.5795C10.6655 11.3685 10.9516 11.25 11.25 11.25ZM15.75 11.25C16.0484 11.25 16.3345 11.3685 16.5455 11.5795C16.7565 11.7905 16.875 12.0766 16.875 12.375V28.125C16.875 28.4234 16.7565 28.7095 16.5455 28.9205C16.3345 29.1315 16.0484 29.25 15.75 29.25C15.4516 29.25 15.1655 29.1315 14.9545 28.9205C14.7435 28.7095 14.625 28.4234 14.625 28.125V12.375C14.625 12.0766 14.7435 11.7905 14.9545 11.5795C15.1655 11.3685 15.4516 11.25 15.75 11.25Z"
+        fill="currentColor"
+        />
+        <path
+        d="M7.875 0C7.57663 0 7.29048 0.118526 7.07951 0.329505C6.86853 0.540483 6.75 0.826631 6.75 1.125V6.75H4.5C3.30653 6.75 2.16193 7.22411 1.31802 8.06802C0.474106 8.91193 9.80561e-08 10.0565 9.80561e-08 11.25V29.25C-0.000167649 30.0537 0.214893 30.8427 0.622835 31.5351C1.03078 32.2276 1.61671 32.7981 2.31975 33.1875C2.23526 33.52 2.2277 33.8674 2.29764 34.2033C2.36759 34.5392 2.5132 34.8547 2.7234 35.1259C2.93361 35.3971 3.20287 35.6167 3.51072 35.7682C3.81857 35.9197 4.15691 35.9989 4.5 36C5.09674 36 5.66903 35.7629 6.09099 35.341C6.51295 34.919 6.75 34.3467 6.75 33.75H15.75C15.7509 34.0688 15.8196 34.3838 15.9515 34.6741C16.0834 34.9644 16.2755 35.2233 16.5151 35.4338C16.7546 35.6442 17.0361 35.8013 17.341 35.8947C17.6459 35.9881 17.9671 36.0156 18.2834 35.9754C18.5997 35.9353 18.9039 35.8283 19.1757 35.6617C19.4476 35.4951 19.6809 35.2726 19.8602 35.009C20.0396 34.7454 20.1609 34.4467 20.2161 34.1327C20.2712 33.8186 20.259 33.4965 20.1802 33.1875C20.8833 32.7981 21.4692 32.2276 21.8772 31.5351C22.2851 30.8427 22.5002 30.0537 22.5 29.25V11.25C22.5 10.0565 22.0259 8.91193 21.182 8.06802C20.3381 7.22411 19.1935 6.75 18 6.75H15.75V1.125C15.75 0.826631 15.6315 0.540483 15.4205 0.329505C15.2095 0.118526 14.9234 0 14.625 0L7.875 0ZM13.5 6.75H9V2.25H13.5V6.75ZM20.25 29.25C20.25 29.8467 20.0129 30.419 19.591 30.841C19.169 31.2629 18.5967 31.5 18 31.5H4.5C3.90326 31.5 3.33097 31.2629 2.90901 30.841C2.48705 30.419 2.25 29.8467 2.25 29.25V11.25C2.25 10.6533 2.48705 10.081 2.90901 9.65901C3.33097 9.23705 3.90326 9 4.5 9H18C18.5967 9 19.169 9.23705 19.591 9.65901C20.0129 10.081 20.25 10.6533 20.25 11.25V29.25Z"
+        fill="currentColor"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-user" viewBox="0 0 24 24" fill="none">
+        <g>
+        <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M12 3C10.6739 3 9.40215 3.52678 8.46447 4.46447C7.52678 5.40215 7 6.67392 7 8C7 9.32608 7.52678 10.5979 8.46447 11.5355C8.53043 11.6015 8.59804 11.6654 8.66721 11.7273C7.81069 12.1198 7.02217 12.6641 6.34314 13.3431C4.84285 14.8434 4 16.8783 4 19V20C4 20.5523 4.44771 21 5 21C5.55228 21 6 20.5523 6 20V19C6 17.4087 6.63214 15.8826 7.75736 14.7574C8.88258 13.6321 10.4087 13 12 13C13.5913 13 15.1174 13.6321 16.2426 14.7574C17.3679 15.8826 18 17.4087 18 19V20C18 20.5523 18.4477 21 19 21C19.5523 21 20 20.5523 20 20V19C20 16.8783 19.1571 14.8434 17.6569 13.3431C16.9778 12.6641 16.1893 12.1198 15.3328 11.7273C15.402 11.6654 15.4696 11.6015 15.5355 11.5355C16.4732 10.5979 17 9.32608 17 8C17 6.67392 16.4732 5.40215 15.5355 4.46447C14.5979 3.52678 13.3261 3 12 3ZM9.87868 5.87868C10.4413 5.31607 11.2043 5 12 5C12.7956 5 13.5587 5.31607 14.1213 5.87868C14.6839 6.44129 15 7.20435 15 8C15 8.79565 14.6839 9.55871 14.1213 10.1213C13.5587 10.6839 12.7956 11 12 11C11.2043 11 10.4413 10.6839 9.87868 10.1213C9.31607 9.55871 9 8.79565 9 8C9 7.20435 9.31607 6.44129 9.87868 5.87868Z"
+        fill="currentColor"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-chevron-down" viewBox="0 0 16 16" fill="none">
+        <g>
+        <path
+        d="M4 6L8 10L12 6"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-chevron-left" viewBox="0 0 17 17" fill="none">
+        <g>
+        <path
+        d="M10.625 12.75L6.375 8.5L10.625 4.25"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-chevron-right" viewBox="0 0 17 17" fill="none">
+        <g>
+        <path
+        d="M6.375 12.75L10.625 8.5L6.375 4.25"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-check" viewBox="0 0 16 16" fill="none">
+        <path
+        d="M3.5 8.5L6.5 11.5L12.5 4.5"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        />
+        </symbol>
+        <symbol id="seg-i-cross" viewBox="0 0 16 16" fill="none">
+        <g>
+        <path
+        d="M12 4L4 12M4 4L12 12"
+        stroke="currentColor"
+        stroke-width="1.33333"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-search" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path
+        d="M15.7501 15.7501L12.4951 12.4951M14.25 8.25C14.25 11.5637 11.5637 14.25 8.25 14.25C4.93629 14.25 2.25 11.5637 2.25 8.25C2.25 4.93629 4.93629 2.25 8.25 2.25C11.5637 2.25 14.25 4.93629 14.25 8.25Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-filter" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path
+        d="M15 4.2C15 3.78 15 3.57 14.9175 3.4095C14.8458 3.2685 14.7313 3.15378 14.5905 3.08175C14.43 3 14.22 3 13.8 3H4.2C3.78 3 3.57 3 3.4095 3.08175C3.26838 3.15365 3.15365 3.26838 3.08175 3.4095C3 3.57 3 3.78 3 4.2V4.75275C3 4.9365 3 5.028 3.021 5.11425C3.03937 5.19103 3.06974 5.26444 3.111 5.33175C3.15675 5.40675 3.222 5.472 3.351 5.60175L7.14825 9.39825C7.278 9.528 7.34325 9.59325 7.389 9.66825C7.4305 9.73625 7.4605 9.80875 7.479 9.88575C7.5 9.97125 7.5 10.062 7.5 10.2412V13.8082C7.5 14.451 7.5 14.7727 7.635 14.9662C7.69357 15.0499 7.76862 15.1208 7.85554 15.1744C7.94247 15.2281 8.03944 15.2634 8.1405 15.2783C8.37375 15.3128 8.66175 15.1695 9.23625 14.8815L9.83625 14.5815C10.0777 14.4615 10.1977 14.4015 10.2855 14.3115C10.3633 14.232 10.4225 14.1362 10.4587 14.031C10.5 13.9125 10.5 13.7775 10.5 13.5082V10.2473C10.5 10.0635 10.5 9.972 10.521 9.88575C10.5394 9.80896 10.5697 9.73556 10.611 9.66825C10.656 9.59325 10.7213 9.52875 10.8488 9.40125L10.8517 9.39825L14.649 5.60175C14.778 5.472 14.8425 5.40675 14.889 5.33175C14.9305 5.26375 14.9605 5.19125 14.979 5.11425C15 5.0295 15 4.938 15 4.75875V4.2Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-download" viewBox="0 0 18 16" fill="none">
+        <g>
+        <path
+        d="M1 11V15H17V11"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        />
+        <path
+        d="M9 1V9"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        />
+        <path
+        d="M5 5L9 9L13 5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-calendar" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path
+        d="M12.3611 1.5V4.5M2.25 7.5H16.25M6.13889 1.5V4.5M16.25 8.50725V4.5C16.25 4.10218 16.0861 3.72064 15.7944 3.43934C15.5027 3.15804 15.107 3 14.6944 3H3.80556C3.393 3 2.99733 3.15804 2.70561 3.43934C2.41389 3.72064 2.25 4.10218 2.25 4.5V15C2.25 15.3978 2.41389 15.7794 2.70561 16.0607C2.99733 16.342 3.393 16.5 3.80556 16.5H10.8056H14.25C15.3546 16.5 16.25 15.6046 16.25 14.5V8.50725Z"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-calendar-salida" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path
+        d="M16.5006 13.5004L13.5005 16.5006L10.5003 13.5004M13.5005 16.5006V10.5001M12.0004 1.4994V4.49964M15.7506 8.51546V4.49964C15.7506 4.10178 15.5925 3.72022 15.3112 3.43889C15.0299 3.15757 14.6483 2.99952 14.2505 2.99952H3.75006C3.35222 2.99952 2.97067 3.15757 2.68936 3.43889C2.40804 3.72022 2.25 4.10178 2.25 4.49964V15.0005C2.25 15.3983 2.40804 15.7799 2.68936 16.0612C2.97067 16.3426 3.35222 16.5006 3.75006 16.5006H9.25754M2.25 7.49988H15.7506M6.00016 1.4994V4.49964"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+        <symbol id="seg-i-calendar-regreso" viewBox="0 0 18 18" fill="none">
+        <g>
+        <path
+        d="M16.5006 13.5004L13.5005 10.5001L10.5003 13.5004M13.5005 10.5001V16.5006M12.0004 1.4994V4.49964M15.7506 8.50721V4.49964C15.7506 4.10178 15.5925 3.72022 15.3112 3.43889C15.0299 3.15757 14.6483 2.99952 14.2505 2.99952H3.75006C3.35222 2.99952 2.97067 3.15757 2.68936 3.43889C2.40804 3.72022 2.25 4.10178 2.25 4.49964V15.0005C2.25 15.3983 2.40804 15.7799 2.68936 16.0612C2.97067 16.3426 3.35222 16.5006 3.75006 16.5006H10.5003M2.25 7.49988H15.7506M6.00016 1.4994V4.49964"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        />
+        </g>
+        </symbol>
+      </svg>
+
+      <!-- ============ FILTROS ============ -->
+      <section class="l-section" aria-labelledby="seg-t-filtros">
+        <h2 class="u-visually-hidden" id="seg-t-filtros">Filtros del panel</h2>
+
+        <form class="bi-filtros">
+          <div class="bi-filtros__campos">
+            <div class="bi-filtro">
+              <span class="bi-filtro__icon">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-calendar-salida" />
+                </svg>
+              </span>
+              <span class="bi-filtro__content">
+                <label class="bi-filtro__label" for="seg-f-desde">Desde</label>
+                <input
+                  class="bi-filtro__control"
+                  id="seg-f-desde"
+                  name="desde"
+                  type="date"
+                  value="{{filtros.desde}}"
+                />
+              </span>
+            </div>
+
+            <div class="bi-filtro">
+              <span class="bi-filtro__icon">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-calendar-regreso" />
+                </svg>
+              </span>
+              <span class="bi-filtro__content">
+                <label class="bi-filtro__label" for="seg-f-hasta">Hasta</label>
+                <input
+                  class="bi-filtro__control"
+                  id="seg-f-hasta"
+                  name="hasta"
+                  type="date"
+                  value="{{filtros.hasta}}"
+                />
+              </span>
+            </div>
+
+            <div class="bi-filtro bi-filtro--select">
+              <span class="bi-filtro__icon">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-filter" />
+                </svg>
+              </span>
+              <span class="bi-filtro__content">
+                <label class="bi-filtro__label" for="seg-f-centro"
+                  >Centro de costo</label
+                >
+                <select class="bi-filtro__control" id="seg-f-centro" name="centro">
+                  <option value="">Todos</option>
+                  <!-- REPEAT: una opción por centro de costo -->
+                  <option value="{{centro.id}}">{{centro.nombre}}</option>
+                  <!-- /REPEAT -->
+                </select>
+              </span>
+              <svg class="bi-filtro__chevron" aria-hidden="true">
+                <use href="#seg-i-chevron-down" />
+              </svg>
+            </div>
+
+            <div class="bi-filtro bi-filtro--select">
+              <span class="bi-filtro__icon">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-user" />
+                </svg>
+              </span>
+              <span class="bi-filtro__content">
+                <label class="bi-filtro__label" for="seg-f-gerente"
+                  >Gerente de servicio</label
+                >
+                <select class="bi-filtro__control" id="seg-f-gerente" name="gerente">
+                  <option value="">Todos</option>
+                  <!-- REPEAT: una opción por gerente de servicio -->
+                  <option value="{{gerente.id}}">{{gerente.nombre}}</option>
+                  <!-- /REPEAT -->
+                </select>
+              </span>
+              <svg class="bi-filtro__chevron" aria-hidden="true">
+                <use href="#seg-i-chevron-down" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="bi-acciones">
+            <button class="bi-btn bi-btn--primario" type="submit">
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-search" />
+              </svg>
+              Consultar
+            </button>
+            <button class="bi-btn" type="reset">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ INDICADORES ============ -->
+      <section class="l-section" aria-labelledby="seg-t-kpis">
+        <h2 class="l-section__title" id="seg-t-kpis">Saldo de la empresa</h2>
+
+        <div class="bi-kpis">
+          <article class="bi-kpi bi-kpi--neutro">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon c-icon--maleta" aria-hidden="true">
+                  <use href="#seg-i-maleta" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Saldo total</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.saldoTotal}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
+
+          <article class="bi-kpi bi-kpi--anterior">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-cross" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Periodos anteriores</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.periodosAnteriores}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
+
+          <article class="bi-kpi bi-kpi--vigente">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-calendar" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Pendientes de utilizar</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.pendientes}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
+
+          <article class="bi-kpi bi-kpi--transito">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-check" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Programadas</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.programadas}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ TRAMOS DE SALDO ============
+         Cada tarjeta abre el modal del final, ya filtrado por ese tramo.
+         Los cortes (+31, 16-30, 0-15) están escritos en js/seguimiento.js. -->
+      <section class="l-section" aria-labelledby="seg-t-tramos">
+        <h2 class="l-section__title" id="seg-t-tramos">
+          Colaboradores por tramo de saldo
+        </h2>
+
+        <div class="bi-tramos">
+          <button
+            class="bi-tramo bi-tramo--alto"
+            type="button"
+            data-tramo="alto"
+            data-abre="#seg-modal-tramo"
+          >
+            <span class="bi-tramo__cuerpo">
+              <span class="bi-tramo__rango">+31 días de saldo</span>
+              <span class="bi-tramo__label"
+                ><span class="bi-tramo__n">{{tramo.alto}}</span> Colaboradores</span
+              >
+            </span>
+            <span class="bi-tramo__pie">
+              Ver el detalle
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-chevron-right" />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="bi-tramo bi-tramo--medio"
+            type="button"
+            data-tramo="medio"
+            data-abre="#seg-modal-tramo"
+          >
+            <span class="bi-tramo__cuerpo">
+              <span class="bi-tramo__rango">16 a 30 días de saldo</span>
+              <span class="bi-tramo__label"
+                ><span class="bi-tramo__n">{{tramo.medio}}</span> Colaboradores</span
+              >
+            </span>
+            <span class="bi-tramo__pie">
+              Ver el detalle
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-chevron-right" />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="bi-tramo bi-tramo--bajo"
+            type="button"
+            data-tramo="bajo"
+            data-abre="#seg-modal-tramo"
+          >
+            <span class="bi-tramo__cuerpo">
+              <span class="bi-tramo__rango">0 a 15 días de saldo</span>
+              <span class="bi-tramo__label"
+                ><span class="bi-tramo__n">{{tramo.bajo}}</span> Colaboradores</span
+              >
+            </span>
+            <span class="bi-tramo__pie">
+              Ver el detalle
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-chevron-right" />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="bi-tramo bi-tramo--hoy"
+            type="button"
+            data-tramo="hoy"
+            data-abre="#seg-modal-tramo"
+          >
+            <span class="bi-tramo__cuerpo">
+              <span class="bi-tramo__rango">En vacaciones hoy</span>
+              <span class="bi-tramo__label"
+                ><span class="bi-tramo__n">{{tramo.hoy}}</span> Colaboradores</span
+              >
+            </span>
+            <span class="bi-tramo__pie">
+              Ver el detalle
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-chevron-right" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ============ GRÁFICOS · FILA 1 ============
+         Primero los dos que se miran a diario. Los dibuja Highcharts desde
+         js/seguimiento-datos.js; acá solo va la caja. -->
+      <div class="bi-fila bi-fila--2">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">
+                10 trabajadores con más vacaciones pendientes
+              </h2>
+              <p class="bi-card__sub">Días de saldo acumulado</p>
+            </div>
+          </header>
+          <div class="bi-card__body">
+            <div class="bi-plot bi-plot--alto" id="seg-g-top10"></div>
+          </div>
+        </section>
+
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">Evolución semanal de vacaciones</h2>
+              <p class="bi-card__sub">Según fecha de ingreso de la solicitud</p>
+            </div>
+          </header>
+          <div class="bi-card__body">
+            <div class="bi-plot bi-plot--alto" id="seg-g-semanal"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============ -->
+      <div class="bi-fila">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">
+                Colaboradores con saldo de periodos anteriores
+              </h2>
+              <p class="bi-card__sub">Evolución semanal</p>
+            </div>
+          </header>
+          <div class="bi-card__body">
+            <div class="bi-plot" id="seg-g-anteriores"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ GRÁFICO · GERENTES ============ -->
+      <div class="bi-fila">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">
+                Saldo acumulado por gerente de servicio
+              </h2>
+              <p class="bi-card__sub">
+                Días totales disponibles por equipo · últimas 4 semanas
+              </p>
+            </div>
+          </header>
+          <div class="bi-card__body">
+            <div class="bi-plot bi-plot--alto" id="seg-g-gerentes"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ TABLA · GERENCIAS ============
+         Once filas: van escritas acá, sin paginar ni buscar. Las dos columnas
+         de año son las únicas que se abren; lo anterior a {{anio.vence}} no se
+         muestra pero SÍ sigue contando en Total. Por eso las columnas de año
+         no suman el total: es a propósito. -->
+      <div class="bi-fila">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">
+                Saldo acumulado por gerente de servicio
+              </h2>
+            </div>
+            <button class="bi-btn bi-btn--compacto" type="button">
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-download" /></svg
+              >Excel
+            </button>
+          </header>
+          <div class="bi-card__body bi-card__body--plano">
+            <div class="bi-tabla-wrap">
+              <table class="bi-tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Gerente de servicio</th>
+                    <th scope="col">Colaboradores</th>
+                    <th scope="col">{{anio.vigente}}</th>
+                    <th scope="col">{{anio.vence}}</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- La fila de totales va primera y con su propia clase -->
+                  <tr class="bi-tabla__fila-total">
+                    <td>Total</td>
+                    <td class="bi-tabla__num">{{total.colaboradores}}</td>
+                    <td class="bi-tabla__num">
+                      <span class="bi-celda bi-celda--actual">{{total.vigente}}</span>
+                    </td>
+                    <td class="bi-tabla__num">
+                      <span class="bi-celda bi-celda--vence">{{total.vence}}</span>
+                    </td>
+                    <td class="bi-tabla__num">
+                      <span class="bi-celda bi-celda--total">{{total.dias}}</span>
+                    </td>
+                  </tr>
+
+                  <!-- REPEAT: una fila por gerente de servicio, de mayor a
+                       menor saldo total.
+                       · fila.rut va debajo del nombre, en gris y más chico.
+                       · Si el maestro no trae el nombre, en fila.nombre va el
+                         RUT y en fila.rut el texto "sin nombre en el maestro".
+                       · Las celdas en cero llevan bi-celda--cero y un guion
+                         (—) en vez del número. -->
+                  <tr>
+                    <td>
+                      {{fila.nombre}}<span class="bi-sub">{{fila.rut}}</span>
+                    </td>
+                    <td class="bi-tabla__num">{{fila.colaboradores}}</td>
+                    <td class="bi-tabla__num">
+                      <!-- estadoVigente: actual | cero -->
+                      <span class="bi-celda bi-celda--{{fila.estadoVigente}}"
+                        >{{fila.vigente}}</span
+                      >
+                    </td>
+                    <td class="bi-tabla__num">
+                      <!-- estadoVence: vence | cero -->
+                      <span class="bi-celda bi-celda--{{fila.estadoVence}}"
+                        >{{fila.vence}}</span
+                      >
+                    </td>
+                    <td class="bi-tabla__num">
+                      <span class="bi-celda bi-celda--total">{{fila.total}}</span>
+                    </td>
+                  </tr>
+                  <!-- /REPEAT -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="bi-pie">
+            <span
+              >{{pie.gerentes}} gerentes de servicio · {{pie.colaboradores}}
+              colaboradores</span
+            >
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ TABLA · PERSONAS ============
+         Esta no lleva REPEAT: son cientos de filas y se pintan desde
+         js/seguimiento-datos.js, de 10 en 10, con buscador en el navegador.
+         Si prefieren paginar contra el servidor, el REPEAT de la tabla de
+         arriba sirve de molde. -->
+      <div class="bi-fila">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">Saldo histórico por persona</h2>
+            </div>
+            <button class="bi-btn bi-btn--compacto" type="button">
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-download" /></svg
+              >Excel
+            </button>
+          </header>
+
+          <!-- Buscar filtra sobre nombre, RUT, gerente y centro de costo a la vez -->
+          <div class="bi-barra bi-barra--tabla">
+            <label class="bi-barra__campo">
+              <span class="bi-barra__label">Mostrar</span>
+              <select
+                class="bi-barra__select"
+                data-personas-tam
+                aria-label="Colaboradores por página"
+              >
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+              <span class="bi-barra__label">registros</span>
+            </label>
+
+            <label class="bi-barra__campo bi-barra__campo--buscar">
+              <span class="bi-barra__label">Buscar</span>
+              <input
+                class="bi-barra__input"
+                type="search"
+                data-personas-buscar
+                placeholder="Nombre, RUT, gerente o centro de costo"
+              />
+            </label>
+          </div>
+
+          <div class="bi-card__body bi-card__body--plano" data-personas-caja>
+            <div class="bi-tabla-wrap">
+              <table class="bi-tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Colaborador</th>
+                    <th scope="col" style="text-align: left">
+                      Gerente de servicio
+                    </th>
+                    <th scope="col" style="text-align: left">Centro de costo</th>
+                    <th scope="col">{{anio.vigente}}</th>
+                    <th scope="col">{{anio.vence}}</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody data-personas-filas>
+                  <!-- Lo llena js/seguimiento.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cuando el buscador no encuentra a nadie -->
+          <div class="c-empty c-empty--compact" data-personas-vacio hidden>
+            <span class="c-empty__bubble">
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-search" />
+              </svg>
+            </span>
+            <p class="c-empty__title">Ningún colaborador coincide</p>
+            <p class="c-empty__text">
+              Prueba con otro nombre, RUT, gerente o centro de costo.
+            </p>
+          </div>
+
+          <nav class="bi-pie" aria-label="Paginación de colaboradores">
+            <span data-personas-nota></span>
+            <span class="c-pagination__nav">
+              <button
+                class="c-iconbtn c-iconbtn--sm"
+                type="button"
+                data-personas-pag="-1"
+                aria-label="Página anterior"
+              >
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-chevron-left" />
+                </svg>
+              </button>
+              <button
+                class="c-iconbtn c-iconbtn--sm"
+                type="button"
+                data-personas-pag="1"
+                aria-label="Página siguiente"
+              >
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-chevron-right" />
+                </svg>
+              </button>
+            </span>
+          </nav>
+        </section>
+      </div>
+
+      <!-- ============ DETALLE DE UN TRAMO ============
+         Lo abre cualquiera de las cuatro tarjetas de tramo. Va DENTRO de .seg
+         a propósito: aunque el <dialog> se dibuja por encima de todo, sigue
+         heredando los estilos de donde está escrito. Si se saca de acá, pierde
+         el CSS. El cuerpo lo arma js/seguimiento.js con las mismas personas
+         de la tabla de arriba. -->
+      <dialog
+        class="c-modal bi-modal"
+        id="seg-modal-tramo"
+        aria-labelledby="seg-modal-tramo-titulo"
+      >
+        <header class="c-modal__header">
+          <div>
+            <h2 class="c-modal__title" id="seg-modal-tramo-titulo">
+              Detalle de colaboradores
+            </h2>
+            <p class="bi-card__sub" data-modal-sub></p>
+          </div>
+          <button class="c-closebtn" type="button" data-cierra aria-label="Cerrar">
+            <svg class="c-icon" aria-hidden="true"><use href="#seg-i-cross" /></svg>
+          </button>
+        </header>
+
+        <div class="c-modal__body c-modal__body--plain">
+          <div class="bi-barra">
+            <label class="bi-barra__campo">
+              <span class="bi-barra__label">Mostrar</span>
+              <select class="bi-barra__select" data-modal-tam>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+              <span class="bi-barra__label">registros</span>
+            </label>
+
+            <label class="bi-barra__campo bi-barra__campo--buscar">
+              <span class="bi-barra__label">Buscar</span>
+              <input
+                class="bi-barra__input"
+                type="search"
+                data-modal-buscar
+                placeholder="Nombre, RUT o área"
+              />
+            </label>
+          </div>
+
+          <div class="bi-tabla-wrap bi-modal__tabla" data-modal-caja>
+            <table class="bi-tabla bi-tabla--modal">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="0">
+                      RUT persona
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="1">
+                      Nombres
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="2">
+                      Apellido paterno
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="3">
+                      Apellido materno
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="4">
+                      Área
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="5">
+                      Total días disponibles
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody data-modal-filas></tbody>
+            </table>
+          </div>
+
+          <!-- Cuando el tramo no tiene a nadie, o el buscador no encuentra -->
+          <div class="c-empty c-empty--compact" data-modal-vacio hidden>
+            <span class="c-empty__bubble">
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-search" />
+              </svg>
+            </span>
+            <p class="c-empty__title" data-modal-vacio-titulo></p>
+            <p class="c-empty__text" data-modal-vacio-texto></p>
+          </div>
+
+          <nav class="c-pagination" aria-label="Paginación del detalle">
+            <p class="c-pagination__note" data-modal-nota></p>
+            <div class="c-pagination__nav">
+              <button
+                class="c-iconbtn"
+                type="button"
+                data-modal-pag="-1"
+                aria-label="Página anterior"
+              >
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-chevron-left" />
+                </svg>
+              </button>
+              <button
+                class="c-iconbtn"
+                type="button"
+                data-modal-pag="1"
+                aria-label="Página siguiente"
+              >
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-chevron-right" />
+                </svg>
+              </button>
+            </div>
+          </nav>
+        </div>
+      </dialog>
+    </div>
+    <!-- ░░░░░░░░░░░░░░░░░░░░ FIN DEL BLOQUE ░░░░░░░░░░░░░░░░░░░░ -->
+
+    <!-- Highcharts es de licencia comercial: confirmar con TI antes de salir a
+         producción. Si la intranet ya lo carga, borrar estas tres líneas. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/highcharts.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/exporting.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/modules/accessibility.min.js" defer></script>
+
+    <!-- Los dos con defer y en este orden: los datos primero. -->
+    <script src="js/seguimiento-datos.js" defer></script>
+    <script src="js/seguimiento.js" defer></script>
+  </body>
+</html>

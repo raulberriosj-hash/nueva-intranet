@@ -1,0 +1,1413 @@
+/* ==========================================================================
+   SEGUIMIENTO DE VACACIONES · HOJA ÚNICA DEL BLOQUE
+
+   Todo lo que la pantalla necesita, y nada más: salió de las cinco hojas del
+   sistema de diseño de la intranet nueva, recortado a lo que esta pantalla
+   usa de verdad.
+
+   POR QUÉ NO SE PISA CON LA INTRANET
+   Cada regla empieza por .seg, el contenedor del bloque. Dos consecuencias:
+     · Nada de acá sale del bloque. Ni el reset, ni la tipografía, ni los
+       colores tocan una sola línea del resto de la intranet.
+     · Dentro del bloque, estas reglas pesan más que las generales de la
+       intranet, así que no hay que pelear con !important.
+   Las variables también: van declaradas en .seg y no en :root.
+
+   SI HAY QUE RENOMBRAR .seg
+   Buscar y reemplazar ".seg" en este archivo, la clase del <div> en el HTML y
+   la constante RAIZ de js/seguimiento.js. No hay nada más que cambiar.
+
+   EL ORDEN IMPORTA
+     1 · Variables      colores, espacios, tipografía, sombras
+     2 · Base           lo que el bloque no puede heredar del <body>
+     3 · Sistema        componentes de la intranet que usa la pantalla
+     4 · Pantalla       lo propio del panel: filtros, tiles, tablas, modal
+
+   Ningún valor está escrito dos veces: todo sale de las variables del punto 1.
+   ========================================================================== */
+
+/* ==========================================================================
+   1 · VARIABLES
+   ========================================================================== */
+
+.seg {
+  /* ======================================================================
+  1. PRIMITIVAS · COLOR            INELCOM/Colors
+  ====================================================================== */
+  /* --- Corporativo --------------------------------------------------- */
+  --c-corporate-50: #ebffff;
+  --c-corporate-100: #cefdff;
+  --c-corporate-200: #a2f9ff;
+  --c-corporate-300: #63f1fd;
+  --c-corporate-400: #1ce0f4;
+  --c-corporate-500: #00bfd6;
+  --c-corporate-600: #039bb7;
+  --c-corporate-700: #0a7c94;
+  --c-corporate-800: #126378;
+  --c-corporate-900: #145265;
+  --c-corporate-950: #063646;
+  /* --- Support (morado) ---------------------------------------------- */
+  --c-support-50: #ecefff;
+  --c-support-100: #dde2ff;
+  --c-support-200: #c2c9ff;
+  --c-support-300: #9ca5ff;
+  --c-support-400: #7577ff;
+  --c-support-500: #6c63ff;
+  --c-support-600: #5036f5;
+  --c-support-700: #452ad8;
+  --c-support-800: #3825ae;
+  --c-support-900: #312689;
+  --c-support-950: #1e1650;
+  /* --- Blue support ---------------------------------------------------
+  Ojo: el sistema no publica el 800 de esta familia. */
+  --c-blue-support-50: #f4fcff;
+  --c-blue-support-100: #e9f8fe;
+  --c-blue-support-200: #c9eefd;
+  --c-blue-support-300: #9be0fc;
+  --c-blue-support-400: #4eafde;
+  --c-blue-support-500: #357eb2;
+  --c-blue-support-600: #245a93;
+  --c-blue-support-700: #194573;
+  --c-blue-support-900: #061b37;
+  /* --- Neutros -------------------------------------------------------- */
+  --c-neutral-0: #ffffff;
+  --c-neutral-50: #f8fbfc;
+  --c-neutral-100: #f1f7f9;
+  --c-neutral-200: #e3ebef;
+  --c-neutral-300: #ccdae0;
+  --c-neutral-400: #96acb6;
+  --c-neutral-500: #6b8490;
+  --c-neutral-600: #495d67;
+  --c-neutral-700: #354953;
+  --c-neutral-800: #1f303a;
+  --c-neutral-900: #101e29;
+  --c-neutral-950: #030c16;
+  /* --- Semáforo ------------------------------------------------------- */
+  --c-success-50: #f0fdf4;
+  --c-success-100: #dcfce7;
+  --c-success-200: #bbf7d0;
+  --c-success-300: #86efac;
+  --c-success-400: #4ade80;
+  --c-success-500: #22c55e;
+  --c-success-600: #16a34a;
+  --c-success-700: #15803d;
+  --c-success-800: #166534;
+  --c-success-900: #14532d;
+  --c-success-950: #052e16;
+  --c-warning-50: #fef9ec;
+  --c-warning-100: #fdedc8;
+  --c-warning-200: #fada8d;
+  --c-warning-300: #f7c052;
+  --c-warning-400: #f5a623;
+  --c-warning-500: #ef8711;
+  --c-warning-600: #d3630c;
+  --c-warning-700: #af440e;
+  --c-warning-800: #8f3411;
+  --c-warning-900: #752c12;
+  --c-warning-950: #431505;
+  --c-error-50: #fef2f2;
+  --c-error-100: #fee2e2;
+  --c-error-200: #ffc9c9;
+  --c-error-300: #fda4a4;
+  --c-error-400: #fa6f6f;
+  --c-error-500: #f24b4b;
+  --c-error-600: #de2424;
+  --c-error-700: #bb1a1a;
+  --c-error-800: #9b1919;
+  --c-error-900: #801c1c;
+  --c-error-950: #460909;
+  /* ======================================================================
+  2. PRIMITIVAS · ESPACIO          INELCOM/Spacing
+  ====================================================================== */
+  --space-half: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  /* ======================================================================
+  3. PRIMITIVAS · RADIO            INELCOM/Radius
+  ====================================================================== */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+  /* ======================================================================
+  4. PRIMITIVAS · TIPOGRAFÍA       INELCOM/Typography
+  La familia no es una variable de Figma: el sistema la da por sentada.
+  Es lo único de esta sección que no sale del archivo.
+  ====================================================================== */
+  --font-sans:
+  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+  Arial, sans-serif;
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-base: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 30px;
+  --fs-4xl: 36px;
+  --fs-5xl: 48px;
+  --fs-6xl: 60px;
+  --fs-7xl: 72px;
+  --fs-8xl: 96px;
+  --fs-9xl: 128px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-none: 1;
+  --lh-tight: 1.25;
+  --lh-snug: 1.375;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.625;
+  --lh-loose: 2;
+  --ls-tighter: -0.05em;
+  --ls-tight: -0.025em;
+  --ls-normal: 0;
+  --ls-wide: 0.025em;
+  --ls-wider: 0.05em;
+  --ls-widest: 0.1em;
+  /* ======================================================================
+  5. SEMÁNTICAS · para qué sirve cada color en pantalla
+  ====================================================================== */
+  /* --- Superficies ---------------------------------------------------- */
+  --color-bg-page: var(--c-blue-support-100);
+  --color-surface: var(--c-neutral-0);
+  --color-surface-subtle: var(--c-neutral-200);
+  --color-surface-sunken: var(--c-neutral-50); /* tarjeta de detalle    */
+  --color-surface-muted: var(--c-neutral-100); /* cuerpo de los modales */
+  /* --- Bordes y separadores -------------------------------------------- */
+  --color-border: var(--c-neutral-400);
+  --color-border-subtle: var(--c-neutral-300);
+  --color-divider: var(--c-neutral-200);
+  /* --- Texto ------------------------------------------------------------ */
+  --color-text-primary: var(--c-neutral-800);
+  --color-text-heading: var(--c-neutral-700);
+  --color-text-strong: var(--c-neutral-900);
+  --color-text-secondary: var(--c-neutral-600);
+  --color-text-inverse: var(--c-neutral-0);
+  --color-text-link: var(--c-corporate-700);
+  --color-text-danger: var(--c-error-600);
+  /* --- Iconos ----------------------------------------------------------- */
+  --color-icon: var(--c-neutral-700);
+  --color-icon-muted: var(--c-neutral-500);
+  --color-icon-inverse: var(--c-neutral-0);
+  /* --- Interacción ------------------------------------------------------ */
+  --color-state-hover: var(--c-blue-support-50);
+  --color-state-pressed: var(--c-blue-support-200);
+  --color-state-focus: var(--c-blue-support-200);
+  --color-state-selected: var(--c-blue-support-200);
+  /* El sidebar va sobre blanco, así que arranca un escalón más arriba */
+  --color-nav-hover: var(--c-blue-support-100);
+  --color-nav-pressed: var(--c-blue-support-300);
+  --color-nav-selected: var(--c-blue-support-200);
+  --color-focus-ring: var(--c-corporate-700);
+  /* --- Acción primaria -------------------------------------------------- */
+  --color-action-bg: var(--c-corporate-600);
+  --color-action-bg-hover: var(--c-corporate-700);
+  --color-action-bg-pressed: var(--c-corporate-800);
+  --color-action-text: var(--c-neutral-0);
+  --color-action-bg-disabled: var(--c-neutral-200);
+  --color-action-text-disabled: var(--c-neutral-500);
+  /* --- Modales ---------------------------------------------------------- */
+  --color-overlay: rgb(16 30 41 / 0.55);
+  /* --- Estados ---------------------------------------------------------- */
+  --color-info-bg: var(--c-blue-support-200);
+  --color-info-border: var(--c-corporate-600);
+  --color-info-text: var(--c-corporate-950);
+  --color-info-accent: var(--c-corporate-700);
+  --color-success-bg: var(--c-success-200);
+  --color-success-border: var(--c-success-600);
+  --color-success-text: var(--c-success-900);
+  --color-warning-bg: var(--c-warning-200);
+  --color-warning-bg-soft: var(--c-warning-100);
+  --color-warning-border: var(--c-warning-500);
+  --color-warning-text: var(--c-warning-900);
+  --color-danger-bg: var(--c-error-200);
+  --color-danger-border: var(--c-error-500);
+  --color-danger-text: var(--c-error-900);
+  --color-danger-solid: var(--c-error-500);
+  /* --- Badge de días ---------------------------------------------------- */
+  --color-badge-empty: var(--c-neutral-400);
+  --color-badge-ok: var(--c-success-600);
+  --color-badge-over: var(--color-danger-solid);
+  /* --- Tabla ------------------------------------------------------------ */
+  --color-table-head-bg: var(--c-neutral-100);
+  --color-table-border: var(--c-neutral-300);
+  --color-table-row-hover: var(--color-state-hover);
+  --color-table-row-pressed: var(--color-state-pressed);
+  --color-tag-ok-bg: var(--c-success-100);
+  --color-tag-ok-text: var(--c-success-700);
+  --color-tag-wait-bg: var(--c-warning-100);
+  --color-tag-wait-text: var(--c-warning-700);
+  --color-tag-no-bg: var(--c-error-100);
+  --color-tag-no-text: var(--c-error-700);
+  /* Las filas rechazadas van atenuadas */
+  --opacity-row-muted: 0.6;
+  /* --- Icono de la tarjeta de historial --------------------------------- */
+  --color-status-icon-aprobada: var(--c-success-700);
+  --color-status-icon-rechazada: var(--c-neutral-900);
+  --color-status-icon-pendiente: var(--color-icon);
+  /* ======================================================================
+  6. FUERA DEL DESIGN SYSTEM
+  Medidas de implementación que Figma no publica como variables. Si
+  alguna debiera ser del sistema, el sitio donde agregarla es el archivo
+  de Figma, no este bloque.
+  ====================================================================== */
+  /* --- Medidas de layout ------------------------------------------------ */
+  --size-sidebar-collapsed: 92px;
+  --size-sidebar-expanded: 256px;
+  --size-bottomnav: 64px; /* barra inferior en móvil */
+  --size-content-max: 1440px;
+  --size-modal-sm: 500px; /* detalle de solicitud  */
+  --size-modal-md: 800px; /* confirmación          */
+  --size-modal-lg: 720px; /* drawer de informe     */
+  --size-modal-xl: 1040px; /* detalle de un tramo  */
+  /* --- Iconos ----------------------------------------------------------- */
+  --icon-xs: 13px;
+  --icon-sm: 16px;
+  --icon-md: 18px;
+  --icon-lg: 24px;
+  --icon-xl: 36px;
+  /* Área mínima de toque en teléfono */
+  --tap-target: 44px;
+  /* --- Sombras ---------------------------------------------------------- */
+  --shadow-button: 0 2px 2px -1px rgb(0 0 0 / 0.25);
+  --shadow-card: 0 2px 8px 0 rgb(36 48 71 / 0.1);
+  --shadow-card-lg: 0 10px 24px -10px rgb(36 48 71 / 0.1);
+  --shadow-modal:
+  0 12px 32px 0 rgb(15 24 37 / 0.14), 0 4px 8px 0 rgb(15 24 37 / 0.06);
+  /* --- Foco ------------------------------------------------------------- */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  /* --- Movimiento ------------------------------------------------------- */
+  --transition-fast: 120ms ease-out;
+  --transition-base: 180ms ease-out;
+}
+
+/* ==========================================================================
+   2 · BASE DEL BLOQUE
+
+   Lo que una pantalla normalmente hereda del <body> —tipografía, caja,
+   márgenes— acá se lo damos a .seg: el bloque vive dentro de otra página y no
+   puede contar con el reset de esa página, ni pisarlo.
+   ========================================================================== */
+
+.seg {
+  /* El contenedor es una columna con aire entre secciones. Si la intranet ya
+     pone su propio relleno al área de contenido, dejar el padding en 0. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4) var(--space-8);
+
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+  /* El gris de fondo de la intranet. Si el contenedor ya trae el suyo, fuera. */
+  background-color: var(--color-bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 768px) {
+  .seg {
+    padding: var(--space-6) var(--space-6) var(--space-8);
+  }
+}
+
+.seg *,
+.seg *::before,
+.seg *::after {
+  box-sizing: border-box;
+}
+
+.seg h1,
+.seg h2,
+.seg h3,
+.seg h4,
+.seg p {
+  margin: 0;
+}
+
+.seg img,
+.seg svg {
+  display: block;
+  max-width: 100%;
+}
+
+.seg button,
+.seg input,
+.seg select,
+.seg textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+.seg button {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* El atributo hidden tiene que ganarle al display de los componentes */
+.seg [hidden] {
+  display: none !important;
+}
+
+/* Y el <dialog> cerrado no se dibuja: sin esto el modal del final aparece
+   escrito dentro de la página, debajo de la última tabla. */
+.seg dialog:not([open]) {
+  display: none;
+}
+
+.seg :focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg *,
+  .seg *::before,
+  .seg *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Solo para lectores de pantalla */
+.seg .u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   3 · COMPONENTES DEL SISTEMA
+   Los que usa esta pantalla: icono, botón redondo, modal, vacío, paginación.
+   ========================================================================== */
+
+.seg .l-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.seg .l-section__title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+.seg .c-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--c-neutral-700);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast);
+}
+
+.seg .c-iconbtn:hover {
+  background-color: var(--color-state-hover);
+}
+
+.seg .c-iconbtn:active {
+  background-color: var(--color-state-pressed);
+}
+
+.seg .c-iconbtn .c-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.seg .c-icon {
+  display: inline-block;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex-shrink: 0;
+  color: var(--color-icon);
+  pointer-events: none;
+}
+
+.seg .c-icon--maleta {
+  width: auto;
+  aspect-ratio: 5 / 8;
+}
+
+.seg .c-closebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  color: var(--color-border);
+  transition:
+  background-color var(--transition-fast),
+  color var(--transition-fast);
+}
+
+.seg .c-closebtn:hover {
+  background-color: var(--color-state-hover);
+  color: var(--color-text-primary);
+}
+
+.seg .c-closebtn:active {
+  background-color: var(--color-state-pressed);
+}
+
+.seg .c-closebtn .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: inherit;
+}
+
+.seg .c-modal {
+  width: calc(100% - var(--space-8));
+  max-width: var(--size-modal-md);
+  max-height: calc(100dvh - var(--space-8));
+  padding: 0;
+  overflow: auto;
+  background-color: var(--color-surface);
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  color: var(--color-text-primary);
+}
+
+.seg .c-modal::backdrop {
+  background-color: var(--color-overlay);
+}
+
+.seg .c-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.seg .c-modal__title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.seg .c-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background-color: var(--color-surface-muted);
+}
+
+.seg .c-modal__body--plain {
+  gap: var(--space-4);
+  background-color: var(--color-surface);
+}
+
+.seg .c-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.seg .c-empty__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-pill);
+  color: var(--color-icon-muted);
+}
+
+.seg .c-empty__bubble .c-icon {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  color: inherit;
+}
+
+.seg .c-empty__title {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+}
+
+.seg .c-empty__text {
+  max-width: 44ch;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.seg .c-empty--compact {
+  padding: var(--space-8) var(--space-6);
+}
+
+.seg .c-iconbtn--sm {
+  width: 28px;
+  height: 28px;
+}
+
+.seg .c-iconbtn--sm .c-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.seg .c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.seg .c-pagination__note {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-secondary);
+}
+
+.seg .c-pagination__nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ==========================================================================
+   4 · LO PROPIO DE LA PANTALLA
+   Filtros, indicadores, tramos, tarjeta de gráfico, tabla ancha y modal.
+   ========================================================================== */
+
+.seg {
+  /* --- Mapeo: rol del panel → token de la intranet -------------------- */
+  /* Estado del saldo en los GRÁFICOS y su leyenda. Reservados: no se usan
+  para nada más. Acá el semáforo sí corresponde, porque la serie habla de
+  un saldo que vence. En las tablas no: ver más abajo. */
+  --dash-vigente: var(--c-corporate-600);
+  --dash-vence: var(--c-warning-500);
+  --dash-anterior: var(--c-error-500);
+  /* Flujo: lo que se mueve, no lo que se acumula */
+  --dash-efectivo: var(--c-success-600);
+  --dash-transito: var(--c-blue-support-600);
+  /* Las tablas solo abren dos años: el que corre y el que vence el 31-12.
+  Azul el primero, rojo el segundo y morado el total. Acá el rojo sí es
+  un aviso —esos días se pierden el 31-12— y no una marca de error: es el
+  único que queda, no una columna más de un degradado. */
+  --dash-celda-actual-bg: var(--c-blue-support-200);
+  --dash-celda-actual-text: var(--c-corporate-950);
+  --dash-celda-vence-bg: var(--color-tag-no-bg);
+  --dash-celda-vence-text: var(--color-tag-no-text);
+  --dash-celda-total-bg: var(--c-support-50);
+  --dash-celda-total-text: var(--c-support-700);
+}
+
+.seg .bi-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.seg .bi-filtros__campos {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.seg .bi-filtro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.seg .bi-filtro:hover {
+  background-color: var(--color-state-hover);
+}
+
+.seg .bi-filtro:hover .bi-filtro__icon {
+  background-color: var(--c-blue-support-200);
+}
+
+.seg .bi-filtro:focus-within .bi-filtro__icon {
+  background-color: var(--c-corporate-200);
+}
+
+.seg .bi-filtro__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-md);
+  color: var(--color-icon-muted);
+  transition: background-color var(--transition-fast);
+}
+
+.seg .bi-filtro__icon .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: inherit;
+}
+
+.seg .bi-filtro__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.seg .bi-filtro__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.seg .bi-filtro__control {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  background-color: transparent;
+  border: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.seg .bi-filtro__control:focus {
+  outline: none;
+}
+
+.seg .bi-filtro:focus-within {
+  outline: var(--focus-ring-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.seg .bi-filtro--select .bi-filtro__content {
+  padding-right: var(--space-6);
+}
+
+.seg .bi-filtro--select {
+  position: relative;
+}
+
+.seg .bi-filtro__chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  margin-top: calc(var(--icon-sm) / -2);
+  color: var(--color-text-primary);
+  pointer-events: none;
+}
+
+.seg .bi-filtro--select .bi-filtro__control {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.seg .bi-acciones {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.seg .bi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  height: 44px;
+  padding: 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--color-text-heading);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  transition:
+  background-color var(--transition-fast),
+  border-color var(--transition-fast);
+}
+
+.seg .bi-btn .c-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: currentColor;
+}
+
+.seg .bi-btn:hover {
+  background-color: var(--color-state-hover);
+}
+
+.seg .bi-btn:active {
+  background-color: var(--color-state-pressed);
+}
+
+.seg .bi-btn--primario {
+  color: var(--color-action-text);
+  background-color: var(--color-action-bg);
+  border-color: var(--color-action-bg);
+}
+
+.seg .bi-btn--primario:hover {
+  background-color: var(--color-action-bg-hover);
+  border-color: var(--color-action-bg-hover);
+}
+
+.seg .bi-btn--primario:active {
+  background-color: var(--color-action-bg-pressed);
+  border-color: var(--color-action-bg-pressed);
+}
+
+.seg .bi-btn--compacto {
+  height: auto;
+  padding: var(--space-1) var(--space-2);
+}
+
+.seg .bi-kpis {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .seg .bi-kpis {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 1100px) {
+  .seg .bi-kpis {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.seg .bi-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-4) var(--space-4);
+  background-color: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-lg);
+}
+
+.seg .bi-kpi__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.seg .bi-kpi__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--tile-accent);
+  border-radius: var(--radius-pill);
+  color: var(--tile-accent);
+}
+
+.seg .bi-kpi__bubble .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: inherit;
+}
+
+.seg .bi-kpi__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.25;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+}
+
+.seg .bi-kpi__valor {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  color: var(--tile-value);
+}
+
+.seg .bi-kpi__n {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--lh-none);
+}
+
+.seg .bi-kpi__u {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+}
+
+.seg .bi-kpi--neutro {
+  --tile-bg: var(--c-neutral-100);
+  --tile-border: var(--color-border);
+  --tile-accent: var(--color-text-heading);
+  --tile-value: var(--color-text-strong);
+}
+
+.seg .bi-kpi--anterior {
+  --tile-bg: var(--color-danger-bg);
+  --tile-border: var(--color-danger-border);
+  --tile-accent: var(--c-error-700);
+  --tile-value: var(--color-danger-text);
+}
+
+.seg .bi-kpi--vigente {
+  --tile-bg: var(--color-info-bg);
+  --tile-border: var(--color-info-border);
+  --tile-accent: var(--color-info-accent);
+  --tile-value: var(--color-info-text);
+}
+
+.seg .bi-kpi--transito {
+  --tile-bg: var(--color-success-bg);
+  --tile-border: var(--color-success-border);
+  --tile-accent: var(--c-success-700);
+  --tile-value: var(--color-success-text);
+}
+
+.seg .bi-tramos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .seg .bi-tramos {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 1100px) {
+  .seg .bi-tramos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.seg .bi-tramo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  background-color: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.seg .bi-tramo:hover {
+  background-color: var(--tile-bg-hover);
+}
+
+.seg .bi-tramo:active {
+  background-color: var(--tile-bg-hover);
+  background-image: linear-gradient(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.06));
+}
+
+.seg .bi-tramo__cuerpo {
+  flex: 1;
+  padding: var(--space-4);
+}
+
+.seg .bi-tramo__rango {
+  display: block;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--tile-value);
+}
+
+.seg .bi-tramo__label {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.seg .bi-tramo__n {
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.seg .bi-tramo__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--tile-accent);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--tile-border);
+}
+
+.seg .bi-tramo__pie .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: inherit;
+}
+
+.seg .bi-tramo--alto {
+  --tile-bg: var(--c-error-100);
+  --tile-bg-hover: var(--c-error-200);
+  --tile-border: var(--color-danger-border);
+  --tile-accent: var(--c-error-700);
+  --tile-value: var(--color-danger-text);
+}
+
+.seg .bi-tramo--medio {
+  --tile-bg: var(--c-warning-100);
+  --tile-bg-hover: var(--c-warning-200);
+  --tile-border: var(--color-warning-border);
+  --tile-accent: var(--c-warning-700);
+  --tile-value: var(--color-warning-text);
+}
+
+.seg .bi-tramo--bajo {
+  --tile-bg: var(--c-success-100);
+  --tile-bg-hover: var(--c-success-200);
+  --tile-border: var(--color-success-border);
+  --tile-accent: var(--c-success-700);
+  --tile-value: var(--color-success-text);
+}
+
+.seg .bi-tramo--hoy {
+  --tile-bg: var(--c-blue-support-100);
+  --tile-bg-hover: var(--c-blue-support-200);
+  --tile-border: var(--color-info-border);
+  --tile-accent: var(--color-info-accent);
+  --tile-value: var(--color-info-text);
+}
+
+.seg .bi-fila {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1000px) {
+  .seg .bi-fila--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.seg .bi-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-lg);
+}
+
+.seg .bi-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.seg .bi-card__title {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+.seg .bi-card__sub {
+  margin-top: var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  color: var(--color-text-heading);
+}
+
+.seg .bi-card__body {
+  padding: var(--space-4) var(--space-6) var(--space-6);
+}
+
+.seg .bi-card__body--plano {
+  padding: 0;
+}
+
+.seg .bi-plot {
+  height: 300px;
+}
+
+.seg .bi-plot--alto {
+  height: 360px;
+}
+
+.seg .bi-tabla-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.seg .bi-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
+.seg .bi-tabla th,
+.seg .bi-tabla td {
+  padding: var(--space-3) var(--space-4);
+  text-align: right;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-table-border);
+}
+
+.seg .bi-tabla th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--color-text-heading);
+  background-color: var(--color-table-head-bg);
+}
+
+.seg .bi-tabla th:first-child,
+.seg .bi-tabla td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  text-align: left;
+  background-color: var(--color-surface);
+}
+
+.seg .bi-tabla th:first-child {
+  z-index: 3;
+  background-color: var(--color-table-head-bg);
+}
+
+.seg .bi-tabla tbody tr:hover td {
+  background-color: var(--color-table-row-hover);
+}
+
+.seg .bi-tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.seg .bi-tabla__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.seg .bi-tabla__fila-total td {
+  font-weight: var(--fw-bold);
+  background-color: var(--color-table-head-bg);
+}
+
+.seg .bi-sub {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+  color: var(--color-text-secondary);
+}
+
+.seg .bi-celda {
+  display: inline-block;
+  min-width: 46px;
+  padding: var(--space-1) var(--space-2);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  border-radius: var(--radius-md);
+  background-color: var(--celda-bg);
+  color: var(--celda-text);
+}
+
+.seg .bi-celda--actual {
+  --celda-bg: var(--dash-celda-actual-bg);
+  --celda-text: var(--dash-celda-actual-text);
+}
+
+.seg .bi-celda--vence {
+  --celda-bg: var(--dash-celda-vence-bg);
+  --celda-text: var(--dash-celda-vence-text);
+}
+
+.seg .bi-celda--total {
+  --celda-bg: var(--dash-celda-total-bg);
+  --celda-text: var(--dash-celda-total-text);
+}
+
+.seg .bi-celda--cero {
+  --celda-bg: transparent;
+  --celda-text: var(--color-text-secondary);
+  font-weight: var(--fw-regular);
+}
+
+.seg .bi-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-2) var(--space-6);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-divider);
+}
+
+.seg .bi-modal[open] {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--size-modal-xl);
+  overflow: hidden;
+}
+
+.seg .bi-modal .c-modal__body {
+  flex: 1;
+  min-height: 0;
+  padding-top: 0;
+  overflow: auto;
+}
+
+.seg .bi-modal .bi-barra {
+  padding-top: var(--space-6);
+}
+
+.seg .bi-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.seg .bi-barra--tabla {
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.seg .bi-barra__campo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.seg .bi-barra__campo--buscar {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.seg .bi-barra__label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--color-text-heading);
+}
+
+.seg .bi-barra__select,
+.seg .bi-barra__input {
+  height: var(--tap-target);
+  padding: 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.seg .bi-barra__input {
+  width: 100%;
+  max-width: 280px;
+  font-weight: var(--fw-regular);
+}
+
+.seg .bi-barra__input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.seg .bi-barra__select:hover,
+.seg .bi-barra__input:hover {
+  border-color: var(--color-border);
+}
+
+.seg .bi-modal__tabla {
+  overflow: visible;
+  border: 1px solid var(--color-table-border);
+  border-radius: var(--radius-lg);
+}
+
+.seg .bi-tabla--modal {
+  white-space: normal;
+}
+
+.seg .bi-tabla--modal th {
+  white-space: nowrap;
+}
+
+.seg .bi-tabla--modal th,
+.seg .bi-tabla--modal td {
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.seg .bi-tabla--modal th:last-child,
+.seg .bi-tabla--modal td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.seg .bi-tabla--modal th:first-child {
+  left: auto;
+  z-index: 1;
+}
+
+.seg .bi-tabla--modal td:first-child {
+  position: static;
+}
+
+.seg .bi-tabla--modal tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.seg .bi-orden {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+}
+
+.seg .bi-orden::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-top-color: var(--color-border);
+  translate: 0 2px;
+}
+
+.seg .bi-orden:hover {
+  color: var(--color-text-link);
+}
+
+.seg .bi-orden[data-dir="asc"]::after {
+  border-top-color: transparent;
+  border-bottom-color: var(--color-text-link);
+  translate: 0 -2px;
+}
+
+.seg .bi-orden[data-dir="desc"]::after {
+  border-top-color: var(--color-text-link);
+}
+
+.seg th:last-child .bi-orden {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 539px) {
+  .seg .bi-barra {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .seg .bi-barra__campo--buscar {
+    justify-content: flex-start;
+  }
+
+  .seg .bi-barra__input {
+    max-width: none;
+  }
+}
