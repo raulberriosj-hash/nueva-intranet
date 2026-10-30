@@ -208,10 +208,28 @@
                   <span class="c-stat__bubble">
                     <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
                   </span>
-                  <span class="c-stat__numero">{{conDiferencia}}</span>
+                  <span class="c-stat__numero" data-stat-diferencia>0</span>
                   <span class="c-stat__label">con diferencia</span>
                 </span>
               </div>
+            </div>
+
+            <div class="s-saldos__barra">
+              <div class="s-saldos__segmentos" role="group" aria-label="Filtrar por diferencia">
+                <button class="c-btn c-btn--neutro" type="button"
+                        data-filtro="todas" aria-pressed="true">Todas</button>
+                <button class="c-btn c-btn--neutro" type="button"
+                        data-filtro="con" aria-pressed="false">Con diferencia</button>
+                <button class="c-btn c-btn--neutro" type="button"
+                        data-filtro="sin" aria-pressed="false">Sin diferencia</button>
+              </div>
+
+              <label class="c-search">
+                <svg class="c-icon" aria-hidden="true"><use href="#i-search" /></svg>
+                <span class="u-visually-hidden">Buscar persona</span>
+                <input class="c-search__input" type="search" data-buscar
+                       placeholder="Nombre o RUT" />
+              </label>
             </div>
 
             <table class="c-table">
@@ -241,145 +259,25 @@
                 </tr>
               </thead>
 
-              <tbody>
-                <!-- Una fila por persona. El botón abre el drawer del informe. -->
-                <tr class="c-table__row">
-                  <td data-col="Persona">
-                    <span class="c-persona">
-                      <span class="c-avatar c-avatar--iniciales" aria-hidden="true">GP</span>
-                      <span class="c-persona__datos">
-                        <span class="c-persona__nombre">Tomás Eduardo Maldonado Paredes</span>
-                      </span>
-                    </span>
-                  </td>
-                  <td data-col="RUT">11740283</td>
-                  <td data-col="Ingreso">2007-01-01</td>
-                  <td class="s-saldos__num" data-col="Días tomados">228,08</td>
-                  <td class="s-saldos__num" data-col="Días generados">236,42</td>
-                  <td class="s-saldos__num" data-col="Saldo sistema">50,04</td>
-                  <td class="s-saldos__num s-saldos__num--fuerte" data-col="Saldo real">73,34</td>
-                  <td class="s-saldos__num" data-col="Diferencia">
-                    <span class="c-tag c-tag--rechazado">−23,30</span>
-                  </td>
-                  <td class="s-saldos__detalle" data-col="Detalle">
-                    <div class="c-acciones c-acciones--fin">
-                      <button
-                        class="c-btn c-btn--neutro"
-                        type="button"
-                        data-abre="#drawer-informe"
-                        aria-label="Ver informe de Tomás Eduardo Maldonado Paredes"
-                      >
-                        Ver
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr class="c-table__row">
-                  <td data-col="Persona">
-                    <span class="c-persona">
-                      <span class="c-avatar c-avatar--iniciales" aria-hidden="true">HG</span>
-                      <span class="c-persona__datos">
-                        <span class="c-persona__nombre">Hernán Andrés Gonzalez Contreras</span>
-                      </span>
-                    </span>
-                  </td>
-                  <td data-col="RUT">12398047</td>
-                  <td data-col="Ingreso">1986-04-27</td>
-                  <td class="s-saldos__num" data-col="Días tomados">0,00</td>
-                  <td class="s-saldos__num" data-col="Días generados">616,17</td>
-                  <td class="s-saldos__num" data-col="Saldo sistema">7,54</td>
-                  <td class="s-saldos__num s-saldos__num--fuerte" data-col="Saldo real">88,34</td>
-                  <td class="s-saldos__num" data-col="Diferencia">
-                    <span class="c-tag c-tag--rechazado">−80,80</span>
-                  </td>
-                  <td class="s-saldos__detalle" data-col="Detalle">
-                    <div class="c-acciones c-acciones--fin">
-                      <button
-                        class="c-btn c-btn--neutro"
-                        type="button"
-                        data-abre="#drawer-informe"
-                        aria-label="Ver informe de Hernán Andrés Gonzalez Contreras"
-                      >
-                        Ver
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr class="c-table__row">
-                  <td data-col="Persona">
-                    <span class="c-persona">
-                      <span class="c-avatar c-avatar--iniciales" aria-hidden="true">JG</span>
-                      <span class="c-persona__datos">
-                        <span class="c-persona__nombre">Fernanda Isabel Olivares Riquelme</span>
-                      </span>
-                    </span>
-                  </td>
-                  <td data-col="RUT">13504926</td>
-                  <td data-col="Ingreso">2009-04-13</td>
-                  <td class="s-saldos__num" data-col="Días tomados">29,00</td>
-                  <td class="s-saldos__num" data-col="Días generados">266,71</td>
-                  <td class="s-saldos__num" data-col="Saldo sistema">101,00</td>
-                  <td class="s-saldos__num s-saldos__num--fuerte" data-col="Saldo real">163,33</td>
-                  <td class="s-saldos__num" data-col="Diferencia">
-                    <span class="c-tag c-tag--rechazado">−62,33</span>
-                  </td>
-                  <td class="s-saldos__detalle" data-col="Detalle">
-                    <div class="c-acciones c-acciones--fin">
-                      <button
-                        class="c-btn c-btn--neutro"
-                        type="button"
-                        data-abre="#drawer-informe"
-                        aria-label="Ver informe de Fernanda Isabel Olivares Riquelme"
-                      >
-                        Ver
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr class="c-table__row">
-                  <td data-col="Persona">
-                    <span class="c-persona">
-                      <span class="c-avatar c-avatar--iniciales" aria-hidden="true">SN</span>
-                      <span class="c-persona__datos">
-                        <span class="c-persona__nombre">Macarena Alejandra Toledo Bravo</span>
-                      </span>
-                    </span>
-                  </td>
-                  <td data-col="RUT">14118360</td>
-                  <td data-col="Ingreso">2022-03-02</td>
-                  <td class="s-saldos__num" data-col="Días tomados">52,00</td>
-                  <td class="s-saldos__num" data-col="Días generados">70,63</td>
-                  <td class="s-saldos__num" data-col="Saldo sistema">64,63</td>
-                  <td class="s-saldos__num s-saldos__num--fuerte" data-col="Saldo real">64,63</td>
-                  <td class="s-saldos__num" data-col="Diferencia">
-                    <span class="c-tag c-tag--aprobado">0,00</span>
-                  </td>
-                  <td class="s-saldos__detalle" data-col="Detalle">
-                    <div class="c-acciones c-acciones--fin">
-                      <button
-                        class="c-btn c-btn--neutro"
-                        type="button"
-                        data-abre="#drawer-informe"
-                        aria-label="Ver informe de Macarena Alejandra Toledo Bravo"
-                      >
-                        Ver
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              <!-- Las filas las pinta js/informe-colaborador.js -->
+              <tbody data-filas></tbody>
             </table>
 
-            <nav class="c-pagination" aria-label="Paginación de saldos">
-              <p class="c-pagination__note">Mostrando {{desde}} de {{total}} personas</p>
+            <div class="c-empty c-empty--compact" data-vacio hidden>
+              <span class="c-empty__bubble">
+                <svg class="c-icon" aria-hidden="true"><use href="#i-search" /></svg>
+              </span>
+              <p class="c-empty__title">Nadie coincide con la búsqueda</p>
+              <p class="c-empty__text">Prueba con otro nombre, otro RUT u otro filtro.</p>
+            </div>
+
+            <nav class="c-pagination" data-paginacion aria-label="Paginación de saldos" hidden>
+              <p class="c-pagination__note" data-paginacion-nota></p>
               <div class="c-pagination__nav">
-                <button class="c-iconbtn" type="button" aria-label="Página anterior" disabled>
+                <button class="c-iconbtn" type="button" data-pag="-1" aria-label="Página anterior">
                   <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-left" /></svg>
                 </button>
-                <button class="c-iconbtn" type="button" aria-label="Página siguiente">
+                <button class="c-iconbtn" type="button" data-pag="1" aria-label="Página siguiente">
                   <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-right" /></svg>
                 </button>
               </div>
@@ -397,23 +295,20 @@
       aria-labelledby="drawer-informe-titulo"
     >
       <!-- Cabecera fija: identifica a quién estás viendo y permite moverse por
-           la lista sin cerrar. {{posicion}} / {{totalFilas}} salen de la tabla. -->
+           la lista sin cerrar. La posición y el nombre los pone el JS al abrirlo. -->
       <div class="c-modal__header">
-        <span class="c-persona">
-          <span class="c-avatar c-avatar--md c-avatar--iniciales" aria-hidden="true">GP</span>
-          <span class="c-persona__datos">
-            <span class="c-persona__nombre" id="drawer-informe-titulo">
-              Tomás Eduardo Maldonado Paredes
-            </span>
-            <span class="c-persona__cargo">RUT 15.456.569</span>
+        <span class="c-persona__datos">
+          <span class="c-persona__nombre" id="drawer-informe-titulo" data-drawer-nombre>
+            Tomás Eduardo Maldonado Paredes
           </span>
+          <span class="c-persona__cargo" data-drawer-rut>RUT 15.456.569</span>
         </span>
 
         <div class="c-drawer__nav">
           <button class="c-iconbtn c-iconbtn--sm" type="button" aria-label="Colaborador anterior">
             <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-left" /></svg>
           </button>
-          <span class="c-drawer__pos">1 de 639</span>
+          <span class="c-drawer__pos" data-drawer-pos>1 de 64</span>
           <button class="c-iconbtn c-iconbtn--sm" type="button" aria-label="Colaborador siguiente">
             <svg class="c-icon" aria-hidden="true"><use href="#i-chevron-right" /></svg>
           </button>
@@ -637,5 +532,6 @@
 
     <script src="js/sidebar.js" defer></script>
     <script src="js/componentes.js"></script>
+    <script src="js/informe-colaborador.js" defer></script>
   </body>
 </html>

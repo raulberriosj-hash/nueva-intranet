@@ -13,7 +13,7 @@ como referencia de marcado, estilos y comportamiento.
 | [`index.html`](index.html) | Home de la intranet | Al día |
 | [`mis-vacaciones.html`](mis-vacaciones.html) | Solicitud de vacaciones del colaborador | Al día |
 | [`aprobaciones.html`](aprobaciones.html) | Solicitudes del equipo (jefatura) | Al día |
-| [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día · ya viene con `{{placeholders}}` |
+| [`informe-colaborador.html`](informe-colaborador.html) | Informe por colaborador (RRHH) | Al día |
 | [`panel-rrhh.html`](panel-rrhh.html) | Panel de seguimiento de vacaciones (RRHH) | Al día |
 | [`colaboradores-en-vacaciones.html`](colaboradores-en-vacaciones.html) | Quién está de vacaciones y quién se va (jefatura) | Al día |
 
@@ -40,7 +40,8 @@ ninguna pantalla depende de pedir archivos al servidor.
 ├── colaboradores-en-vacaciones.html
 │
 ├── plantillas/                 versiones sin datos, para los devs
-│   └── mis-vacaciones.html
+│   ├── mis-vacaciones.html
+│   └── informe-colaborador.html
 │
 ├── css/
 │   ├── sistema/                el sistema de diseño, compartido
@@ -64,6 +65,7 @@ ninguna pantalla depende de pedir archivos al servidor.
 │   ├── panel-rrhh.js           gráficos y tablas del panel
 │   ├── panel-rrhh-datos.js     datos de muestra · DESECHABLE
 │   ├── colaboradores-en-vacaciones.js  línea de tiempo y tabla · datos de muestra
+│   ├── informe-colaborador.js  tabla de saldos · datos de muestra
 │   ├── inicio-carrusel.js      el carrusel de anuncios del home
 │   ├── inicio-cumpleanos.js    cumpleaños · PENDIENTE DE BACKEND
 │   └── festivos-chile.js       feriados legales · los usan el home y el equipo
@@ -162,8 +164,8 @@ JS del prototipo**: el marcado limpio, que es lo que el desarrollador necesita
 copiar. No se enlazan desde ninguna pantalla —no aparecen al navegar el
 prototipo— pero están en el repositorio para quien las busque.
 
-Por ahora solo existe la de Mis Vacaciones. La idea es que cada pantalla con
-datos acabe teniendo la suya.
+Por ahora existen la de Mis Vacaciones y la del informe por colaborador. La
+idea es que cada pantalla con datos acabe teniendo la suya.
 
 ## Datos de ejemplo
 

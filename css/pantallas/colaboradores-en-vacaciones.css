@@ -45,50 +45,6 @@
 }
 
 /* ==========================================================================
-   BUSCADOR
-   Filtra las dos vistas a la vez.
-   ========================================================================== */
-
-.s-envac__buscador {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 180px;
-  max-width: 280px;
-  height: 36px;
-  padding-inline: var(--space-3);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-}
-
-.s-envac__buscador:focus-within {
-  border-color: var(--color-focus-ring);
-}
-
-.s-envac__buscador .c-icon {
-  width: var(--icon-md);
-  height: var(--icon-md);
-  color: var(--color-icon-muted);
-}
-
-.s-envac__input {
-  flex: 1;
-  min-width: 0;
-  font-family: inherit;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-normal);
-  color: var(--color-text-primary);
-  background: none;
-  border: 0;
-}
-
-.s-envac__input:focus {
-  outline: none;
-}
-
-/* ==========================================================================
    LÍNEA DE TIEMPO
 
    El scroll horizontal vive acá y no en la página: la columna de personas

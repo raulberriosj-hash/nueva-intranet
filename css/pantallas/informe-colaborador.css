@@ -17,6 +17,31 @@
 .s-saldos__col--diferencia { width: 10%; }
 .s-saldos__col--detalle    { width: 9%; }
 
+/* Filtro y buscador: los tres segmentos primero y la caja de búsqueda al
+   lado, a la misma altura. */
+.s-saldos__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.s-saldos__segmentos {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.s-saldos__segmentos .c-btn[aria-pressed="true"] {
+  color: var(--color-text-inverse);
+  background-color: var(--color-action-bg);
+  border-color: var(--color-action-bg);
+}
+
+/* Cuando el saldo coincide no hay nada que mirar: va en gris y sin pastilla */
+.s-saldos__cuadra {
+  color: var(--color-text-secondary);
+}
+
 /* Las cifras se comparan en vertical: a la derecha y con ancho fijo de dígito */
 .s-saldos__num {
   text-align: right;

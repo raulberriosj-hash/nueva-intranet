@@ -1325,6 +1325,51 @@
 }
 
 /* ==========================================================================
+   BUSCADOR
+   Caja de una línea para filtrar una lista. Más baja que .c-field, que es
+   para formularios.
+   ========================================================================== */
+
+.c-search {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 180px;
+  max-width: 280px;
+  height: 36px;
+  padding-inline: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.c-search:focus-within {
+  border-color: var(--color-focus-ring);
+}
+
+.c-search .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-icon-muted);
+}
+
+.c-search__input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+  background: none;
+  border: 0;
+}
+
+.c-search__input:focus {
+  outline: none;
+}
+
+/* ==========================================================================
    PAGINACIÓN
    ========================================================================== */
 
