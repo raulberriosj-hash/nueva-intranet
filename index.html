@@ -131,35 +131,61 @@
               </section>
 
               <div class="s-inicio__tarjetas">
+                <!-- ============ CUMPLEAÑOS ============
+                   Una sola lista con tres tramos de tiempo en vez de dos
+                   listas sueltas: así la tarjeta mide lo mismo con un equipo
+                   de 10 que con uno de 100. Los números de cada tramo, el
+                   tramo que abre y las filas las pone js/inicio-cumpleanos.js. -->
                 <section
                   class="c-card s-inicio__card--cumple"
                   aria-labelledby="birthdays-heading"
                 >
                   <h2 class="c-card__title s-inicio__titulo" id="birthdays-heading">
                     <img class="c-icon" src="assets/home/ic-cake.svg" alt="" />
-                    Cumpleaños Hoy
-                  </h2>
-                  <ul
-                    class="s-inicio__lista"
-                    data-birthdays-today
-                    aria-labelledby="birthdays-heading"
-                    aria-live="polite"
-                  ></ul>
-
-                  <hr class="c-divider" />
-
-                  <h2 class="c-card__title s-inicio__titulo" id="team-birthdays-heading">
-                    <img class="c-icon" src="assets/home/ic-celebration.svg" alt="" />
                     Cumpleaños de mi equipo
                   </h2>
-                  <ul
-                    class="s-inicio__lista"
-                    data-birthdays-team
-                    aria-labelledby="team-birthdays-heading"
-                    aria-live="polite"
-                  ></ul>
+
+                  <div
+                    class="s-inicio__segmentos"
+                    role="group"
+                    aria-label="Ver cumpleaños por tramo de fecha"
+                  >
+                    <button
+                      class="c-btn c-btn--neutro"
+                      type="button"
+                      data-tramo="hoy"
+                      aria-pressed="true"
+                    >
+                      Hoy <span class="s-inicio__cuenta" data-cuenta="hoy">0</span>
+                    </button>
+                    <button
+                      class="c-btn c-btn--neutro"
+                      type="button"
+                      data-tramo="semana"
+                      aria-pressed="false"
+                    >
+                      Esta semana
+                      <span class="s-inicio__cuenta" data-cuenta="semana">0</span>
+                    </button>
+                    <button
+                      class="c-btn c-btn--neutro"
+                      type="button"
+                      data-tramo="mes"
+                      aria-pressed="false"
+                    >
+                      Este mes <span class="s-inicio__cuenta" data-cuenta="mes">0</span>
+                    </button>
+                  </div>
+
+                  <!-- El alto lo fija el CSS para que la tarjeta no salte al
+                     cambiar de tramo -->
+                  <div class="s-inicio__panel" data-cumple-panel aria-live="polite"></div>
                 </section>
 
+                <!-- ============ FESTIVOS ============
+                   El próximo va destacado y el resto en una línea sutil cada
+                   uno. Los calcula js/festivos-chile.js, que no necesita
+                   mantención: las fechas móviles salen de la Pascua. -->
                 <section
                   class="c-card s-inicio__card--festivos"
                   aria-labelledby="holidays-heading"
@@ -168,7 +194,9 @@
                     <img class="c-icon" src="assets/home/ic-calendar.svg" alt="" />
                     Próximos Festivos
                   </h2>
-                  <ul class="s-inicio__lista" data-holidays-list aria-live="polite"></ul>
+
+                  <div data-holiday-next aria-live="polite"></div>
+                  <ul class="s-inicio__festivos" data-holidays-list></ul>
                 </section>
               </div>
 

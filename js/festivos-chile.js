@@ -28,6 +28,11 @@ const MONTH_NAMES = [
   "Diciembre",
 ];
 
+const MONTH_SHORT = ["ene", "feb", "mar", "abr", "may", "jun",
+                     "jul", "ago", "sep", "oct", "nov", "dic"];
+
+const WEEKDAY_SHORT = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+
 const WEEKDAY_NAMES = [
   "domingo",
   "lunes",
@@ -130,35 +135,76 @@ function getUpcomingHolidays(count) {
   return holidays.slice(0, count);
 }
 
-function formatHolidayDate(date) {
-  const weekday = WEEKDAY_NAMES[date.getDay()];
-  return `${weekday}, ${date.getDate()} de ${MONTH_NAMES[date.getMonth()]}`;
-}
+// Cuántos feriados van en la lista de abajo, después del destacado. Seis es
+// lo que hace falta para que esta tarjeta mida lo mismo que la de cumpleaños,
+// que comparte fila con ella. Van en gris y en una línea: no estorban.
+const FESTIVOS_SECUNDARIOS = 6;
 
 function renderHolidays() {
+  const destacado = document.querySelector("[data-holiday-next]");
   const list = document.querySelector("[data-holidays-list]");
-  if (!list) return;
+  if (!destacado || !list) return;
 
+  const proximos = getUpcomingHolidays(FESTIVOS_SECUNDARIOS + 1);
+  if (!proximos.length) return;
+
+  // --- El que viene: va solo y en grande, porque es el único con el que se
+  // hacen planes. Sin cuenta regresiva: la fecha y el día de la semana dicen
+  // lo que hay que saber.
+  const [primero, ...resto] = proximos;
+
+  destacado.innerHTML = "";
+  const caja = document.createElement("div");
+  caja.className = "s-inicio__proximo";
+
+  const chip = document.createElement("span");
+  chip.className = "s-inicio__proximoChip";
+  const dia = document.createElement("span");
+  dia.className = "s-inicio__proximoDia";
+  dia.textContent = primero.date.getDate();
+  const mes = document.createElement("span");
+  mes.className = "s-inicio__proximoMes";
+  mes.textContent = MONTH_SHORT[primero.date.getMonth()];
+  chip.appendChild(dia);
+  chip.appendChild(mes);
+  caja.appendChild(chip);
+
+  const datos = document.createElement("span");
+  datos.className = "s-inicio__proximoDatos";
+  const nombre = document.createElement("span");
+  nombre.className = "s-inicio__proximoNombre";
+  nombre.textContent = primero.name;
+  const semana = document.createElement("span");
+  semana.className = "s-inicio__proximoSemana";
+  semana.textContent = WEEKDAY_NAMES[primero.date.getDay()];
+  datos.appendChild(nombre);
+  datos.appendChild(semana);
+  caja.appendChild(datos);
+
+  destacado.appendChild(caja);
+
+  // --- Los demás, en una línea cada uno y en gris: están para saber que
+  // existen, no para mirarlos.
   list.innerHTML = "";
-
-  getUpcomingHolidays(10).forEach((holiday) => {
+  resto.forEach((holiday) => {
     const item = document.createElement("li");
-    item.className = "s-inicio__fila";
+    item.className = "s-inicio__festivo";
 
-    const person = document.createElement("span");
-    person.className = "s-inicio__persona";
+    const fecha = document.createElement("span");
+    fecha.className = "s-inicio__festivoFecha";
+    fecha.textContent = `${holiday.date.getDate()} ${MONTH_SHORT[holiday.date.getMonth()]}`;
 
-    const name = document.createElement("span");
-    name.className = "s-inicio__nombre";
-    name.textContent = holiday.name;
-    person.appendChild(name);
+    const nom = document.createElement("span");
+    nom.className = "s-inicio__festivoNombre";
+    nom.textContent = holiday.name;
 
-    const date = document.createElement("span");
-    date.className = "s-inicio__fecha";
-    date.textContent = formatHolidayDate(holiday.date);
+    const dsem = document.createElement("span");
+    dsem.className = "s-inicio__festivoDia";
+    dsem.textContent = WEEKDAY_SHORT[holiday.date.getDay()];
 
-    item.appendChild(person);
-    item.appendChild(date);
+    item.appendChild(fecha);
+    item.appendChild(nom);
+    item.appendChild(dsem);
     list.appendChild(item);
   });
 }
