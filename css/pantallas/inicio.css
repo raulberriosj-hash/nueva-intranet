@@ -315,121 +315,108 @@
 }
 
 /* ==========================================================================
-   CUMPLEAÑOS Y FESTIVOS
+   CUMPLEAÑOS Y FERIADOS
 
-   Las dos tarjetas comparten fila, así que miden lo mismo: lo que cambia es
-   cómo se las arreglan para no crecer.
-
-   · Cumpleaños reparte la gente en tres tramos de tiempo y muestra cuatro
-     filas por tramo. Da igual que el equipo sean 10 o 100: el resto se abre
-     con "+N más". El panel lleva alto mínimo para que la tarjeta no salte al
-     cambiar de tramo.
-   · Festivos destaca solo el que viene —es el único con el que se hacen
-     planes— y deja los demás en una línea gris cada uno.
-
-   El morado es "hoy": el mismo que marca las vacaciones en curso en el
-   calendario del equipo.
+   Las dos tarjetas comparten fila y están armadas igual: lo de hoy —o lo que
+   viene— va arriba, destacado en su propia caja, y lo demás queda abajo en
+   una línea por fila. Lo que se gana es que la tarjeta mide lo mismo con un
+   equipo de 10 que con uno de 100: pasadas las primeras filas, el resto se
+   abre con un "+ Ver más".
    ========================================================================== */
 
-/* --- Tramos de tiempo -------------------------------------------------- */
+/* Cada mitad de una tarjeta: su rótulo y lo que cuelga de él */
+.s-inicio__bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
 
-.s-inicio__segmentos {
+.s-inicio__rotulo {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+}
+
+/* --- Los de hoy -------------------------------------------------------- */
+
+/* No es una lista: celebrar no es consultar. La mascota se apoya en el borde
+   de abajo, así que esta caja no lleva relleno inferior. */
+.s-inicio__hoy {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  overflow: hidden;
+  padding: var(--space-1) var(--space-3) 0;
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.s-inicio__hoyIlus {
+  flex-shrink: 0;
+  align-self: flex-end;
+  width: 70px;
+  height: auto;
+}
+
+.s-inicio__hoyDatos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding-block: var(--space-2);
+}
+
+.s-inicio__hoyTitulo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+}
+
+.s-inicio__hoyTitulo strong {
+  font-weight: var(--fw-bold);
+}
+
+.s-inicio__hoyFecha {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Una pastilla por persona: el nombre completo, que es lo que se busca para
+   saludar. Con muchos cumpleaños el bloque crece hacia abajo en varias
+   líneas, que es lo correcto: son los de hoy, no hay que esconderlos. */
+.s-inicio__personas {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
 }
 
-.s-inicio__segmentos .c-btn {
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--fs-xs);
-}
-
-.s-inicio__segmentos .c-btn[aria-pressed="true"] {
-  color: var(--color-text-inverse);
-  background-color: var(--color-action-bg);
-  border-color: var(--color-action-bg);
-}
-
-.s-inicio__cuenta {
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text-secondary);
-}
-
-.s-inicio__segmentos .c-btn[aria-pressed="true"] .s-inicio__cuenta {
-  color: inherit;
-}
-
-/* El alto mínimo son cuatro filas más el "+N más" */
-.s-inicio__panel {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-height: 200px;
-}
-
-/* --- Los de hoy -------------------------------------------------------- */
-
-/* No es una lista: celebrar no es consultar. Avatares, una frase y un botón */
-.s-inicio__hoy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background-color: var(--c-support-50);
-  border-radius: var(--radius-md);
-}
-
-.s-inicio__avatares {
-  display: flex;
-}
-
-.s-inicio__avatares > * + * {
-  margin-left: -10px;
-}
-
-.s-inicio__avatares .c-avatar {
-  border: 2px solid var(--color-surface);
-}
-
-.s-inicio__avataresResto {
+.s-inicio__pastilla {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-bold);
-  color: var(--c-support-900);
-  background-color: var(--c-support-200);
-}
-
-.s-inicio__hoyTexto {
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
   font-size: var(--fs-sm);
   line-height: var(--lh-normal);
   color: var(--color-text-primary);
-}
-
-.s-inicio__hoyTexto strong {
-  font-weight: var(--fw-bold);
-}
-
-/* Rótulo de "esta semana", debajo del saludo de hoy */
-.s-inicio__rotulo {
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-normal);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-pill);
 }
 
 /* --- Filas de cumpleaños ----------------------------------------------- */
 
+.s-inicio__panel,
 .s-inicio__lista {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-3);
   width: 100%;
 }
 
@@ -448,7 +435,7 @@
   display: flex;
   flex: 1;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -484,23 +471,16 @@
   color: var(--color-text-heading);
 }
 
-.s-inicio__fecha--hoy {
-  color: var(--c-support-600);
-}
-
-/* El resto de la gente, hasta que la pidan */
+/* El resto de las filas, hasta que las pidan. Lo usan las dos tarjetas. */
 .s-inicio__mas {
   align-self: flex-start;
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-bold);
   line-height: var(--lh-normal);
-  color: var(--color-text-link);
-  border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
+  color: var(--c-corporate-600);
 }
 
-.s-inicio__mas:hover { background-color: var(--color-state-hover); }
+.s-inicio__mas:hover { text-decoration: underline; }
 
 /* --- Sin nadie --------------------------------------------------------- */
 
@@ -510,22 +490,16 @@
   color: var(--color-text-secondary);
 }
 
-.s-inicio__vacioNota {
-  font-size: var(--fs-xs);
-  line-height: var(--lh-normal);
-  color: var(--color-text-secondary);
-}
-
-/* --- El festivo que viene ---------------------------------------------- */
+/* --- El feriado que viene ---------------------------------------------- */
 
 .s-inicio__proximo {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
   padding: var(--space-3);
   background-color: var(--color-surface-sunken);
   border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 }
 
 .s-inicio__proximoChip {
@@ -534,39 +508,37 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  background-color: var(--c-blue-support-200);
-  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-4);
   color: var(--c-blue-support-900);
+  background-color: var(--c-blue-support-200);
+  border: 1px solid var(--c-blue-support-300);
+  border-radius: var(--radius-md);
 }
 
 .s-inicio__proximoDia {
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
-  line-height: 1;
+  line-height: 1.4;
 }
 
 .s-inicio__proximoMes {
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-bold);
-  line-height: 1.4;
-  letter-spacing: var(--ls-wide);
+  line-height: var(--lh-normal);
   text-transform: uppercase;
 }
 
 .s-inicio__proximoDatos {
   display: flex;
   flex-direction: column;
-  gap: 2px;
   min-width: 0;
 }
 
 .s-inicio__proximoNombre {
   font-size: var(--fs-base);
   font-weight: var(--fw-bold);
-  line-height: var(--lh-snug);
-  color: var(--color-text-heading);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
 }
 
 .s-inicio__proximoSemana {
@@ -575,24 +547,24 @@
   color: var(--color-text-secondary);
 }
 
-/* --- Los demás festivos ------------------------------------------------ */
+/* --- Los demás feriados ------------------------------------------------ */
 
 .s-inicio__festivos {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
   width: 100%;
 }
 
 .s-inicio__festivo {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-3);
   padding: var(--space-1);
   font-size: var(--fs-sm);
   line-height: var(--lh-normal);
   border-radius: var(--radius-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   transition: background-color var(--transition-fast);
 }
 
@@ -600,7 +572,7 @@
 
 .s-inicio__festivoFecha {
   flex-shrink: 0;
-  width: 52px;
+  width: 100px;
   font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
   color: var(--color-text-heading);
@@ -611,9 +583,19 @@
   min-width: 0;
 }
 
+/* Los que no se pueden trabajar, al margen del nombre */
+.s-inicio__festivoMarca {
+  margin-left: var(--space-1);
+  font-size: var(--fs-xs);
+  /* La marca no se parte: si no, el "·" queda colgando al final de la línea */
+  white-space: nowrap;
+  color: var(--c-neutral-500);
+}
+
 .s-inicio__festivoDia {
   flex-shrink: 0;
-  font-size: var(--fs-xs);
+  width: 40px;
+  color: var(--color-text-secondary);
 }
 
 /* ==========================================================================

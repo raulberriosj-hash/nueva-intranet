@@ -6,7 +6,7 @@
 // tiempo y los descuenta de los días hábiles. Por eso vive suelto y no
 // dentro de ninguna de las dos.
 //
-// getChileHolidays(año) devuelve [{ date, name }] con los feriados
+// getChileHolidays(año) devuelve [{ date, name, irrenunciable }] con los feriados
 // irrenunciables y los móviles ya calculados (Pascua, San Pedro y San
 // Pablo, Encuentro de Dos Mundos).
 //
@@ -31,16 +31,16 @@ const MONTH_NAMES = [
 const MONTH_SHORT = ["ene", "feb", "mar", "abr", "may", "jun",
                      "jul", "ago", "sep", "oct", "nov", "dic"];
 
-const WEEKDAY_SHORT = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const WEEKDAY_SHORT = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 const WEEKDAY_NAMES = [
-  "domingo",
-  "lunes",
-  "martes",
-  "miércoles",
-  "jueves",
-  "viernes",
-  "sábado",
+  "Domingo",
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
 ];
 
 function getEasterSunday(year) {
@@ -97,10 +97,14 @@ function getEncuentroDeDosMundos(year) {
 function getChileHolidays(year) {
   const easterSunday = getEasterSunday(year);
   return [
-    { date: new Date(year, 0, 1), name: "Año Nuevo" },
+    { date: new Date(year, 0, 1), name: "Año Nuevo", irrenunciable: true },
     { date: addDays(easterSunday, -2), name: "Viernes Santo" },
     { date: addDays(easterSunday, -1), name: "Sábado Santo" },
-    { date: new Date(year, 4, 1), name: "Día Nacional del Trabajo" },
+    {
+      date: new Date(year, 4, 1),
+      name: "Día Nacional del Trabajo",
+      irrenunciable: true,
+    },
     { date: new Date(year, 4, 21), name: "Día de las Glorias Navales" },
     {
       date: new Date(year, 5, 21),
@@ -109,8 +113,16 @@ function getChileHolidays(year) {
     { date: getSanPedroYSanPablo(year), name: "San Pedro y San Pablo" },
     { date: new Date(year, 6, 16), name: "Día de la Virgen del Carmen" },
     { date: new Date(year, 7, 15), name: "Asunción de la Virgen" },
-    { date: new Date(year, 8, 18), name: "Independencia Nacional" },
-    { date: new Date(year, 8, 19), name: "Día de las Glorias del Ejército" },
+    {
+      date: new Date(year, 8, 18),
+      name: "Independencia Nacional",
+      irrenunciable: true,
+    },
+    {
+      date: new Date(year, 8, 19),
+      name: "Día de las Glorias del Ejército",
+      irrenunciable: true,
+    },
     { date: getEncuentroDeDosMundos(year), name: "Encuentro de Dos Mundos" },
     {
       date: new Date(year, 9, 31),
@@ -118,7 +130,7 @@ function getChileHolidays(year) {
     },
     { date: new Date(year, 10, 1), name: "Día de Todos los Santos" },
     { date: new Date(year, 11, 8), name: "Inmaculada Concepción" },
-    { date: new Date(year, 11, 25), name: "Navidad" },
+    { date: new Date(year, 11, 25), name: "Navidad", irrenunciable: true },
   ];
 }
 
@@ -135,17 +147,48 @@ function getUpcomingHolidays(count) {
   return holidays.slice(0, count);
 }
 
-// Cuántos feriados van en la lista de abajo, después del destacado. Seis es
-// lo que hace falta para que esta tarjeta mida lo mismo que la de cumpleaños,
-// que comparte fila con ella. Van en gris y en una línea: no estorban.
-const FESTIVOS_SECUNDARIOS = 6;
+// Cuántos feriados se ven en la lista de abajo y hasta dónde llega cuando se
+// abre el "+ Ver más". El que viene no cuenta: ese va aparte y destacado.
+const FESTIVOS_VISIBLES = 4;
+const FESTIVOS_TOTAL = 12;
+
+function filaFestivo(holiday) {
+  const item = document.createElement("li");
+  item.className = "s-inicio__festivo";
+
+  const fecha = document.createElement("span");
+  fecha.className = "s-inicio__festivoFecha";
+  fecha.textContent = `${holiday.date.getDate()} ${
+    MONTH_SHORT[holiday.date.getMonth()]
+  } ${holiday.date.getFullYear()}`;
+
+  const nombre = document.createElement("span");
+  nombre.className = "s-inicio__festivoNombre";
+  nombre.textContent = holiday.name;
+
+  // Los irrenunciables llevan la marca al lado: son los que no se pueden
+  // trabajar, así que cambian los planes de más gente.
+  if (holiday.irrenunciable) {
+    const marca = document.createElement("span");
+    marca.className = "s-inicio__festivoMarca";
+    marca.textContent = "· Irrenunciable";
+    nombre.appendChild(marca);
+  }
+
+  const dia = document.createElement("span");
+  dia.className = "s-inicio__festivoDia";
+  dia.textContent = WEEKDAY_SHORT[holiday.date.getDay()];
+
+  item.append(fecha, nombre, dia);
+  return item;
+}
 
 function renderHolidays() {
   const destacado = document.querySelector("[data-holiday-next]");
   const list = document.querySelector("[data-holidays-list]");
   if (!destacado || !list) return;
 
-  const proximos = getUpcomingHolidays(FESTIVOS_SECUNDARIOS + 1);
+  const proximos = getUpcomingHolidays(FESTIVOS_TOTAL + 1);
   if (!proximos.length) return;
 
   // --- El que viene: va solo y en grande, porque es el único con el que se
@@ -183,30 +226,32 @@ function renderHolidays() {
 
   destacado.appendChild(caja);
 
-  // --- Los demás, en una línea cada uno y en gris: están para saber que
-  // existen, no para mirarlos.
+  // --- Los demás, en una línea cada uno: están para saber que existen, no
+  // para mirarlos. Del quinto en adelante se esconden hasta que los pidan.
   list.innerHTML = "";
-  resto.forEach((holiday) => {
-    const item = document.createElement("li");
-    item.className = "s-inicio__festivo";
+  resto.forEach((holiday) => list.appendChild(filaFestivo(holiday)));
 
-    const fecha = document.createElement("span");
-    fecha.className = "s-inicio__festivoFecha";
-    fecha.textContent = `${holiday.date.getDate()} ${MONTH_SHORT[holiday.date.getMonth()]}`;
+  const seccion = list.closest("section");
+  const anterior = seccion && seccion.querySelector("[data-holidays-mas]");
+  if (anterior) anterior.remove();
 
-    const nom = document.createElement("span");
-    nom.className = "s-inicio__festivoNombre";
-    nom.textContent = holiday.name;
+  const ocultos = Array.from(list.children).slice(FESTIVOS_VISIBLES);
+  if (!ocultos.length || !seccion) return;
+  ocultos.forEach((f) => (f.hidden = true));
 
-    const dsem = document.createElement("span");
-    dsem.className = "s-inicio__festivoDia";
-    dsem.textContent = WEEKDAY_SHORT[holiday.date.getDay()];
-
-    item.appendChild(fecha);
-    item.appendChild(nom);
-    item.appendChild(dsem);
-    list.appendChild(item);
+  const mas = document.createElement("button");
+  mas.className = "s-inicio__mas";
+  mas.type = "button";
+  mas.dataset.holidaysMas = "";
+  mas.setAttribute("aria-expanded", "false");
+  mas.textContent = "+ Ver más";
+  mas.addEventListener("click", () => {
+    const abierto = mas.getAttribute("aria-expanded") === "true";
+    ocultos.forEach((f) => (f.hidden = abierto));
+    mas.setAttribute("aria-expanded", String(!abierto));
+    mas.textContent = abierto ? "+ Ver más" : "Ver menos";
   });
+  seccion.appendChild(mas);
 }
 
 renderHolidays();

@@ -1,20 +1,16 @@
 // ============================================================================
 // Cumpleaños — INTEGRACIÓN PENDIENTE CON LA BASE DE DATOS DEL EQUIPO.
 //
-// Una sola lista con tres tramos de tiempo (hoy · esta semana · este mes) en
-// vez de dos listas sueltas. Lo que se gana: la tarjeta mide lo mismo con un
-// equipo de 10 que con uno de 100, porque cada tramo muestra cuatro filas y
-// el resto se abre con "+N más".
-//
-// Los tramos son ACUMULATIVOS desde hoy: "esta semana" son los próximos 7
-// días contando hoy, y "este mes" los próximos 30. Así los números no hay que
-// sumarlos de cabeza y el de la derecha siempre es el mayor.
+// La tarjeta tiene dos partes. Arriba, los de hoy: la mascota, la fecha y una
+// pastilla por persona, que es lo que se mira. Abajo, los próximos siete días
+// en una lista de tres filas, con el resto detrás de un "+ Ver N más". Así la
+// tarjeta mide lo mismo con un equipo de 10 que con uno de 100.
 //
 // Para conectarlo a la base de datos real, el único punto que hay que tocar
 // es fetchBirthdays(): reemplazar su cuerpo por la llamada real (fetch a una
 // API REST, GraphQL, SDK del backend, etc.) que devuelva datos con la misma
-// forma. El resto del archivo —tramos, filas, estado vacío, errores— ya está
-// listo para consumir esa forma sin más cambios.
+// forma. El resto del archivo —filas, estados vacíos, errores— ya está listo
+// para consumir esa forma sin más cambios.
 //
 // Contrato esperado — fetchBirthdays() devuelve (o resuelve, si es async) un
 // arreglo de personas, ya filtrado al equipo de quien mira y ordenado por
@@ -30,8 +26,8 @@
 //   robot de AVATAR_POR_DEFECTO, el mismo que usa el menú lateral.
 //
 // Si mañana quieren mostrar a toda la empresa y no solo al equipo, no hay que
-// cambiar nada acá: basta con que el backend mande más gente. Los tramos y el
-// "+N más" ya se encargan de que siga siendo legible.
+// cambiar nada acá: basta con que el backend mande más gente. La lista corta
+// y el "+ Ver N más" ya se encargan de que siga siendo legible.
 // ============================================================================
 
 // El archivo entero va dentro de una función anónima: el home carga cuatro
@@ -43,21 +39,13 @@
   // menú lateral (js/sidebar.js, USUARIO.avatar).
   const AVATAR_POR_DEFECTO = "assets/img/avatar-placeholder.png";
 
-  // Cuántas filas se ven antes del "+N más"
-  const FILAS_VISIBLES = 4;
+  // La mascota del bloque de hoy. Va pegada al borde de abajo de la caja.
+  const MASCOTA = "assets/home/img-cumpleanos.png";
 
-  // Cuántos avatares se apilan en el bloque de hoy antes del "+N"
-  const AVATARES_VISIBLES = 4;
-
-  // Cuántos de la semana asoman debajo del saludo de hoy. El resto está a un
-  // clic, en el tramo de al lado.
-  const FILAS_PROXIMAS = 2;
-
-  const TRAMOS = {
-    hoy: { dias: 0, vacio: "Hoy no cumple nadie de tu equipo." },
-    semana: { dias: 7, vacio: "Sin cumpleaños en tu equipo esta semana." },
-    mes: { dias: 30, vacio: "Sin cumpleaños en tu equipo este mes." },
-  };
+  // Hasta dónde llega la lista de abajo y cuántas filas se ven antes del
+  // "+ Ver N más"
+  const DIAS_PROXIMOS = 7;
+  const FILAS_VISIBLES = 3;
 
   // --- Datos de muestra ------------------------------------------------------
   // Van como días de distancia desde hoy y no como fechas fijas, para que la
@@ -66,9 +54,11 @@
     { nombre: "Juan Muñoz", cargo: "Infraestructura", dias: 0 },
     { nombre: "Daniela Torres", cargo: "Desarrollo", dias: 0 },
     { nombre: "Mario Tapia", cargo: "Operaciones", dias: 0 },
-    { nombre: "Josefa Pino", cargo: "Desarrollo", dias: 1 },
-    { nombre: "Matías Tobar", cargo: "COE", dias: 3 },
-    { nombre: "Camila Reyes", cargo: "Administración", dias: 4 },
+    { nombre: "Macarena Parra", cargo: "COE", dias: 1 },
+    { nombre: "Josefa del Pino", cargo: "COE", dias: 2 },
+    { nombre: "Antonia Soto", cargo: "Desarrollo", dias: 3 },
+    { nombre: "Matías Tobar", cargo: "COE", dias: 4 },
+    { nombre: "Camila Reyes", cargo: "Administración", dias: 5 },
     { nombre: "Esteban Fuentes", cargo: "TI", dias: 6 },
     { nombre: "Valentina Rojas", cargo: "Desarrollo", dias: 7 },
     { nombre: "Ignacio Soto", cargo: "Gestores", dias: 9 },
@@ -77,14 +67,6 @@
     { nombre: "Antonia Lagos", cargo: "Desarrollo", dias: 14 },
     { nombre: "Felipe Carrasco", cargo: "Infraestructura", dias: 16 },
     { nombre: "Catalina Núñez", cargo: "Administración", dias: 18 },
-    { nombre: "Tomás Aravena", cargo: "ONNet", dias: 19 },
-    { nombre: "Fernanda Silva", cargo: "Bucle", dias: 21 },
-    { nombre: "Andrés Molina", cargo: "TI", dias: 23 },
-    { nombre: "Javiera Peña", cargo: "Desarrollo", dias: 24 },
-    { nombre: "Cristóbal Herrera", cargo: "Gestores", dias: 26 },
-    { nombre: "Isidora Bravo", cargo: "COE", dias: 27 },
-    { nombre: "Sebastián Muñoz", cargo: "Operaciones", dias: 28 },
-    { nombre: "Trinidad Orellana", cargo: "Implantación", dias: 29 },
   ];
 
   // TODO(backend): reemplazar por la llamada real, por ejemplo:
@@ -110,9 +92,9 @@
      FECHAS
      ======================================================================== */
 
-  const DIA_CORTO = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
-  const MES_CORTO = ["ene", "feb", "mar", "abr", "may", "jun",
-                     "jul", "ago", "sep", "oct", "nov", "dic"];
+  const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
+                 "Diciembre"];
 
   function hoy() {
     const d = new Date();
@@ -127,94 +109,73 @@
 
   const diasHasta = (fecha) => Math.round((fecha - hoy()) / 86400000);
 
-  // Dentro de la semana el día de la semana ubica mejor que el número; más
-  // allá, el número y el mes.
-  function etiquetaFecha(fecha) {
-    const d = diasHasta(fecha);
-    if (d === 0) return "hoy";
-    if (d === 1) return "mañana";
-    if (d <= 7) return `${DIA_CORTO[fecha.getDay()]} ${fecha.getDate()}`;
-    return `${fecha.getDate()} ${MES_CORTO[fecha.getMonth()]}`;
-  }
+  const fechaLarga = (fecha) => `${fecha.getDate()} de ${MESES[fecha.getMonth()]}`;
 
   /* ========================================================================
      PINTADO
      ======================================================================== */
 
-  function avatarDe(persona) {
+  function avatarDe(persona, clase = "c-avatar") {
     const img = document.createElement("img");
-    img.className = "c-avatar c-avatar--md";
+    img.className = clase;
     img.src = persona.avatar || AVATAR_POR_DEFECTO;
     img.alt = "";
     return img;
   }
 
-  // "Juan, Daniela y Mario" · "Juan, Daniela y 4 más"
-  function enumera(personas) {
-    const nombres = personas.map((p) => p.nombre.split(" ")[0]);
-    if (nombres.length === 1) return nombres[0];
-    if (nombres.length <= 3) return `${nombres.slice(0, -1).join(", ")} y ${nombres.at(-1)}`;
-    return `${nombres.slice(0, 2).join(", ")} y ${nombres.length - 2} más`;
-  }
-
-  function pintaVacio(caja, texto, proxima) {
-    const p = document.createElement("p");
-    p.className = "s-inicio__vacio";
-    p.textContent = texto;
-    caja.appendChild(p);
-
-    if (proxima) {
-      const nota = document.createElement("p");
-      nota.className = "s-inicio__vacioNota";
-      nota.textContent = `El próximo es ${proxima.nombre.split(" ")[0]}, ${etiquetaFecha(
-        desdeISO(proxima.fecha),
-      )}.`;
-      caja.appendChild(nota);
-    }
-  }
-
-  // El bloque de hoy: avatares apilados, una frase y el botón de saludar. No es
-  // una lista porque celebrar no es consultar.
+  // El bloque de hoy no es una lista: celebrar no es consultar. La mascota, la
+  // fecha y los nombres en pastillas, que es lo que se mira para saludar.
   function pintaHoy(caja, personas) {
+    caja.innerHTML = "";
+
     const bloque = document.createElement("div");
     bloque.className = "s-inicio__hoy";
 
-    const pila = document.createElement("span");
-    pila.className = "s-inicio__avatares";
-    personas.slice(0, AVATARES_VISIBLES).forEach((p) => pila.appendChild(avatarDe(p)));
-    if (personas.length > AVATARES_VISIBLES) {
-      const resto = document.createElement("span");
-      resto.className = "c-avatar c-avatar--md s-inicio__avataresResto";
-      resto.textContent = `+${personas.length - AVATARES_VISIBLES}`;
-      pila.appendChild(resto);
+    const ilus = document.createElement("img");
+    ilus.className = "s-inicio__hoyIlus";
+    ilus.src = MASCOTA;
+    ilus.alt = "";
+    bloque.appendChild(ilus);
+
+    const datos = document.createElement("div");
+    datos.className = "s-inicio__hoyDatos";
+
+    const titulo = document.createElement("p");
+    titulo.className = "s-inicio__hoyTitulo";
+    const rotulo = document.createElement("strong");
+    rotulo.textContent = personas.length ? "Cumpleaños Hoy" : "Hoy no cumple nadie";
+    const cuando = document.createElement("span");
+    cuando.className = "s-inicio__hoyFecha";
+    cuando.textContent = fechaLarga(hoy());
+    titulo.append(rotulo, cuando);
+    datos.appendChild(titulo);
+
+    if (personas.length) {
+      const lista = document.createElement("ul");
+      lista.className = "s-inicio__personas";
+      personas.forEach((p) => {
+        const item = document.createElement("li");
+        item.className = "s-inicio__pastilla";
+        item.appendChild(avatarDe(p));
+        const nombre = document.createElement("span");
+        nombre.textContent = p.nombre;
+        item.appendChild(nombre);
+        lista.appendChild(item);
+      });
+      datos.appendChild(lista);
     }
-    bloque.appendChild(pila);
 
-    const texto = document.createElement("p");
-    texto.className = "s-inicio__hoyTexto";
-    texto.innerHTML = `<strong>${enumera(personas)}</strong> ${
-      personas.length === 1 ? "cumple años hoy" : "cumplen años hoy"
-    }`;
-    bloque.appendChild(texto);
-
-    // TODO(backend): enganchar con el correo o con Teams
-    const saludar = document.createElement("button");
-    saludar.className = "c-btn c-btn--neutro";
-    saludar.type = "button";
-    saludar.textContent = "Saludar";
-    bloque.appendChild(saludar);
-
+    bloque.appendChild(datos);
     caja.appendChild(bloque);
   }
 
-  function filaDe(persona, compacta = false) {
-    const fecha = desdeISO(persona.fecha);
+  function filaDe(persona) {
     const item = document.createElement("li");
     item.className = "s-inicio__fila";
 
     const quien = document.createElement("span");
     quien.className = "s-inicio__persona";
-    quien.appendChild(avatarDe(persona));
+    quien.appendChild(avatarDe(persona, "c-avatar c-avatar--md"));
 
     const datos = document.createElement("span");
     datos.className = "s-inicio__datos";
@@ -224,7 +185,7 @@
     nombre.textContent = persona.nombre;
     datos.appendChild(nombre);
 
-    if (persona.cargo && !compacta) {
+    if (persona.cargo) {
       const cargo = document.createElement("span");
       cargo.className = "s-inicio__cargo";
       cargo.textContent = persona.cargo;
@@ -236,36 +197,45 @@
 
     const cuando = document.createElement("span");
     cuando.className = "s-inicio__fecha";
-    if (diasHasta(fecha) === 0) cuando.classList.add("s-inicio__fecha--hoy");
-    cuando.textContent = etiquetaFecha(fecha);
+    cuando.textContent = fechaLarga(persona._fecha);
     item.appendChild(cuando);
 
     return item;
   }
 
-  function pintaLista(caja, personas, tope = FILAS_VISIBLES, compacta = false) {
+  function pintaProximos(caja, personas) {
+    caja.innerHTML = "";
+
+    if (!personas.length) {
+      const vacio = document.createElement("p");
+      vacio.className = "s-inicio__vacio";
+      vacio.textContent = "Sin cumpleaños en los próximos 7 días.";
+      caja.appendChild(vacio);
+      return;
+    }
+
     const lista = document.createElement("ul");
     lista.className = "s-inicio__lista";
-    personas.forEach((p) => lista.appendChild(filaDe(p, compacta)));
+    personas.forEach((p) => lista.appendChild(filaDe(p)));
     caja.appendChild(lista);
 
-    if (personas.length <= tope) return;
+    if (personas.length <= FILAS_VISIBLES) return;
 
     // Lo que sobra se esconde hasta que lo pidan: con 100 personas en el equipo
     // esta tarjeta se comería la home.
-    const ocultas = Array.from(lista.children).slice(tope);
+    const ocultas = Array.from(lista.children).slice(FILAS_VISIBLES);
     ocultas.forEach((f) => (f.hidden = true));
 
     const mas = document.createElement("button");
     mas.className = "s-inicio__mas";
     mas.type = "button";
     mas.setAttribute("aria-expanded", "false");
-    mas.textContent = `+${ocultas.length} más`;
+    mas.textContent = `+ Ver ${ocultas.length} más`;
     mas.addEventListener("click", () => {
       const abierto = mas.getAttribute("aria-expanded") === "true";
       ocultas.forEach((f) => (f.hidden = abierto));
       mas.setAttribute("aria-expanded", String(!abierto));
-      mas.textContent = abierto ? `+${ocultas.length} más` : "Ver menos";
+      mas.textContent = abierto ? `+ Ver ${ocultas.length} más` : "Ver menos";
     });
     caja.appendChild(mas);
   }
@@ -275,16 +245,20 @@
      ======================================================================== */
 
   async function initBirthdays() {
+    const cajaHoy = document.querySelector("[data-cumple-hoy]");
     const panel = document.querySelector("[data-cumple-panel]");
-    const botones = Array.from(document.querySelectorAll("[data-tramo]"));
-    if (!panel || !botones.length) return;
+    if (!cajaHoy || !panel) return;
 
     let personas = [];
 
     try {
       personas = await fetchBirthdays();
     } catch (error) {
-      pintaVacio(panel, "No se pudieron cargar los cumpleaños.");
+      panel.innerHTML = "";
+      const aviso = document.createElement("p");
+      aviso.className = "s-inicio__vacio";
+      aviso.textContent = "No se pudieron cargar los cumpleaños.";
+      panel.appendChild(aviso);
       console.error("Error al cargar cumpleaños:", error);
       return;
     }
@@ -293,54 +267,14 @@
       .map((p) => ({ ...p, _fecha: desdeISO(p.fecha) }))
       .sort((a, b) => a._fecha - b._fecha);
 
-    const del = (tramo) =>
-      personas.filter((p) => {
-        const d = diasHasta(p._fecha);
-        return d >= 0 && d <= TRAMOS[tramo].dias;
-      });
-
-    botones.forEach((b) => {
-      const cuenta = document.querySelector(`[data-cuenta="${b.dataset.tramo}"]`);
-      if (cuenta) cuenta.textContent = del(b.dataset.tramo).length;
+    const deHoy = personas.filter((p) => diasHasta(p._fecha) === 0);
+    const proximos = personas.filter((p) => {
+      const d = diasHasta(p._fecha);
+      return d > 0 && d <= DIAS_PROXIMOS;
     });
 
-    const pinta = (tramo) => {
-      panel.innerHTML = "";
-      botones.forEach((b) =>
-        b.setAttribute("aria-pressed", String(b.dataset.tramo === tramo)),
-      );
-
-      const gente = del(tramo);
-      if (!gente.length) {
-        pintaVacio(panel, TRAMOS[tramo].vacio, personas[0]);
-        return;
-      }
-      if (tramo !== "hoy") {
-        pintaLista(panel, gente);
-        return;
-      }
-
-      pintaHoy(panel, gente);
-
-      // Debajo del saludo, lo que viene: si no, el tramo de hoy queda con un
-      // hueco y la tarjeta se ve a medio llenar.
-      const semana = del("semana").filter((p) => diasHasta(p._fecha) > 0);
-      if (!semana.length) return;
-
-      const rotulo = document.createElement("p");
-      rotulo.className = "s-inicio__rotulo";
-      rotulo.textContent = "Esta semana";
-      panel.appendChild(rotulo);
-      // Sin el cargo: son un apunte al margen y así el panel mide lo mismo
-      // que en los otros tramos, que es lo que evita que la tarjeta salte.
-      pintaLista(panel, semana.slice(0, FILAS_PROXIMAS), FILAS_PROXIMAS, true);
-    };
-
-    botones.forEach((b) => b.addEventListener("click", () => pinta(b.dataset.tramo)));
-
-    // Abre en el primer tramo que tenga gente: si hoy no cumple nadie, lo útil
-    // es lo que viene, no un cartel de vacío.
-    pinta(["hoy", "semana", "mes"].find((t) => del(t).length) || "hoy");
+    pintaHoy(cajaHoy, deHoy);
+    pintaProximos(panel, proximos);
   }
 
   initBirthdays();

@@ -132,71 +132,51 @@
 
               <div class="s-inicio__tarjetas">
                 <!-- ============ CUMPLEAÑOS ============
-                   Una sola lista con tres tramos de tiempo en vez de dos
-                   listas sueltas: así la tarjeta mide lo mismo con un equipo
-                   de 10 que con uno de 100. Los números de cada tramo, el
-                   tramo que abre y las filas las pone js/inicio-cumpleanos.js. -->
+                   Los de hoy van arriba, con la mascota y una pastilla por
+                   persona; lo que viene, en una lista corta con el resto a un
+                   clic. Así la tarjeta mide lo mismo con un equipo de 10 que
+                   con uno de 100. Las dos partes las pinta
+                   js/inicio-cumpleanos.js. -->
                 <section
                   class="c-card s-inicio__card--cumple"
                   aria-labelledby="birthdays-heading"
                 >
                   <h2 class="c-card__title s-inicio__titulo" id="birthdays-heading">
                     <img class="c-icon" src="assets/home/ic-cake.svg" alt="" />
-                    Cumpleaños de mi equipo
+                    Cumpleaños
                   </h2>
 
-                  <div
-                    class="s-inicio__segmentos"
-                    role="group"
-                    aria-label="Ver cumpleaños por tramo de fecha"
-                  >
-                    <button
-                      class="c-btn c-btn--neutro"
-                      type="button"
-                      data-tramo="hoy"
-                      aria-pressed="true"
-                    >
-                      Hoy <span class="s-inicio__cuenta" data-cuenta="hoy">0</span>
-                    </button>
-                    <button
-                      class="c-btn c-btn--neutro"
-                      type="button"
-                      data-tramo="semana"
-                      aria-pressed="false"
-                    >
-                      Esta semana
-                      <span class="s-inicio__cuenta" data-cuenta="semana">0</span>
-                    </button>
-                    <button
-                      class="c-btn c-btn--neutro"
-                      type="button"
-                      data-tramo="mes"
-                      aria-pressed="false"
-                    >
-                      Este mes <span class="s-inicio__cuenta" data-cuenta="mes">0</span>
-                    </button>
-                  </div>
+                  <div data-cumple-hoy aria-live="polite"></div>
 
-                  <!-- El alto lo fija el CSS para que la tarjeta no salte al
-                     cambiar de tramo -->
-                  <div class="s-inicio__panel" data-cumple-panel aria-live="polite"></div>
+                  <div class="s-inicio__bloque">
+                    <p class="s-inicio__rotulo">Próximos 7 días:</p>
+                    <div class="s-inicio__panel" data-cumple-panel aria-live="polite"></div>
+                  </div>
                 </section>
 
-                <!-- ============ FESTIVOS ============
-                   El próximo va destacado y el resto en una línea sutil cada
-                   uno. Los calcula js/festivos-chile.js, que no necesita
-                   mantención: las fechas móviles salen de la Pascua. -->
+                <!-- ============ FERIADOS ============
+                   El que viene va destacado —es el único con el que se hacen
+                   planes— y el resto en una línea cada uno. Los calcula
+                   js/festivos-chile.js, que no necesita mantención: las
+                   fechas móviles salen de la Pascua. -->
                 <section
                   class="c-card s-inicio__card--festivos"
                   aria-labelledby="holidays-heading"
                 >
                   <h2 class="c-card__title s-inicio__titulo" id="holidays-heading">
                     <img class="c-icon" src="assets/home/ic-calendar.svg" alt="" />
-                    Próximos Festivos
+                    Feriados
                   </h2>
 
-                  <div data-holiday-next aria-live="polite"></div>
-                  <ul class="s-inicio__festivos" data-holidays-list></ul>
+                  <div class="s-inicio__bloque">
+                    <p class="s-inicio__rotulo">Siguiente feriado:</p>
+                    <div data-holiday-next aria-live="polite"></div>
+                  </div>
+
+                  <div class="s-inicio__bloque">
+                    <p class="s-inicio__rotulo">Próximos:</p>
+                    <ul class="s-inicio__festivos" data-holidays-list></ul>
+                  </div>
                 </section>
               </div>
 
