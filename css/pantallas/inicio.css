@@ -712,9 +712,12 @@
   min-width: 120px;
 }
 
-/* En la columna ancha los seis accesos se reparten la fila entera, así que
-   acá el tope de 150 estorba: dejaría un hueco a la derecha. */
+/* Esta rejilla va de tres en fila y no de una tirada: con la base al 28% el
+   cuarto ya no entra y salta de línea, y los dos que quedan abajo se
+   reparten el ancho. El tope de 150 estorba acá, que es lo contrario del
+   lateral: estos accesos tienen que llenar la fila. */
 .s-inicio__card--recursos .s-inicio__acceso {
+  flex-basis: 28%;
   max-width: none;
 }
 

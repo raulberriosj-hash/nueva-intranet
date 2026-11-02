@@ -27,6 +27,12 @@
    prefijo `nav-`. `href: null` es una pantalla que todavía no existe: se
    dibuja apagada y no se puede clicar.
 
+   EN TELÉFONO
+   Bajo 768px el <aside> es un panel que entra desde la izquierda con el
+   menú entero, y abajo queda una barra (.c-bottomnav) con los primeros
+   enlaces sueltos y el botón "Menú" que lo abre. Los dos salen de este
+   archivo.
+
    AL IMPLEMENTAR
    Esto es una maqueta sin compilador, así que el menú se pinta con JS. En
    la intranet de verdad lo normal es que sea un parcial del lado del
@@ -234,6 +240,43 @@
       </div>`;
   }
 
+  // Lo que se ve abajo en teléfono: los enlaces sueltos de la primera
+  // sección —los que no abren grupo— y, al final, el botón que despliega el
+  // panel con el menú entero. Se queda con los tres primeros: más no caben
+  // en 375px sin que el texto se corte.
+  const ACCESOS_DIRECTOS = 3;
+
+  function barraInferior(activa) {
+    const directos = (MENU[0] ? MENU[0].items : [])
+      .filter((item) => !item.hijos)
+      .slice(0, ACCESOS_DIRECTOS);
+
+    const items = directos
+      .map((item) => {
+        const cuerpo = `${icono(item.icono, item.icono === "maleta" ? "c-icon--maleta" : "")}
+          <span class="c-bottomnav__texto">${esc(item.texto)}</span>`;
+
+        if (!item.href) {
+          return `<span class="c-bottomnav__item c-bottomnav__item--pendiente"
+            title="Pantalla todavía no diseñada">${cuerpo}</span>`;
+        }
+        return `<a class="c-bottomnav__item" href="${esc(ruta(item.href))}"${
+          item.id === activa ? ' aria-current="page"' : ""
+        }>${cuerpo}</a>`;
+      })
+      .join("");
+
+    return `<nav class="c-bottomnav" aria-label="Navegación">
+      ${items}
+      <button class="c-bottomnav__item" type="button" data-menu-movil
+              aria-expanded="false" aria-controls="sidebar">
+        ${icono("menu")}
+        <span class="c-bottomnav__texto">Menú</span>
+      </button>
+    </nav>
+    <div class="c-navscrim" data-menu-cierra hidden></div>`;
+  }
+
   function marcado(activa) {
     // El contenido va en una caja aparte con su propio scroll. Si el scroll
     // estuviera en el <aside>, el botón de plegar —que sobresale 15px por
@@ -267,7 +310,8 @@
               aria-label="Desplegar navegación">
         ${icono("chevron-down", "c-icon--sm")}
       </button>
-    </aside>`;
+    </aside>
+    ${barraInferior(activa)}`;
   }
 
   /* ======================================================================
@@ -322,6 +366,11 @@
     <path d="M1.4994 15.75C1.49934 14.5953 1.83253 13.4651 2.45899 12.495C3.08544 11.5249 3.97855 10.7562 5.03113 10.2811C6.08371 9.80606 7.25104 9.64478 8.39302 9.81665C9.535 9.98853 10.6031 10.4863 11.4692 11.2501M12.0002 14.2497L13.5004 15.7497L16.5006 12.7497M11.2502 5.99991C11.2502 8.07093 9.57111 9.74982 7.49988 9.74982C5.42865 9.74982 3.74958 8.07093 3.74958 5.99991C3.74958 3.92889 5.42865 2.25 7.49988 2.25C9.57111 2.25 11.2502 3.92889 11.2502 5.99991Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     </g>
   </symbol>
+  <symbol id="nav-menu" viewBox="0 0 24 24" fill="none">
+    <g>
+    <path d="M4 7H20M4 12H20M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </symbol>
   <symbol id="nav-chevron-down" viewBox="0 0 16 16" fill="none">
     <g id="chevron-down">
     <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
@@ -371,6 +420,43 @@
 
   const LLAVE = "intranet:sidebar-expandido";
 
+  /* --- El panel en teléfono -------------------------------------------- */
+
+  function conectaMovil(barra) {
+    const boton = document.querySelector("[data-menu-movil]");
+    const velo = document.querySelector("[data-menu-cierra]");
+    if (!boton || !velo) return;
+
+    const pinta = (abierto) => {
+      barra.classList.toggle("c-sidebar--movil", abierto);
+      velo.hidden = !abierto;
+      boton.setAttribute("aria-expanded", String(abierto));
+      // Con el panel abierto la página de detrás no se mueve
+      document.body.style.overflow = abierto ? "hidden" : "";
+    };
+
+    boton.addEventListener("click", () =>
+      pinta(!barra.classList.contains("c-sidebar--movil")),
+    );
+    velo.addEventListener("click", () => pinta(false));
+
+    // Al elegir una pantalla el panel sobra, y si no se cierra se queda
+    // abierto encima de la página nueva al volver atrás.
+    barra.addEventListener("click", (ev) => {
+      if (ev.target.closest("a")) pinta(false);
+    });
+
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape") pinta(false);
+    });
+
+    // Al pasar a escritorio el panel deja de existir: la barra vuelve a su
+    // sitio y el velo tiene que irse con ella.
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) pinta(false);
+    });
+  }
+
   function conecta(barra) {
     const toggle = barra.querySelector("[data-sidebar]");
 
@@ -411,8 +497,12 @@
     barra.querySelectorAll("[data-navgroup]").forEach((boton) => {
       boton.addEventListener("click", () => {
         // Plegado no hay sitio para los hijos: en vez de abrir la barra
-        // entera, se fija el menú flotante y se puede elegir desde ahí.
-        if (!barra.classList.contains("c-sidebar--expanded")) {
+        // entera, se fija el menú flotante y se puede elegir desde ahí. En
+        // el panel de teléfono eso no aplica: el grupo se abre donde está.
+        if (
+          window.innerWidth >= 768 &&
+          !barra.classList.contains("c-sidebar--expanded")
+        ) {
           flota(boton, true);
           return;
         }
@@ -423,6 +513,7 @@
     });
 
     conectaFlotante(barra);
+    conectaMovil(barra);
   }
 
   /* ======================================================================
@@ -455,7 +546,7 @@
   function flota(ancla, fija = false) {
     const barra = document.getElementById("sidebar");
     if (!barra || barra.classList.contains("c-sidebar--expanded")) return;
-    if (window.innerWidth < 768) return; // en teléfono la barra es de abajo
+    if (window.innerWidth < 768) return; // en teléfono manda el panel
 
     const grupo = GRUPOS[ancla.dataset.navgroup];
 

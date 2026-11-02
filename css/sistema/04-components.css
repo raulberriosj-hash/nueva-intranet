@@ -151,31 +151,72 @@
    SIDEBAR
    ========================================================================== */
 
+/* EN TELÉFONO ES UN PANEL QUE ENTRA DESDE LA IZQUIERDA.
+   Antes la barra de abajo era esta misma caja con tres iconos sueltos y el
+   resto del menú escondido. Con el menú creciendo ahí ya no cabía nada, así
+   que abajo quedó .c-bottomnav —cuatro accesos y el botón "Menú"— y el menú
+   entero, con sus rótulos y sus grupos, vive en este panel. */
 .c-sidebar {
   position: fixed;
-  bottom: 0;
+  inset-block: 0;
   left: 0;
-  right: 0;
-  z-index: 20;
+  z-index: 40;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: var(--size-bottomnav);
-  padding: 0 var(--space-3);
+  flex-direction: column;
+  width: min(86vw, 320px);
+  padding: var(--space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border-subtle);
+  border-right: 1px solid var(--color-border-subtle);
+  /* Cerrado se va del todo a la izquierda. La visibilidad es lo que lo saca
+     del recorrido del tabulador mientras está fuera de pantalla. */
+  visibility: hidden;
+  translate: -100% 0;
+  transition:
+    translate var(--transition-base),
+    visibility var(--transition-base);
 }
 
-/* En teléfono la barra inferior muestra solo navegación */
-.c-sidebar__profile,
-.c-sidebar__divider,
-.c-sidebar__spacer,
-.c-sidebar__toggle {
-  display: none;
+.c-sidebar--movil {
+  visibility: visible;
+  translate: 0 0;
+}
+
+.c-sidebar__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.c-sidebar__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.c-sidebar__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
 }
 
 .c-sidebar__nav {
-  display: contents;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.c-sidebar__footer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* El relleno elástico y el botón de plegar son cosa de escritorio */
+.c-sidebar__spacer,
+.c-sidebar__toggle {
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -183,6 +224,12 @@
     position: sticky;
     top: 0;
     bottom: auto;
+    /* Lo del panel de teléfono, deshecho: acá la barra está siempre a la
+       vista y en su sitio. */
+    left: auto;
+    visibility: visible;
+    translate: none;
+    transition: none;
     /* Por encima de .l-header (15): el botón de plegar sobresale sobre el
        contenido y con 10 quedaba por debajo de la cabecera blanca de las
        pantallas que la tienen. */
@@ -200,9 +247,8 @@
   }
 
   .c-sidebar__profile {
-    display: flex;
-    align-items: center;
     justify-content: center;
+    gap: 0;
     height: 44px;
   }
 
@@ -210,15 +256,8 @@
     display: none;
   }
 
-  .c-sidebar__divider {
-    display: block;
-  }
-
   .c-sidebar__nav {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
   }
 
   .c-sidebar__spacer {
@@ -226,9 +265,9 @@
     flex: 1;
   }
 
-  .c-sidebar__footer {
-    display: flex;
-    flex-direction: column;
+  /* El texto solo se ve con la barra desplegada; plegada son iconos */
+  .c-sidebar .c-navlink__label {
+    display: none;
   }
 
   /* Botón de plegar/desplegar, pisando el borde derecho.
@@ -313,6 +352,116 @@
 }
 
 /* ==========================================================================
+   BARRA INFERIOR · solo en teléfono
+
+   Los accesos directos que caben y, al final, el botón que abre el panel
+   con la navegación entera. La pinta js/sidebar.js junto con la barra.
+
+   Va con su propio reset acotado: se monta también en index.html, que es
+   del sistema viejo y no carga 02-base.css.
+   ========================================================================== */
+
+:where(.c-bottomnav, .c-bottomnav *) {
+  box-sizing: border-box;
+}
+
+:where(.c-bottomnav a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.c-bottomnav button) {
+  margin: 0;
+  font: inherit;
+  background: none;
+  border: 0;
+}
+
+:where(.c-bottomnav svg) {
+  display: block;
+}
+
+.c-bottomnav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: var(--space-1);
+  height: var(--size-bottomnav);
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-sans);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.c-bottomnav__item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-half);
+  max-width: 96px;
+  padding: var(--space-1);
+  color: var(--color-icon);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.c-bottomnav__item:active {
+  background-color: var(--color-nav-pressed);
+}
+
+.c-bottomnav__item[aria-current="page"],
+.c-bottomnav__item[aria-expanded="true"] {
+  background-color: var(--color-nav-selected);
+}
+
+/* Una pantalla que todavía no existe: se ve, apagada y sin clic */
+.c-bottomnav__item--pendiente {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.c-bottomnav__texto {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-heading);
+}
+
+/* El velo que apaga la página mientras el panel está abierto */
+.c-navscrim {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background-color: var(--color-overlay);
+}
+
+.c-navscrim[hidden] {
+  display: none;
+}
+
+/* En escritorio no hay nada de esto: la barra está siempre a la vista.
+   Va al final de la sección y no arriba con el resto del escritorio porque
+   a igual especificidad manda el orden, y las reglas de arriba están antes
+   que las de esta sección. */
+@media (min-width: 768px) {
+  .c-bottomnav,
+  .c-navscrim {
+    display: none;
+  }
+}
+
+/* ==========================================================================
    ITEM DE NAVEGACIÓN
    ========================================================================== */
 
@@ -338,7 +487,7 @@
 }
 
 .c-navlink__label {
-  display: none;
+  display: block;
   flex: 1;
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
