@@ -10,7 +10,8 @@
 // irrenunciables y los móviles ya calculados (Pascua, San Pedro y San
 // Pablo, Encuentro de Dos Mundos).
 //
-// renderHolidays() es lo del home: si no encuentra su lista, no hace nada.
+// renderHolidays() es lo del home: pinta el destacado, las cuatro líneas de
+// la tarjeta y la tabla del modal. Si no encuentra su lista, no hace nada.
 // ============================================================================
 
 const MONTH_NAMES = [
@@ -147,10 +148,10 @@ function getUpcomingHolidays(count) {
   return holidays.slice(0, count);
 }
 
-// Cuántos feriados se ven en la lista de abajo y hasta dónde llega cuando se
-// abre el "+ Ver más". El que viene no cuenta: ese va aparte y destacado.
+// Cuántos feriados asoman en la tarjeta —sin contar el destacado, que va
+// aparte— y cuántos entran en la tabla del modal que abre el "+ Ver más".
 const FESTIVOS_VISIBLES = 4;
-const FESTIVOS_TOTAL = 12;
+const FESTIVOS_MODAL = 12;
 
 function filaFestivo(holiday) {
   const item = document.createElement("li");
@@ -183,12 +184,47 @@ function filaFestivo(holiday) {
   return item;
 }
 
+// La fila de la tabla del modal: la fecha entera, el nombre y si es de los
+// que no se pueden trabajar.
+function filaTablaFestivo(holiday) {
+  // La clase y los data-col son lo que necesita .c-table para plegarse en
+  // teléfono: bajo 768 cada fila pasa a bloque y cada celda muestra ahí su
+  // encabezado.
+  const fila = document.createElement("tr");
+  fila.className = "c-table__row";
+
+  const dia = document.createElement("td");
+  dia.dataset.col = "Día";
+  dia.textContent = `${WEEKDAY_NAMES[holiday.date.getDay()]}, ${String(
+    holiday.date.getDate(),
+  ).padStart(2, "0")} de ${
+    MONTH_NAMES[holiday.date.getMonth()]
+  } ${holiday.date.getFullYear()}`;
+
+  const nombre = document.createElement("td");
+  nombre.dataset.col = "Festividad";
+  nombre.textContent = holiday.name;
+
+  const tipo = document.createElement("td");
+  tipo.dataset.col = "Tipo";
+  tipo.className = "s-inicio__tipoFeriado";
+  if (holiday.irrenunciable) {
+    tipo.classList.add("s-inicio__tipoFeriado--irrenunciable");
+    tipo.textContent = "Irrenunciable";
+  } else {
+    tipo.textContent = "Festivo";
+  }
+
+  fila.append(dia, nombre, tipo);
+  return fila;
+}
+
 function renderHolidays() {
   const destacado = document.querySelector("[data-holiday-next]");
   const list = document.querySelector("[data-holidays-list]");
   if (!destacado || !list) return;
 
-  const proximos = getUpcomingHolidays(FESTIVOS_TOTAL + 1);
+  const proximos = getUpcomingHolidays(FESTIVOS_MODAL);
   if (!proximos.length) return;
 
   // --- El que viene: va solo y en grande, porque es el único con el que se
@@ -227,30 +263,34 @@ function renderHolidays() {
   destacado.appendChild(caja);
 
   // --- Los demás, en una línea cada uno: están para saber que existen, no
-  // para mirarlos. Del quinto en adelante se esconden hasta que los pidan.
+  // para mirarlos. Solo asoman cuatro; el resto está en el modal.
   list.innerHTML = "";
-  resto.forEach((holiday) => list.appendChild(filaFestivo(holiday)));
+  resto
+    .slice(0, FESTIVOS_VISIBLES)
+    .forEach((holiday) => list.appendChild(filaFestivo(holiday)));
+
+  // --- La lista completa vive en el modal. El "+ Ver más" lo abre con
+  // [data-abre], que es lo que escucha js/componentes.js.
+  const tabla = document.querySelector("[data-holidays-tabla]");
+  if (tabla) {
+    tabla.innerHTML = "";
+    proximos.forEach((holiday) => tabla.appendChild(filaTablaFestivo(holiday)));
+  }
 
   const seccion = list.closest("section");
-  const anterior = seccion && seccion.querySelector("[data-holidays-mas]");
+  if (!seccion) return;
+
+  const anterior = seccion.querySelector("[data-holidays-mas]");
   if (anterior) anterior.remove();
 
-  const ocultos = Array.from(list.children).slice(FESTIVOS_VISIBLES);
-  if (!ocultos.length || !seccion) return;
-  ocultos.forEach((f) => (f.hidden = true));
+  if (!tabla || resto.length <= FESTIVOS_VISIBLES) return;
 
   const mas = document.createElement("button");
   mas.className = "s-inicio__mas";
   mas.type = "button";
   mas.dataset.holidaysMas = "";
-  mas.setAttribute("aria-expanded", "false");
+  mas.dataset.abre = "#modal-feriados";
   mas.textContent = "+ Ver más";
-  mas.addEventListener("click", () => {
-    const abierto = mas.getAttribute("aria-expanded") === "true";
-    ocultos.forEach((f) => (f.hidden = abierto));
-    mas.setAttribute("aria-expanded", String(!abierto));
-    mas.textContent = abierto ? "+ Ver más" : "Ver menos";
-  });
   seccion.appendChild(mas);
 }
 

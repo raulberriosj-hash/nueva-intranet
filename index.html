@@ -22,6 +22,8 @@
     <script src="js/inicio-carrusel.js" defer></script>
     <script src="js/festivos-chile.js" defer></script>
     <script src="js/inicio-cumpleanos.js" defer></script>
+    <!-- Abre y cierra los dos modales de esta pantalla ([data-abre]/[data-cierra]) -->
+    <script src="js/componentes.js" defer></script>
   </head>
   <body data-pagina="inicio">
     <div class="l-app">
@@ -72,6 +74,18 @@
                 <button type="button" class="s-inicio__destacado">
                   <span class="s-inicio__destacadoLabel">Agendar Sala</span>
                   <img class="s-inicio__ilus s-inicio__ilus--lg" src="assets/home/img-sala.png" alt="" />
+                </button>
+                <button
+                  type="button"
+                  class="s-inicio__destacado"
+                  data-abre="#modal-tickets"
+                >
+                  <span class="s-inicio__destacadoLabel">Enviar Tickets</span>
+                  <img
+                    class="s-inicio__ilus s-inicio__ilus--lg"
+                    src="assets/home/img-enviar-tickets.png"
+                    alt=""
+                  />
                 </button>
               </div>
             </div>
@@ -180,13 +194,183 @@
                 </section>
               </div>
 
+              <!-- ============ INFORMACIÓN Y RECURSOS ============
+                 Seis accesos a los documentos de la empresa. La rejilla
+                 reparte el ancho entre los que quepan en la fila. -->
               <section
-                class="c-card s-inicio__card--beneficios"
-                aria-labelledby="benefits-heading"
+                class="c-card s-inicio__card--recursos"
+                aria-labelledby="recursos-heading"
               >
-                <h2 class="c-card__title s-inicio__titulo" id="benefits-heading">
+                <h2 class="c-card__title s-inicio__titulo" id="recursos-heading">
+                  <img class="c-icon" src="assets/home/ic-book.svg" alt="" />
+                  Información y Recursos
+                </h2>
+                <div class="s-inicio__rejilla">
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-building.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Quienes Somos</span>
+                  </button>
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-book.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Reglamento Interno</span>
+                  </button>
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-megaphone.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Comunicaciones Internas</span>
+                  </button>
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-candado.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Políticas de Seguridad de la Información</span>
+                  </button>
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-acuerdo.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Procedimiento de Comunicación</span>
+                  </button>
+                  <button type="button" class="s-inicio__acceso">
+                    <img
+                      class="s-inicio__ilus s-inicio__ilus--md"
+                      src="assets/home/img-inelcom-documento.png"
+                      alt=""
+                    />
+                    <span class="s-inicio__accesoLabel">Programa de Trabajo Preventivo de Seguridad y Salud en el Trabajo</span>
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            <aside
+              class="s-inicio__lateral"
+              aria-label="Tickets, documentos y convenios"
+            >
+              <section
+                class="c-card s-inicio__card--tickets"
+                aria-labelledby="tickets-heading"
+              >
+                <h2 class="c-card__title s-inicio__titulo" id="tickets-heading">
+                  <img class="c-icon" src="assets/home/ic-tickets.svg" alt="" />
+                  Enviar Tickets
+                </h2>
+                <div class="s-inicio__tickets">
+                  <button type="button" class="s-inicio__ticket">
+                    <img
+                      class="c-icon"
+                      src="assets/home/ic-ticket-soporte.svg"
+                      alt=""
+                    />
+                    <span class="s-inicio__ticketLabel">Solicitar Soporte</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </button>
+                  <button type="button" class="s-inicio__ticket">
+                    <img
+                      class="c-icon"
+                      src="assets/home/ic-ticket-desarrollo.svg"
+                      alt=""
+                    />
+                    <span class="s-inicio__ticketLabel">Solicitar Desarrollo</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </button>
+                  <button type="button" class="s-inicio__ticket">
+                    <img
+                      class="c-icon"
+                      src="assets/home/ic-ticket-infraestructura.svg"
+                      alt=""
+                    />
+                    <span class="s-inicio__ticketLabel">Solicitar a Infraestructura</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </button>
+                  <button type="button" class="s-inicio__ticket">
+                    <img
+                      class="c-icon"
+                      src="assets/home/ic-ticket-rrhh.svg"
+                      alt=""
+                    />
+                    <span class="s-inicio__ticketLabel">Solicitar a Recursos Humanos</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </button>
+                </div>
+              </section>
+
+              <button type="button" class="s-inicio__banner">
+                <span class="s-inicio__bannerTexto">
+                  <span class="s-inicio__bannerTitulo">Procedimientos DataCenter</span>
+                  <span class="s-inicio__bannerPie">
+                    <span class="s-inicio__bannerSub">Acceso SharePoint</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </span>
+                </span>
+                <img
+                  class="s-inicio__bannerImagen"
+                  src="assets/home/img-sharepoint.png"
+                  alt=""
+                />
+              </button>
+
+              <button type="button" class="s-inicio__banner">
+                <span class="s-inicio__bannerTexto">
+                  <span class="s-inicio__bannerTitulo">Listado de Beneficios Caja los Andes</span>
+                  <span class="s-inicio__bannerPie">
+                    <span class="s-inicio__bannerSub">Julio - Agosto 2026</span>
+                    <img
+                      class="c-icon s-inicio__flecha"
+                      src="assets/home/ic-arrow.svg"
+                      alt=""
+                    />
+                  </span>
+                </span>
+                <img
+                  class="s-inicio__bannerImagen"
+                  src="assets/home/img-cajalosandes-benefit.png"
+                  alt=""
+                />
+              </button>
+
+              <section
+                class="c-card s-inicio__card--convenios"
+                aria-labelledby="convenios-heading"
+              >
+                <h2 class="c-card__title s-inicio__titulo" id="convenios-heading">
                   <img class="c-icon" src="assets/home/ic-handshake.svg" alt="" />
-                  Beneficios
+                  Convenios
                 </h2>
                 <div class="s-inicio__rejilla">
                   <a
@@ -256,153 +440,116 @@
                   </a>
                 </div>
               </section>
-            </div>
-
-            <aside
-              class="s-inicio__lateral"
-              aria-label="Tickets, beneficios e información"
-            >
-              <section
-                class="c-card s-inicio__card--tickets"
-                aria-labelledby="tickets-heading"
-              >
-                <h2 class="c-card__title s-inicio__titulo" id="tickets-heading">
-                  <img class="c-icon" src="assets/home/ic-tickets.svg" alt="" />
-                  Enviar Tickets
-                </h2>
-                <div class="s-inicio__tickets">
-                  <button type="button" class="s-inicio__ticket">
-                    <img
-                      class="c-icon"
-                      src="assets/home/ic-ticket-soporte.svg"
-                      alt=""
-                    />
-                    <span class="s-inicio__ticketLabel">Solicitar Soporte</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </button>
-                  <button type="button" class="s-inicio__ticket">
-                    <img
-                      class="c-icon"
-                      src="assets/home/ic-ticket-desarrollo.svg"
-                      alt=""
-                    />
-                    <span class="s-inicio__ticketLabel">Solicitar Desarrollo</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </button>
-                  <button type="button" class="s-inicio__ticket">
-                    <img
-                      class="c-icon"
-                      src="assets/home/ic-ticket-rrhh.svg"
-                      alt=""
-                    />
-                    <span class="s-inicio__ticketLabel">Solicitar a Recursos Humanos</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </button>
-                  <button type="button" class="s-inicio__ticket">
-                    <img
-                      class="c-icon"
-                      src="assets/home/ic-ticket-infraestructura.svg"
-                      alt=""
-                    />
-                    <span class="s-inicio__ticketLabel">Solicitar a Infraestructura</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </button>
-                </div>
-              </section>
-
-              <button type="button" class="s-inicio__banner">
-                <span class="s-inicio__bannerTexto">
-                  <span class="s-inicio__bannerTitulo">Listado de Beneficios Caja los Andes</span>
-                  <span class="s-inicio__bannerPie">
-                    <span class="s-inicio__bannerSub">Julio - Agosto 2026</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </span>
-                </span>
-                <img
-                  class="s-inicio__bannerImagen"
-                  src="assets/home/img-cajalosandes-benefit.png"
-                  alt=""
-                />
-              </button>
-
-              <button type="button" class="s-inicio__banner">
-                <span class="s-inicio__bannerTexto">
-                  <span class="s-inicio__bannerTitulo">Procedimientos DataCenter</span>
-                  <span class="s-inicio__bannerPie">
-                    <span class="s-inicio__bannerSub">Acceso SharePoint</span>
-                    <img
-                      class="c-icon s-inicio__flecha"
-                      src="assets/home/ic-arrow.svg"
-                      alt=""
-                    />
-                  </span>
-                </span>
-                <img
-                  class="s-inicio__bannerImagen"
-                  src="assets/home/img-sharepoint.png"
-                  alt=""
-                />
-              </button>
-
-              <section class="c-card s-inicio__card--info" aria-labelledby="info-heading">
-                <h2 class="c-card__title s-inicio__titulo" id="info-heading">
-                  <img class="c-icon" src="assets/home/ic-book.svg" alt="" />
-                  Información Inelcom
-                </h2>
-                <div class="s-inicio__rejilla">
-                  <button type="button" class="s-inicio__acceso">
-                    <img
-                      class="s-inicio__ilus s-inicio__ilus--md"
-                      src="assets/home/img-inelcom-building.png"
-                      alt=""
-                    />
-                    <span class="s-inicio__accesoLabel">Quienes Somos</span>
-                  </button>
-                  <button type="button" class="s-inicio__acceso">
-                    <img
-                      class="s-inicio__ilus s-inicio__ilus--md"
-                      src="assets/home/img-inelcom-book.png"
-                      alt=""
-                    />
-                    <span class="s-inicio__accesoLabel">Reglamento Interno</span>
-                  </button>
-                  <button type="button" class="s-inicio__acceso">
-                    <img
-                      class="s-inicio__ilus s-inicio__ilus--md"
-                      src="assets/home/img-inelcom-megaphone.png"
-                      alt=""
-                    />
-                    <span class="s-inicio__accesoLabel"
-                      >Comunicaciones Internas</span
-                    >
-                  </button>
-                </div>
-              </section>
             </aside>
           </div>
         </main>
       </div>
 
     </div>
+
+    <!-- ==================== MODAL · ENVIAR TICKETS ====================
+       Los mismos cuatro accesos de la tarjeta lateral, para quien entra por
+       el botón del encabezado. Lo abre y lo cierra js/componentes.js. -->
+    <dialog
+      class="c-modal c-modal--sm"
+      id="modal-tickets"
+      aria-labelledby="modal-tickets-titulo"
+    >
+      <div class="c-modal__header">
+        <h2 class="c-modal__title s-inicio__modalTitulo" id="modal-tickets-titulo">
+          <img class="c-icon" src="assets/home/ic-tickets.svg" alt="" />
+          Enviar Tickets
+        </h2>
+        <button
+          class="c-closebtn"
+          type="button"
+          data-cierra
+          aria-label="Cerrar envío de tickets"
+        >
+          <img class="c-icon" src="assets/icons/cross.svg" alt="" />
+        </button>
+      </div>
+
+      <div class="c-modal__body">
+        <div class="s-inicio__tickets">
+          <button type="button" class="s-inicio__ticket">
+            <img class="c-icon" src="assets/home/ic-ticket-soporte.svg" alt="" />
+            <span class="s-inicio__ticketLabel">Solicitar Soporte</span>
+            <img
+              class="c-icon s-inicio__flecha"
+              src="assets/home/ic-arrow.svg"
+              alt=""
+            />
+          </button>
+          <button type="button" class="s-inicio__ticket">
+            <img class="c-icon" src="assets/home/ic-ticket-desarrollo.svg" alt="" />
+            <span class="s-inicio__ticketLabel">Solicitar Desarrollo</span>
+            <img
+              class="c-icon s-inicio__flecha"
+              src="assets/home/ic-arrow.svg"
+              alt=""
+            />
+          </button>
+          <button type="button" class="s-inicio__ticket">
+            <img class="c-icon" src="assets/home/ic-ticket-infraestructura.svg" alt="" />
+            <span class="s-inicio__ticketLabel">Solicitar a Infraestructura</span>
+            <img
+              class="c-icon s-inicio__flecha"
+              src="assets/home/ic-arrow.svg"
+              alt=""
+            />
+          </button>
+          <button type="button" class="s-inicio__ticket">
+            <img class="c-icon" src="assets/home/ic-ticket-rrhh.svg" alt="" />
+            <span class="s-inicio__ticketLabel">Solicitar a Recursos Humanos</span>
+            <img
+              class="c-icon s-inicio__flecha"
+              src="assets/home/ic-arrow.svg"
+              alt=""
+            />
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ==================== MODAL · PRÓXIMOS FERIADOS ====================
+       La lista completa, que en la tarjeta solo asoma. Las filas las pinta
+       js/festivos-chile.js: acá solo va la cabecera de la tabla. -->
+    <dialog class="c-modal" id="modal-feriados" aria-labelledby="modal-feriados-titulo">
+      <div class="c-modal__header">
+        <h2 class="c-modal__title s-inicio__modalTitulo" id="modal-feriados-titulo">
+          <img class="c-icon" src="assets/home/ic-calendar.svg" alt="" />
+          Próximos Feriados
+        </h2>
+        <button
+          class="c-closebtn"
+          type="button"
+          data-cierra
+          aria-label="Cerrar lista de feriados"
+        >
+          <img class="c-icon" src="assets/icons/cross.svg" alt="" />
+        </button>
+      </div>
+
+      <div class="c-modal__body">
+        <table class="c-table s-inicio__tablaFeriados">
+          <thead>
+            <tr>
+              <th scope="col">Día</th>
+              <th scope="col">Festividad</th>
+              <th scope="col">Tipo</th>
+            </tr>
+          </thead>
+          <!-- Una fila por feriado -->
+          <tbody data-holidays-tabla></tbody>
+        </table>
+
+        <div class="s-inicio__modalPie">
+          <button class="c-btn c-btn--neutro" type="button" data-cierra>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>

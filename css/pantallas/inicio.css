@@ -12,7 +12,7 @@
 
    Queda solo lo que ninguna otra pantalla tiene: el hero, el carrusel de
    anuncios, las listas de cumpleaños y festivos, las rejillas de enlaces,
-   los botones de ticket y los dos banners.
+   los botones de ticket, los dos banners y los dos modales.
 
    Como el resto de las hojas, no declara ni un color ni un tamaño de letra:
    todo sale de 01-tokens.css. Los únicos valores literales son medidas de
@@ -40,8 +40,8 @@
 .s-inicio__card--cumple { order: 5; }
 .s-inicio__card--festivos { order: 6; }
 .s-inicio__banner { order: 7; }
-.s-inicio__card--beneficios { order: 8; }
-.s-inicio__card--info { order: 9; }
+.s-inicio__card--recursos { order: 8; }
+.s-inicio__card--convenios { order: 9; }
 
 .s-inicio__contenido,
 .s-inicio__columna,
@@ -712,12 +712,18 @@
   min-width: 120px;
 }
 
+/* En la columna ancha los seis accesos se reparten la fila entera, así que
+   acá el tope de 150 estorba: dejaría un hueco a la derecha. */
+.s-inicio__card--recursos .s-inicio__acceso {
+  max-width: none;
+}
+
 /* ==========================================================================
    ILUSTRACIONES
 
    Son PNG de producto, no iconos: el sistema no publica estos tamaños.
    Sin modificador van las rejillas de enlaces, --md las de Información
-   Inelcom, --lg los destacados del hero y --auto los logotipos de
+   y Recursos, --lg los destacados del hero y --auto los logotipos de
    convenio, que traen su propia relación de aspecto.
    ========================================================================== */
 
@@ -742,6 +748,50 @@
 .s-inicio__ilus--auto {
   width: auto;
   max-width: 100%;
+}
+
+/* ==========================================================================
+   LOS DOS MODALES
+
+   El botón de tickets del encabezado abre uno con los mismos cuatro accesos
+   de la tarjeta lateral; el "+ Ver más" de feriados abre el otro con la
+   lista completa. El armazón —fondo, cabecera, cuerpo, botón de cerrar— lo
+   pone .c-modal; acá va solo lo que estas dos pantallas agregan.
+   ========================================================================== */
+
+/* El título lleva icono, igual que el de las tarjetas */
+.s-inicio__modalTitulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.s-inicio__modalPie {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.s-inicio__tablaFeriados td {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+}
+
+/* La fecha es lo que se busca en esta tabla */
+.s-inicio__tablaFeriados td:first-child {
+  font-weight: var(--fw-bold);
+}
+
+/* Las dos van con la tabla delante: `.s-inicio__tablaFeriados td` le gana en
+   especificidad a una clase sola y les borraría el color. */
+.s-inicio__tablaFeriados .s-inicio__tipoFeriado {
+  color: var(--color-text-secondary);
+}
+
+/* Los que no se pueden trabajar van en el color de marca: son los que
+   cambian los planes de más gente. */
+.s-inicio__tablaFeriados .s-inicio__tipoFeriado--irrenunciable {
+  color: var(--c-corporate-600);
 }
 
 /* ==========================================================================
