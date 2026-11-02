@@ -976,6 +976,57 @@
 }
 
 /* ==========================================================================
+   CAMPO DE TEXTO
+
+   Mismo molde que .c-notes —la caja con el rótulo dentro— pero de una línea.
+   El borde lo lleva la caja y no el <input>: así el foco tiñe el campo
+   entero y no deja dos marcos uno dentro del otro.
+   ========================================================================== */
+
+.c-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.c-input:focus-within {
+  background-color: var(--color-state-hover);
+}
+
+.c-input__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-input__control {
+  width: 100%;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 0;
+}
+
+.c-input__control:focus-visible {
+  outline: none;
+}
+
+.c-input__control::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
    MODAL
    ========================================================================== */
 
@@ -1816,6 +1867,16 @@
 }
 .c-btn--neutro:hover:not(:disabled)  { background-color: var(--color-state-hover); }
 .c-btn--neutro:active:not(:disabled) { background-color: var(--color-state-pressed); }
+
+/* Acción principal de un formulario. Es el mismo azul de .c-submit, pero en
+   botón suelto: .c-submit ocupa el ancho entero y acá hacen falta dos o tres
+   seguidos en una fila. */
+.c-btn--accion {
+  background-color: var(--color-action-bg);
+  color: var(--color-action-text);
+}
+.c-btn--accion:hover:not(:disabled)  { background-color: var(--color-action-bg-hover); }
+.c-btn--accion:active:not(:disabled) { background-color: var(--color-action-bg-pressed); }
 
 .c-btn--bloque { width: 100%; }
 

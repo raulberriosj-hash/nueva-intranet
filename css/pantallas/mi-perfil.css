@@ -1,0 +1,174 @@
+/* ==========================================================================
+   PANTALLA — MI PERFIL
+
+   Tres bloques de lectura —quién eres, tus datos, tu contrato— y uno de
+   escritura, la contraseña. Lo único propio de la pantalla es la tarjeta de
+   identidad y la rejilla de pares rótulo/valor; lo demás ya lo ponía el
+   sistema (.c-card, .c-input, .c-btn, .c-modal).
+
+   Como el resto de las hojas de pantalla, no declara ni un color ni un
+   tamaño de letra: todo sale de 01-tokens.css. El único valor literal es el
+   tamaño del avatar, que es una medida de esta pantalla.
+   ========================================================================== */
+
+/* ==========================================================================
+   TARJETA DE IDENTIDAD
+   ========================================================================== */
+
+.s-perfil__identidad {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.s-perfil__avatar {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+}
+
+.s-perfil__quien {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.s-perfil__nombre {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-text-primary);
+}
+
+/* Correo y teléfono van en la misma línea mientras quepan */
+.s-perfil__contacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.s-perfil__contactoItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-primary);
+}
+
+.s-perfil__contactoItem .c-icon {
+  flex-shrink: 0;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: var(--color-icon-muted);
+}
+
+.s-perfil__rol {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+}
+
+/* En teléfono la foto se va arriba: al lado deja al nombre tres palabras
+   por renglón. */
+@media (max-width: 539px) {
+  .s-perfil__identidad {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}
+
+/* ==========================================================================
+   PARES RÓTULO / VALOR
+
+   Dos columnas en escritorio y una en teléfono, llenando por filas. El
+   orden es el del marcado: así en una sola columna se sigue leyendo
+   seguido, que es lo que se pierde cuando la rejilla llena por columnas.
+   ========================================================================== */
+
+.s-perfil__datos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3) var(--space-8);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .s-perfil__datos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.s-perfil__dato {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.s-perfil__rotulo {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-heading);
+}
+
+/* Los dos puntos los pone el CSS: así el hueco del dato queda limpio para
+   el dev, que reemplaza solo el valor. */
+.s-perfil__rotulo::after {
+  content: ":";
+}
+
+.s-perfil__valor {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text-primary);
+}
+
+/* Un dato que la empresa todavía no tiene cargado. Se deja a la vista y
+   apagado: el hueco en blanco parece un error de la pantalla. */
+.s-perfil__valor--vacio {
+  color: var(--color-text-secondary);
+}
+
+.s-perfil__nota {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   FORMULARIOS · contraseña y edición de datos
+   ========================================================================== */
+
+.s-perfil__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.s-perfil__campos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .s-perfil__campos--trio {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* El botón no se estira: es una acción, no un bloque */
+.s-perfil__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.s-perfil__acciones--inicio {
+  justify-content: flex-start;
+}

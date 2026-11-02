@@ -52,7 +52,7 @@
     {
       items: [
         { id: "inicio", texto: "Inicio", icono: "home", href: "index.html" },
-        { id: "perfil", texto: "Mi Perfil", icono: "user", href: null },
+        { id: "perfil", texto: "Mi Perfil", icono: "user", href: "mi-perfil.html" },
         {
           id: "vacaciones",
           texto: "Vacaciones",

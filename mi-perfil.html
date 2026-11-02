@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="assets/home/favicon.svg" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mi perfil · Intranet 2.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/sistema/01-tokens.css" />
+    <link rel="stylesheet" href="css/sistema/02-base.css" />
+    <link rel="stylesheet" href="css/sistema/03-layout.css" />
+    <link rel="stylesheet" href="css/sistema/04-components.css" />
+    <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
+    <link rel="stylesheet" href="css/pantallas/mi-perfil.css" />
+  </head>
+
+  <body data-pagina="perfil">
+    <!-- ========================================================================
+     MI PERFIL · propuesta de diseño, con datos de muestra.
+
+     QUÉ HAY EN LA PANTALLA
+       1. Quién eres: foto, nombre, cómo te contactan y qué haces.
+       2. Datos personales, los únicos que la persona puede corregir.
+       3. Datos laborales, que vienen del contrato y son de solo lectura.
+       4. Cambiar contraseña.
+
+     DECISIONES DE DISEÑO, para discutir
+       · El lápiz está solo en Datos Personales, y dentro abre nada más que
+         dirección, correo personal y teléfono. Nombre, RUT, nacionalidad y
+         fecha de nacimiento salen del contrato: si alguno está mal, lo
+         corrige RRHH y no la persona. Por eso los laborales no llevan lápiz
+         sino una línea que dice a quién pedírselo.
+       · Los pares van en dos columnas en escritorio y en una en teléfono,
+         llenando por filas: en una columna el orden del marcado se sigue
+         leyendo seguido.
+       · Un dato que la empresa no tiene cargado —el teléfono de empresa en
+         los datos de muestra— se deja a la vista y apagado, con una raya. En
+         blanco parece un error de la pantalla.
+       · La contraseña va en su propia tarjeta y al final: es la única
+         sección que escribe algo fuera del perfil.
+
+     LOS DATOS SON INVENTADOS. El repositorio es público, así que el RUT, la
+     dirección, el teléfono, el correo personal y la fecha de nacimiento no
+     son los de nadie. Los reales los pone el backend.
+     ======================================================================== -->
+
+    <!-- Iconos de esta pantalla. Van en el HTML y no en un archivo aparte
+       para que la maqueta funcione también abriéndola con doble clic. -->
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
+      style="position: absolute; width: 0; height: 0; overflow: hidden">
+      <symbol id="i-user" viewBox="0 0 24 24" fill="none">
+        <g>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C10.6739 3 9.40215 3.52678 8.46447 4.46447C7.52678 5.40215 7 6.67392 7 8C7 9.32608 7.52678 10.5979 8.46447 11.5355C8.53043 11.6015 8.59804 11.6654 8.66721 11.7273C7.81069 12.1198 7.02217 12.6641 6.34314 13.3431C4.84285 14.8434 4 16.8783 4 19V20C4 20.5523 4.44771 21 5 21C5.55228 21 6 20.5523 6 20V19C6 17.4087 6.63214 15.8826 7.75736 14.7574C8.88258 13.6321 10.4087 13 12 13C13.5913 13 15.1174 13.6321 16.2426 14.7574C17.3679 15.8826 18 17.4087 18 19V20C18 20.5523 18.4477 21 19 21C19.5523 21 20 20.5523 20 20V19C20 16.8783 19.1571 14.8434 17.6569 13.3431C16.9778 12.6641 16.1893 12.1198 15.3328 11.7273C15.402 11.6654 15.4696 11.6015 15.5355 11.5355C16.4732 10.5979 17 9.32608 17 8C17 6.67392 16.4732 5.40215 15.5355 4.46447C14.5979 3.52678 13.3261 3 12 3ZM9.87868 5.87868C10.4413 5.31607 11.2043 5 12 5C12.7956 5 13.5587 5.31607 14.1213 5.87868C14.6839 6.44129 15 7.20435 15 8C15 8.79565 14.6839 9.55871 14.1213 10.1213C13.5587 10.6839 12.7956 11 12 11C11.2043 11 10.4413 10.6839 9.87868 10.1213C9.31607 9.55871 9 8.79565 9 8C9 7.20435 9.31607 6.44129 9.87868 5.87868Z" fill="currentColor"/>
+        </g>
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none">
+        <g>
+        <path d="M4 5H20C21.1 5 22 5.9 22 7V17C22 18.1 21.1 19 20 19H4C2.9 19 2 18.1 2 17V7C2 5.9 2.9 5 4 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 7L12 14L2 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24" fill="none">
+        <g>
+        <path d="M22 16.92V19.92C22 20.47 21.55 20.93 21 20.92C17.43 20.73 14.1 19.4 11.37 17.26C8.84 15.3 6.7 13.16 5.1 10.26C2.95 7.5 1.63 4.15 1.44 0.56" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 2)"/>
+        <path d="M1.44 2.56C1.43 2.01 1.89 1.56 2.44 1.56H5.44C5.95 1.56 6.39 1.94 6.46 2.45C6.58 3.42 6.81 4.37 7.14 5.28C7.29 5.69 7.18 6.16 6.86 6.47L5.59 7.74" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 2)"/>
+        <path d="M14.26 16.14C13.08 15.4 11.98 14.54 10.98 13.57" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.26 14.26L16.53 12.99C16.84 12.67 17.31 12.56 17.72 12.71C18.63 13.04 19.58 13.27 20.55 13.39C21.06 13.46 21.44 13.9 21.44 14.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24" fill="none">
+        <g>
+        <path d="M12 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.5 3.5C16.89 3.11 17.42 2.89 17.97 2.89C18.52 2.89 19.05 3.11 19.44 3.5C19.83 3.89 20.05 4.42 20.05 4.97C20.05 5.52 19.83 6.05 19.44 6.44L7 18.88L3 19.88L4 15.88L16.5 3.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </symbol>
+      <symbol id="i-cross" viewBox="0 0 16 16" fill="none">
+        <g>
+        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.33333"/>
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="l-app">
+      <!-- ■■■ INICIO · SIDEBAR — bloque desmontable: bórralo entero si la
+         intranet ya trae su propia navegación. El layout no depende de él. ■■■ -->
+      <!-- El menú lo pinta js/sidebar.js, igual en todas las pantallas -->
+      <div data-sidebar-slot></div>
+      <!-- ■■■ FIN · SIDEBAR ■■■ -->
+
+      <div class="l-main">
+        <header class="l-header">
+          <div class="l-header__content">
+            <div class="c-pagetitle">
+              <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+              <h1 class="c-pagetitle__text">Mi perfil</h1>
+            </div>
+          </div>
+        </header>
+
+        <main class="l-body">
+          <!-- ====================== QUIÉN ERES ====================== -->
+          <section class="c-card s-perfil__identidad" aria-labelledby="perfil-nombre">
+            <img
+              class="c-avatar s-perfil__avatar"
+              src="assets/img/avatar-placeholder.png"
+              alt=""
+            />
+
+            <div class="s-perfil__quien">
+              <h2 class="s-perfil__nombre" id="perfil-nombre">
+                Raúl Gabriel Berríos Jofré
+              </h2>
+
+              <p class="s-perfil__contacto">
+                <span class="s-perfil__contactoItem">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-mail" /></svg>
+                  raul.berrios@informatica.inelcom.cl
+                </span>
+                <span class="s-perfil__contactoItem">
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                  +56 9 8765 4321
+                </span>
+              </p>
+
+              <p class="s-perfil__rol">Diseñador UX/UI &amp; Gráfico Digital</p>
+              <p class="s-perfil__rol">Desarrollo TI</p>
+            </div>
+          </section>
+
+          <!-- ==================== DATOS PERSONALES ====================
+             Los doce pares. El lápiz abre el modal con los tres que la
+             persona puede corregir por su cuenta. -->
+          <section class="c-card" aria-labelledby="personales-titulo">
+            <div class="c-card__heading">
+              <h2 class="c-card__title" id="personales-titulo">Datos Personales</h2>
+              <button
+                class="c-iconbtn"
+                type="button"
+                data-abre="#modal-datos"
+                aria-label="Editar mis datos de contacto"
+              >
+                <svg class="c-icon" aria-hidden="true"><use href="#i-pencil" /></svg>
+              </button>
+            </div>
+
+            <dl class="s-perfil__datos">
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Nombres</dt>
+                <dd class="s-perfil__valor">Raúl Gabriel</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Apellidos</dt>
+                <dd class="s-perfil__valor">Berríos Jofré</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">RUT</dt>
+                <dd class="s-perfil__valor">18264517-9</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Cumpleaños</dt>
+                <dd class="s-perfil__valor">14-03-1994</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Dirección</dt>
+                <dd class="s-perfil__valor" data-perfil-valor="direccion">
+                  Av. Los Leones 1234, Providencia
+                </dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Nacionalidad</dt>
+                <dd class="s-perfil__valor">Chilena</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Correo personal</dt>
+                <dd class="s-perfil__valor" data-perfil-valor="correo">
+                  r.berrios.demo@correo.cl
+                </dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Género</dt>
+                <dd class="s-perfil__valor">Masculino</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Teléfono personal</dt>
+                <dd class="s-perfil__valor" data-perfil-valor="telefono">
+                  +56 9 1234 5678
+                </dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Estado civil</dt>
+                <dd class="s-perfil__valor">Soltero/a</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">AFP</dt>
+                <dd class="s-perfil__valor">AFP Uno</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Previsión</dt>
+                <dd class="s-perfil__valor">FONASA</dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- ==================== DATOS LABORALES ====================
+             Solo lectura: salen del contrato. -->
+          <section class="c-card" aria-labelledby="laborales-titulo">
+            <h2 class="c-card__title" id="laborales-titulo">Datos Laborales</h2>
+            <p class="s-perfil__nota">
+              Los mantiene Recursos Humanos. Si algo no cuadra, avísales con un
+              ticket.
+            </p>
+
+            <dl class="s-perfil__datos">
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Cargo</dt>
+                <dd class="s-perfil__valor">Diseñador UX/UI &amp; Gráfico Digital</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Jefatura</dt>
+                <dd class="s-perfil__valor">Carla Helena Garrido</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Área</dt>
+                <dd class="s-perfil__valor">Desarrollo TI</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Gerencia</dt>
+                <dd class="s-perfil__valor">TI</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Centro de costo</dt>
+                <dd class="s-perfil__valor">TI</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Fecha de ingreso</dt>
+                <dd class="s-perfil__valor">17-11-2025</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Correo empresa</dt>
+                <dd class="s-perfil__valor">raul.berrios@informatica.inelcom.cl</dd>
+              </div>
+              <div class="s-perfil__dato">
+                <dt class="s-perfil__rotulo">Teléfono empresa</dt>
+                <dd class="s-perfil__valor s-perfil__valor--vacio">
+                  — Sin registrar
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- =================== CAMBIAR CONTRASEÑA =================== -->
+          <section class="c-card" aria-labelledby="clave-titulo">
+            <h2 class="c-card__title" id="clave-titulo">Cambiar Contraseña</h2>
+
+            <!-- TODO(backend): enviar a la API de cambio de clave. Acá solo
+               se valida que las dos nuevas coincidan. -->
+            <form class="s-perfil__form" data-perfil-clave novalidate>
+              <div class="s-perfil__campos s-perfil__campos--trio">
+                <label class="c-input">
+                  <span class="c-input__label">Contraseña actual</span>
+                  <input
+                    class="c-input__control"
+                    type="password"
+                    name="actual"
+                    autocomplete="current-password"
+                    placeholder="Ingresa tu contraseña actual"
+                    required
+                  />
+                </label>
+                <label class="c-input">
+                  <span class="c-input__label">Nueva contraseña</span>
+                  <input
+                    class="c-input__control"
+                    type="password"
+                    name="nueva"
+                    autocomplete="new-password"
+                    placeholder="Ingresa la nueva contraseña"
+                    required
+                  />
+                </label>
+                <label class="c-input">
+                  <span class="c-input__label">Repite la contraseña</span>
+                  <input
+                    class="c-input__control"
+                    type="password"
+                    name="repite"
+                    autocomplete="new-password"
+                    placeholder="Vuelve a escribirla"
+                    required
+                  />
+                </label>
+              </div>
+
+              <p class="s-perfil__nota" data-perfil-aviso role="status"></p>
+
+              <div class="s-perfil__acciones s-perfil__acciones--inicio">
+                <button class="c-btn c-btn--accion" type="submit">Guardar</button>
+              </div>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ================== MODAL · EDITAR CONTACTO ==================
+       Solo los tres datos que la persona puede corregir sola. -->
+    <dialog class="c-modal c-modal--sm" id="modal-datos" aria-labelledby="modal-datos-titulo">
+      <div class="c-modal__header">
+        <h2 class="c-modal__title" id="modal-datos-titulo">Editar mis datos</h2>
+        <button
+          class="c-closebtn"
+          type="button"
+          data-cierra
+          aria-label="Cerrar edición de datos"
+        >
+          <svg class="c-icon" aria-hidden="true"><use href="#i-cross" /></svg>
+        </button>
+      </div>
+
+      <div class="c-modal__body">
+        <!-- TODO(backend): enviar a la API del perfil. Acá solo se repinta
+           lo que se ve en la tarjeta. -->
+        <form class="s-perfil__form" data-perfil-datos novalidate>
+          <div class="s-perfil__campos">
+            <label class="c-input">
+              <span class="c-input__label">Dirección</span>
+              <input class="c-input__control" type="text" name="direccion" />
+            </label>
+            <label class="c-input">
+              <span class="c-input__label">Correo personal</span>
+              <input class="c-input__control" type="email" name="correo" />
+            </label>
+            <label class="c-input">
+              <span class="c-input__label">Teléfono personal</span>
+              <input class="c-input__control" type="tel" name="telefono" />
+            </label>
+          </div>
+
+          <p class="s-perfil__nota">
+            El resto de los datos sale del contrato y los corrige Recursos
+            Humanos.
+          </p>
+
+          <div class="s-perfil__acciones">
+            <button class="c-btn c-btn--neutro" type="button" data-cierra>
+              Cancelar
+            </button>
+            <button class="c-btn c-btn--accion" type="submit">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <script src="js/sidebar.js" defer></script>
+    <script src="js/componentes.js"></script>
+    <script src="js/mi-perfil.js"></script>
+  </body>
+</html>
