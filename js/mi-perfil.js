@@ -3,15 +3,14 @@
 //
 // La pantalla es casi toda de lectura: los datos vienen pintados en el HTML y
 // el dev los reemplaza por los del backend. Este archivo resuelve lo único
-// que se mueve:
+// que se mueve, que son los dos botones de la tarjeta de identidad:
 //
-//   1. El lápiz de Datos Personales abre el modal con los tres datos que la
-//      persona puede corregir sola. Al abrirlo los campos se llenan con lo
-//      que se ve en la tarjeta, así nadie escribe de cero para cambiar una
-//      letra.
-//   2. Guardar repinta la tarjeta y cierra. Falta mandarlo a la API.
-//   3. El formulario de contraseña comprueba que las dos nuevas coincidan.
-//      Falta mandarlo a la API.
+//   1. "Editar datos" abre el modal con los tres datos que la persona puede
+//      corregir sola. Al abrirlo los campos se llenan con lo que se ve en la
+//      rejilla, así nadie escribe de cero para cambiar una letra. Guardar
+//      repinta la rejilla y cierra. Falta mandarlo a la API.
+//   2. "Cambiar Contraseña" abre el otro modal, que comprueba que las dos
+//      nuevas coincidan. Falta mandarlo a la API.
 //
 // Los dos TODO(backend) del HTML marcan dónde engancha cada uno.
 // ============================================================================
@@ -20,7 +19,7 @@
   "use strict";
 
   // Los tres datos que la persona edita. La clave es la misma en el
-  // [data-perfil-valor] de la tarjeta y en el name del campo del modal.
+  // [data-perfil-valor] de la rejilla y en el name del campo del modal.
   const EDITABLES = ["direccion", "correo", "telefono"];
 
   const MINIMO_CLAVE = 8;
@@ -64,6 +63,7 @@
      ======================================================================== */
 
   function conectaClave() {
+    const modal = document.getElementById("modal-clave");
     const form = document.querySelector("[data-perfil-clave]");
     if (!form) return;
 
@@ -71,6 +71,14 @@
     const di = (texto) => {
       if (aviso) aviso.textContent = texto;
     };
+
+    // Al cerrar no quedan ni las contraseñas escritas ni el aviso anterior
+    if (modal) {
+      modal.addEventListener("close", () => {
+        form.reset();
+        di("");
+      });
+    }
 
     form.addEventListener("submit", (ev) => {
       ev.preventDefault();
@@ -92,7 +100,8 @@
       }
 
       // TODO(backend): acá va la llamada real. Hasta entonces, solo se
-      // limpia el formulario y se avisa.
+      // limpia el formulario y se avisa, sin cerrar: el mensaje se tiene
+      // que alcanzar a leer.
       form.reset();
       di("Listo: tu contraseña quedó cambiada.");
     });

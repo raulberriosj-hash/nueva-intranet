@@ -1,30 +1,73 @@
 /* ==========================================================================
    PANTALLA — MI PERFIL
 
-   Tres bloques de lectura —quién eres, tus datos, tu contrato— y uno de
-   escritura, la contraseña. Lo único propio de la pantalla es la tarjeta de
-   identidad y la rejilla de pares rótulo/valor; lo demás ya lo ponía el
-   sistema (.c-card, .c-input, .c-btn, .c-modal).
+   Dos columnas en escritorio: la tarjeta de identidad a la izquierda, con
+   las dos acciones, y las dos secciones de datos a la derecha. Lo único
+   propio de la pantalla es esa tarjeta y la rejilla de pares rótulo/valor;
+   lo demás ya lo ponía el sistema (.c-card, .c-divider, .c-input, .c-btn,
+   .c-modal).
 
    Como el resto de las hojas de pantalla, no declara ni un color ni un
-   tamaño de letra: todo sale de 01-tokens.css. El único valor literal es el
-   tamaño del avatar, que es una medida de esta pantalla.
+   tamaño de letra: todo sale de 01-tokens.css. Los únicos valores literales
+   son medidas de esta pantalla —el ancho de la columna izquierda y el
+   tamaño del avatar— que el design system no publica como variables.
+
+   DOS COSAS DEL FIGMA QUE NO SE PUDIERON COPIAR AL PIE DE LA LETRA
+     · El Figma pide radio 24 en la tarjeta de identidad y 12 en sus dos
+       botones. El design system tiene 8 y 16, no esos. Quedaron en los del
+       sistema para que estas cajas no sean las únicas distintas de toda la
+       intranet. Si los 24 y 12 son los buenos, el lugar de agregarlos es el
+       archivo de variables de Figma.
+     · El Figma pone los rótulos de Datos Personales en neutral/600 y los de
+       Datos Laborales en neutral/700. Acá van los dos en el mismo tono: la
+       diferencia no significa nada y se ve como un descuido.
    ========================================================================== */
+
+.s-perfil {
+  /* El celeste de los iconos de sección y del cargo. Es corporate/700, el
+     mismo que el sistema llama "acento". */
+  --perfil-acento: var(--color-info-accent);
+}
+
+/* ==========================================================================
+   LAS DOS COLUMNAS
+
+   La izquierda es fija porque la tarjeta es una ficha: si se estira, la
+   foto queda flotando en medio de nada. El corte va en 1024 y no en 768:
+   a 768 la columna derecha quedaría en 234 px y los datos no caben.
+   ========================================================================== */
+
+.s-perfil__columnas {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.s-perfil__secciones {
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+}
+
+@media (min-width: 1024px) {
+  .s-perfil__columnas {
+    grid-template-columns: 370px minmax(0, 1fr);
+    align-items: start;
+  }
+}
 
 /* ==========================================================================
    TARJETA DE IDENTIDAD
    ========================================================================== */
 
 .s-perfil__identidad {
-  flex-direction: row;
   align-items: center;
-  gap: var(--space-6);
+  text-align: center;
 }
 
 .s-perfil__avatar {
   flex-shrink: 0;
-  width: 96px;
-  height: 96px;
+  width: 140px;
+  height: 140px;
 }
 
 .s-perfil__quien {
@@ -32,86 +75,147 @@
   flex-direction: column;
   gap: var(--space-1);
   min-width: 0;
+  width: 100%;
 }
 
 .s-perfil__nombre {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.s-perfil__rol {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-normal);
+  color: var(--perfil-acento);
+}
+
+.s-perfil__contacto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* El Figma mete el correo 24 px hacia adentro, que en la tarjeta de 370 se
+   ve bien. En teléfono la tarjeta ocupa el ancho entero y esos 48 px de más
+   son justo los que parten el correo de empresa en dos renglones, así que
+   el margen solo entra cuando la tarjeta vuelve a ser una columna. */
+@media (min-width: 1024px) {
+  .s-perfil__contacto {
+    padding-inline: var(--space-6);
+  }
+}
+
+.s-perfil__contactoItem {
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--c-blue-support-900);
+  overflow-wrap: anywhere;
+}
+
+/* Las dos acciones de la pantalla. Van una sobre otra y sin estirarse: son
+   dos verbos, no dos bloques. */
+.s-perfil__botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* .c-btn--neutro viene de la tabla de solicitudes: etiqueta corta, en
+   negrita y apretada. Acá es un botón de ficha, así que se le da aire, la
+   etiqueta en redonda y el icono grande, como en el Figma. */
+.s-perfil__accion {
+  padding: var(--space-2) var(--space-4);
+  gap: var(--space-2);
+  font-weight: var(--fw-regular);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-button);
+}
+
+.s-perfil__accion .c-icon {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+
+/* ==========================================================================
+   SECCIONES DE DATOS
+   ========================================================================== */
+
+.s-perfil__secTitulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
   line-height: var(--lh-snug);
   color: var(--color-text-primary);
 }
 
-/* Correo y teléfono van en la misma línea mientras quepan */
-.s-perfil__contacto {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-}
-
-.s-perfil__contactoItem {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-normal);
-  color: var(--color-text-primary);
-}
-
-.s-perfil__contactoItem .c-icon {
-  flex-shrink: 0;
-  width: var(--icon-sm);
-  height: var(--icon-sm);
-  color: var(--color-icon-muted);
-}
-
-.s-perfil__rol {
-  font-size: var(--fs-sm);
-  line-height: var(--lh-normal);
-  color: var(--color-text-secondary);
-}
-
-/* En teléfono la foto se va arriba: al lado deja al nombre tres palabras
-   por renglón. */
-@media (max-width: 539px) {
-  .s-perfil__identidad {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-4);
-  }
+.s-perfil__secIcono {
+  color: var(--perfil-acento);
 }
 
 /* ==========================================================================
    PARES RÓTULO / VALOR
 
-   Dos columnas en escritorio y una en teléfono, llenando por filas. El
-   orden es el del marcado: así en una sola columna se sigue leyendo
-   seguido, que es lo que se pierde cuando la rejilla llena por columnas.
+   Cinco columnas en el escritorio del Figma y una en teléfono, llenando por
+   filas. El orden es el del marcado: así en una sola columna se sigue
+   leyendo seguido, que es lo que se pierde cuando la rejilla llena por
+   columnas.
+
+   Los cortes son los anchos en que la columna derecha deja de dar para una
+   columna más, con los rótulos largos —"Teléfono personal", "Fecha de
+   ingreso"— como medida.
    ========================================================================== */
 
 .s-perfil__datos {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3) var(--space-8);
+  grid-template-columns: repeat(var(--perfil-columnas, 1), minmax(0, 1fr));
+  gap: var(--space-6);
   margin: 0;
 }
 
+@media (min-width: 480px) {
+  .s-perfil__datos { --perfil-columnas: 2; }
+}
+
 @media (min-width: 768px) {
-  .s-perfil__datos {
-    grid-template-columns: 1fr 1fr;
-  }
+  .s-perfil__datos { --perfil-columnas: 3; }
+}
+
+@media (min-width: 1280px) {
+  .s-perfil__datos { --perfil-columnas: 4; }
+}
+
+@media (min-width: 1440px) {
+  .s-perfil__datos { --perfil-columnas: 5; }
 }
 
 .s-perfil__dato {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-normal);
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Un valor largo y sin espacios —un correo— se parte por la mitad si lo
+   dejas en una celda de 152 px. En vez de partirlo, ocupa dos columnas.
+   Desde 480, que es donde hay una segunda columna que ocupar. */
+@media (min-width: 480px) {
+  .s-perfil__dato--ancho {
+    grid-column: span 2;
+  }
 }
 
 .s-perfil__rotulo {
+  font-size: var(--fs-xs);
   font-weight: var(--fw-bold);
-  color: var(--color-text-heading);
+  line-height: var(--lh-snug);
+  color: var(--color-text-secondary);
 }
 
 /* Los dos puntos los pone el CSS: así el hueco del dato queda limpio para
@@ -123,14 +227,16 @@
 .s-perfil__valor {
   margin: 0;
   min-width: 0;
-  overflow-wrap: anywhere;
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
   color: var(--color-text-primary);
+  overflow-wrap: anywhere;
 }
 
 /* Un dato que la empresa todavía no tiene cargado. Se deja a la vista y
    apagado: el hueco en blanco parece un error de la pantalla. */
 .s-perfil__valor--vacio {
-  color: var(--color-text-secondary);
+  color: var(--color-border);
 }
 
 .s-perfil__nota {
@@ -140,7 +246,7 @@
 }
 
 /* ==========================================================================
-   FORMULARIOS · contraseña y edición de datos
+   FORMULARIOS · los dos modales
    ========================================================================== */
 
 .s-perfil__form {
@@ -155,20 +261,10 @@
   gap: var(--space-4);
 }
 
-@media (min-width: 768px) {
-  .s-perfil__campos--trio {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 /* El botón no se estira: es una acción, no un bloque */
 .s-perfil__acciones {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--space-2);
-}
-
-.s-perfil__acciones--inicio {
-  justify-content: flex-start;
 }
