@@ -11,6 +11,8 @@
 //      repinta la rejilla y cierra. Falta mandarlo a la API.
 //   2. "Cambiar Contraseña" abre el otro modal, que comprueba que las dos
 //      nuevas coincidan. Falta mandarlo a la API.
+//   3. El lápiz de la foto abre el selector de archivos y muestra la imagen
+//      elegida. Falta subirla.
 //
 // Los dos TODO(backend) del HTML marcan dónde engancha cada uno.
 // ============================================================================
@@ -55,6 +57,36 @@
         if (celda && nuevo) celda.textContent = nuevo;
       });
       modal.close();
+    });
+  }
+
+  /* ========================================================================
+     CAMBIAR LA FOTO
+
+     El <input type="file"> va escondido y lo dispara el lápiz: así el botón
+     se ve como el resto de los de la pantalla y no como el control que trae
+     el navegador, que cambia de forma en cada uno.
+     ======================================================================== */
+
+  function conectaFoto() {
+    const boton = document.querySelector("[data-perfil-cambia-foto]");
+    const archivo = document.querySelector("[data-perfil-archivo]");
+    const foto = document.querySelector("[data-perfil-foto]");
+    if (!boton || !archivo || !foto) return;
+
+    boton.addEventListener("click", () => archivo.click());
+
+    archivo.addEventListener("change", () => {
+      const elegida = archivo.files && archivo.files[0];
+      if (!elegida) return;
+
+      // La anterior se suelta: si no, el navegador se queda con la imagen
+      // en memoria hasta que se cierre la pestaña.
+      if (foto.dataset.perfilTemporal) URL.revokeObjectURL(foto.src);
+
+      // TODO(backend): subir el archivo y dejar la URL que devuelva la API.
+      foto.src = URL.createObjectURL(elegida);
+      foto.dataset.perfilTemporal = "si";
     });
   }
 
@@ -111,5 +143,6 @@
   }
 
   conectaDatos();
+  conectaFoto();
   conectaClave();
 })();

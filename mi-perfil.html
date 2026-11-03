@@ -100,11 +100,32 @@
             <!-- ====================== QUIÉN ERES ======================
                Foto, nombre, cargo, cómo te contactan y las dos acciones. -->
             <section class="c-card s-perfil__identidad" aria-labelledby="perfil-nombre">
-              <img
-                class="c-avatar s-perfil__avatar"
-                src="assets/img/avatar-placeholder.png"
-                alt=""
-              />
+              <div class="s-perfil__foto">
+                <img
+                  class="c-avatar s-perfil__avatar"
+                  src="assets/img/avatar-placeholder.png"
+                  alt=""
+                  data-perfil-foto
+                />
+                <!-- TODO(backend): subir el archivo. Acá solo se muestra lo
+                   que la persona elige, sin guardarlo en ninguna parte. -->
+                <button
+                  class="c-iconbtn s-perfil__editaFoto"
+                  type="button"
+                  data-perfil-cambia-foto
+                  aria-label="Cambiar mi foto de perfil"
+                >
+                  <svg class="c-icon" aria-hidden="true"><use href="#i-pencil" /></svg>
+                </button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  data-perfil-archivo
+                  aria-hidden="true"
+                  tabindex="-1"
+                />
+              </div>
 
               <div class="s-perfil__quien">
                 <h2 class="s-perfil__nombre" id="perfil-nombre">

@@ -70,6 +70,22 @@
   height: 140px;
 }
 
+/* El lápiz para cambiar la foto. Va donde el borde del círculo cruza la
+   diagonal de abajo a la derecha —a 45°, que en un círculo de 140 cae a 2 px
+   de la esquina— y un pelo más afuera, para que se despegue de la foto en
+   vez de taparla. */
+.s-perfil__foto {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.s-perfil__editaFoto {
+  position: absolute;
+  right: -4px;
+  bottom: 2px;
+  box-shadow: var(--shadow-button);
+}
+
 .s-perfil__quien {
   display: flex;
   flex-direction: column;
