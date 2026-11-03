@@ -46,13 +46,19 @@
                 />
                 <div class="s-inicio__acciones">
                   <!-- Nombre y avatar hardcodeados como placeholder de diseño.
-                       Deberían venir de la sesión/usuario autenticado. -->
-                  <button type="button" class="s-inicio__perfil">
-                    <img class="c-avatar" src="assets/img/avatar-placeholder.png" alt="" />
+                       Deberían venir de la sesión/usuario autenticado. La foto
+                       la reparte js/sidebar.js por el [data-foto-perfil]. -->
+                  <a class="s-inicio__perfil" href="mi-perfil.html">
+                    <img
+                      class="c-avatar"
+                      src="assets/img/avatar-placeholder.png"
+                      alt=""
+                      data-foto-perfil
+                    />
                     <span class="s-inicio__perfilNombre"
                       >Raúl Gabriel Berríos Jofré</span
                     >
-                  </button>
+                  </a>
                   <button
                     type="button"
                     class="c-iconbtn s-inicio__salir"

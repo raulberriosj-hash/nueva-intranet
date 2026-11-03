@@ -157,6 +157,52 @@
   const ruta = (r) => (r ? new URL(r, RAIZ).href : null);
 
   /* ======================================================================
+     LA FOTO DE PERFIL
+
+     La misma foto sale en tres sitios —el sidebar, el botón del hero del
+     inicio y la tarjeta de Mi perfil—, así que la lleva este componente,
+     que es el que ya sabe quién es el usuario, y no cada pantalla. Cualquier
+     <img data-foto-perfil> de cualquier página la recibe.
+
+     TODO(backend): la foto tendría que llegar con el resto de la sesión y
+     subirse a la API al cambiarla. Hasta entonces vive en localStorage, que
+     es lo único que sobrevive al cambio de página en una maqueta estática.
+     ====================================================================== */
+
+  const LLAVE_FOTO = "intranet:foto-perfil";
+
+  function leeFoto() {
+    try {
+      return localStorage.getItem(LLAVE_FOTO) || null;
+    } catch {
+      return null; // ventana privada, o almacenamiento bloqueado
+    }
+  }
+
+  function pintaFoto(src) {
+    const foto = src || leeFoto() || ruta(USUARIO.avatar);
+    document.querySelectorAll("[data-foto-perfil]").forEach((img) => {
+      img.src = foto;
+    });
+  }
+
+  function guardaFoto(dataUrl) {
+    try {
+      localStorage.setItem(LLAVE_FOTO, dataUrl);
+    } catch {
+      // Si no cabe o no se puede escribir, al menos se ve en esta pantalla
+    }
+    pintaFoto(dataUrl);
+  }
+
+  window.FotoPerfil = { lee: leeFoto, pinta: pintaFoto, guarda: guardaFoto };
+
+  // Si la cambian en otra pestaña, esta se entera
+  window.addEventListener("storage", (ev) => {
+    if (ev.key === LLAVE_FOTO) pintaFoto();
+  });
+
+  /* ======================================================================
      MARCADO
      ====================================================================== */
 
@@ -284,7 +330,12 @@
     return `<aside class="c-sidebar" id="sidebar" aria-label="Navegación principal">
       <div class="c-sidebar__scroll">
       <div class="c-sidebar__profile">
-        <img class="c-avatar c-avatar--lg" src="${esc(ruta(USUARIO.avatar))}" alt="" />
+        <img
+          class="c-avatar c-avatar--lg"
+          src="${esc(leeFoto() || ruta(USUARIO.avatar))}"
+          alt=""
+          data-foto-perfil
+        />
         <span class="c-sidebar__identity">
           <span class="c-sidebar__org">${esc(USUARIO.organizacion)}</span>
           <span class="c-sidebar__user">${esc(USUARIO.nombre)}</span>
@@ -412,6 +463,8 @@
     const activa = document.body.dataset.pagina || "";
     hueco.outerHTML = marcado(activa);
     conecta(document.getElementById("sidebar"));
+    // El sidebar ya trae la suya; esto es para las demás fotos de la página
+    pintaFoto();
   }
 
   /* --- Plegar y desplegar ----------------------------------------------

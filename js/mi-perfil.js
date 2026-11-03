@@ -68,25 +68,71 @@
      el navegador, que cambia de forma en cada uno.
      ======================================================================== */
 
+  // La foto se recorta a un cuadrado y se baja a este lado antes de
+  // guardarla. Una foto de teléfono pesa varios megas y el sitio donde
+  // queda —localStorage, mientras no haya API— no da para tanto. 400 es lo
+  // que mide el avatar de muestra del repositorio.
+  const LADO_FOTO = 400;
+
+  function cuadra(archivo) {
+    return new Promise((resuelve, rechaza) => {
+      const img = new Image();
+      const temporal = URL.createObjectURL(archivo);
+
+      img.onload = () => {
+        URL.revokeObjectURL(temporal);
+        // Se recorta por el centro: el avatar es redondo y lo que importa
+        // de una foto de perfil siempre está en medio.
+        const lado = Math.min(img.naturalWidth, img.naturalHeight);
+        const lienzo = document.createElement("canvas");
+        lienzo.width = LADO_FOTO;
+        lienzo.height = LADO_FOTO;
+        lienzo.getContext("2d").drawImage(
+          img,
+          (img.naturalWidth - lado) / 2,
+          (img.naturalHeight - lado) / 2,
+          lado,
+          lado,
+          0,
+          0,
+          LADO_FOTO,
+          LADO_FOTO,
+        );
+        resuelve(lienzo.toDataURL("image/jpeg", 0.85));
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(temporal);
+        rechaza();
+      };
+
+      img.src = temporal;
+    });
+  }
+
   function conectaFoto() {
     const boton = document.querySelector("[data-perfil-cambia-foto]");
     const archivo = document.querySelector("[data-perfil-archivo]");
-    const foto = document.querySelector("[data-perfil-foto]");
-    if (!boton || !archivo || !foto) return;
+    if (!boton || !archivo) return;
 
     boton.addEventListener("click", () => archivo.click());
 
-    archivo.addEventListener("change", () => {
+    archivo.addEventListener("change", async () => {
       const elegida = archivo.files && archivo.files[0];
       if (!elegida) return;
 
-      // La anterior se suelta: si no, el navegador se queda con la imagen
-      // en memoria hasta que se cierre la pestaña.
-      if (foto.dataset.perfilTemporal) URL.revokeObjectURL(foto.src);
+      try {
+        const foto = await cuadra(elegida);
+        // TODO(backend): subir el archivo y quedarse con la URL que
+        // devuelva la API. FotoPerfil vive en js/sidebar.js y es quien
+        // reparte la foto por todas las pantallas.
+        if (window.FotoPerfil) window.FotoPerfil.guarda(foto);
+      } catch {
+        // No era una imagen que el navegador supiera abrir
+      }
 
-      // TODO(backend): subir el archivo y dejar la URL que devuelva la API.
-      foto.src = URL.createObjectURL(elegida);
-      foto.dataset.perfilTemporal = "si";
+      // Se limpia para que elegir dos veces el mismo archivo también cuente
+      archivo.value = "";
     });
   }
 
