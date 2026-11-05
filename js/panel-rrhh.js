@@ -49,6 +49,28 @@
     ],
   };
 
+  /* Días efectivamente tomados, mes a mes. Es lo contrario del saldo: lo
+     que la gente SÍ usó. Dos años para que se vea si el año va mejor o
+     peor, y 2026 cortado en octubre porque es hasta donde llega el filtro
+     de arriba.
+
+     Los meses sin dato van en null y no en 0: un cero dibuja una columna
+     a ras de suelo y se lee como "ese mes nadie tomó vacaciones", que es
+     una afirmación distinta de "todavía no pasa". */
+  const ACTIVOS = 634;
+  const DIAS_POR_ANIO = 15; // art. 67 del Código del Trabajo
+
+  const TOMADOS = {
+    meses: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    2025: [1420, 1510, 520, 480, 390, 360, 610, 380, 780, 420, 450, 980],
+    2026: [1560, 1640, 590, 510, 430, 395, 690, 455, 860, 505, null, null],
+  };
+
+  // Lo que la empresa devenga cada mes. Por debajo de esta línea el saldo
+  // sube; por encima, baja. No es una meta inventada: son los 634 activos
+  // por sus 15 días al año, repartidos en doce.
+  const DEVENGO_MES = Math.round((ACTIVOS * DIAS_POR_ANIO) / 12);
+
   // Las diez personas con más saldo salen del mismo arreglo que las tablas
   const TOP10 = PERSONAS.slice(0, 10).map((p) => [
     `${p[1].split(" ")[0]} ${p[2]}`,
@@ -77,6 +99,7 @@
     anterior: tok("--c-error-500"),
     efectivo: tok("--c-success-600"),
     transito: tok("--c-blue-support-600"),
+    previo: tok("--c-neutral-400"),
     tinta: tok("--color-text-primary"),
     suave: tok("--color-text-heading"),
     tenue: tok("--color-text-secondary"),
@@ -201,6 +224,38 @@
     series: [
       { name: "Días aprobados", data: SEMANAL.aprobados, color: COLOR.efectivo },
       { name: "Días pendientes de aprobación", data: SEMANAL.pendientes, color: COLOR.vence },
+    ],
+  });
+
+  Highcharts.chart("g-tomados", {
+    chart: { type: "column" },
+    xAxis: { categories: TOMADOS.meses },
+    yAxis: {
+      labels: { format: "{value}" },
+      // La referencia va en el eje y no en una serie: es un umbral, no un
+      // dato que se pueda comparar mes contra mes.
+      plotLines: [
+        {
+          value: DEVENGO_MES,
+          color: COLOR.vence,
+          dashStyle: "Dash",
+          width: 2,
+          zIndex: 4,
+          label: {
+            text: `Se devengan ${DEVENGO_MES} días al mes`,
+            align: "right",
+            x: -8,
+            y: -6,
+            style: { color: COLOR.suave, fontSize: FS_CHICO },
+          },
+        },
+      ],
+    },
+    tooltip: { shared: true, pointFormat: "{series.name}: <b>{point.y} días</b><br>" },
+    // El año en curso manda; el anterior queda en gris, de referencia.
+    series: [
+      { name: "2026", data: TOMADOS[2026], color: COLOR.vigente },
+      { name: "2025", data: TOMADOS[2025], color: COLOR.previo },
     ],
   });
 
