@@ -453,7 +453,7 @@
             <h2 class="l-section__title" id="t-kpis">Saldo de la empresa</h2>
 
             <div class="bi-kpis">
-              <article class="bi-kpi bi-kpi--neutro">
+              <article class="bi-kpi bi-kpi--vigente">
                 <div class="bi-kpi__header">
                   <span class="bi-kpi__bubble">
                     <svg class="c-icon c-icon--maleta" aria-hidden="true">
@@ -464,36 +464,6 @@
                 </div>
                 <p class="bi-kpi__valor">
                   <span class="bi-kpi__n">9.257</span
-                  ><span class="bi-kpi__u">días</span>
-                </p>
-              </article>
-
-              <article class="bi-kpi bi-kpi--anterior">
-                <div class="bi-kpi__header">
-                  <span class="bi-kpi__bubble">
-                    <svg class="c-icon" aria-hidden="true">
-                      <use href="#i-cross" />
-                    </svg>
-                  </span>
-                  <h3 class="bi-kpi__label">Periodos anteriores</h3>
-                </div>
-                <p class="bi-kpi__valor">
-                  <span class="bi-kpi__n">5.644</span
-                  ><span class="bi-kpi__u">días</span>
-                </p>
-              </article>
-
-              <article class="bi-kpi bi-kpi--vigente">
-                <div class="bi-kpi__header">
-                  <span class="bi-kpi__bubble">
-                    <svg class="c-icon" aria-hidden="true">
-                      <use href="#i-calendar" />
-                    </svg>
-                  </span>
-                  <h3 class="bi-kpi__label">Pendientes de utilizar</h3>
-                </div>
-                <p class="bi-kpi__valor">
-                  <span class="bi-kpi__n">8.845</span
                   ><span class="bi-kpi__u">días</span>
                 </p>
               </article>
@@ -512,49 +482,96 @@
                   ><span class="bi-kpi__u">días</span>
                 </p>
               </article>
-            </div>
+
+              <article class="bi-kpi bi-kpi--vence">
+                <div class="bi-kpi__header">
+                  <span class="bi-kpi__bubble">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-calendar" />
+                    </svg>
+                  </span>
+                  <h3 class="bi-kpi__label">Pendientes de utilizar</h3>
+                </div>
+                <p class="bi-kpi__valor">
+                  <span class="bi-kpi__n">8.845</span
+                  ><span class="bi-kpi__u">días</span>
+                </p>
+              </article>
+
+              <article class="bi-kpi bi-kpi--anterior">
+                <div class="bi-kpi__header">
+                  <span class="bi-kpi__bubble">
+                    <svg class="c-icon" aria-hidden="true">
+                      <use href="#i-cross" />
+                    </svg>
+                  </span>
+                  <h3 class="bi-kpi__label">Periodos anteriores</h3>
+                </div>
+                <p class="bi-kpi__valor">
+                  <span class="bi-kpi__n">5.644</span
+                  ><span class="bi-kpi__u">días</span>
+                </p>
+              </article>
           </section>
 
           <!-- ============ TRAMOS DE SALDO ============
              Cada tarjeta abre la lista filtrada por ese tramo. Mismo tile
              que arriba, con un pie que lo delata como puerta de entrada. -->
+          <!-- ============ TRAMOS DE SALDO ============
+             Cada tarjeta abre la lista filtrada por ese tramo. Mismo tile
+             que arriba, con un pie que lo delata como puerta de entrada.
+
+             LAS CUATRO VAN DE MENOS A MÁS GRAVE, de izquierda a derecha, y
+             el color acompaña. Los cortes son los mismos que el límite de
+             20 días que persigue la empresa: por eso en la tarjeta verde el
+             exceso sería siempre cero y en su lugar va un "Dentro del
+             límite". Las dos tarjetas que sí tienen exceso suman exactamente
+             el total de la línea de arriba.
+
+             Las cifras las pinta js/panel-rrhh.js desde PERSONAS; acá van en
+             cero para que no haya dos verdades si el dato cambia. -->
           <section class="l-section" aria-labelledby="t-tramos">
             <h2 class="l-section__title" id="t-tramos">
               Colaboradores por tramo de saldo
             </h2>
 
+            <!-- El objetivo de la empresa, dicho una vez y entero -->
+            <p class="bi-limite">
+              <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+              <span class="bi-limite__texto">
+                <strong data-exceso-personas>0</strong> colaboradores superan el
+                límite de 20 días ·
+                <strong data-exceso-dias>0</strong> días por recuperar
+              </span>
+              <button
+                class="bi-limite__enlace"
+                type="button"
+                data-tramo="sobre"
+                data-abre="#modal-tramo"
+              >
+                Ver el detalle
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#i-chevron-right" />
+                </svg>
+              </button>
+            </p>
+
             <div class="bi-tramos">
               <button
-                class="bi-tramo bi-tramo--alto"
+                class="bi-tramo bi-tramo--hoy"
                 type="button"
-                data-tramo="alto"
+                data-tramo="hoy"
                 data-abre="#modal-tramo"
               >
                 <span class="bi-tramo__cuerpo">
-                  <span class="bi-tramo__rango">+31 días de saldo</span>
-                  <span class="bi-tramo__label"
-                    ><span class="bi-tramo__n">60</span> Colaboradores</span
-                  >
-                </span>
-                <span class="bi-tramo__pie">
-                  Ver el detalle
-                  <svg class="c-icon" aria-hidden="true">
-                    <use href="#i-chevron-right" />
-                  </svg>
-                </span>
-              </button>
-
-              <button
-                class="bi-tramo bi-tramo--medio"
-                type="button"
-                data-tramo="medio"
-                data-abre="#modal-tramo"
-              >
-                <span class="bi-tramo__cuerpo">
-                  <span class="bi-tramo__rango">16 a 30 días de saldo</span>
-                  <span class="bi-tramo__label"
-                    ><span class="bi-tramo__n">164</span> Colaboradores</span
-                  >
+                  <span class="bi-tramo__rango">En vacaciones hoy</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="hoy">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                  </span>
                 </span>
                 <span class="bi-tramo__pie">
                   Ver el detalle
@@ -571,10 +588,18 @@
                 data-abre="#modal-tramo"
               >
                 <span class="bi-tramo__cuerpo">
-                  <span class="bi-tramo__rango">0 a 15 días de saldo</span>
-                  <span class="bi-tramo__label"
-                    ><span class="bi-tramo__n">385</span> Colaboradores</span
-                  >
+                  <span class="bi-tramo__rango">0 a 20 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="bajo">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--ok">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-check" /></svg>
+                      Dentro del límite
+                    </span>
+                  </span>
                 </span>
                 <span class="bi-tramo__pie">
                   Ver el detalle
@@ -585,16 +610,52 @@
               </button>
 
               <button
-                class="bi-tramo bi-tramo--hoy"
+                class="bi-tramo bi-tramo--medio"
                 type="button"
-                data-tramo="hoy"
+                data-tramo="medio"
                 data-abre="#modal-tramo"
               >
                 <span class="bi-tramo__cuerpo">
-                  <span class="bi-tramo__rango">En vacaciones hoy</span>
-                  <span class="bi-tramo__label"
-                    ><span class="bi-tramo__n">0</span> Colaboradores</span
-                  >
+                  <span class="bi-tramo__rango">21 a 30 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="medio">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+                      <span data-tramo-exceso="medio">0</span> días sobre el límite
+                    </span>
+                  </span>
+                </span>
+                <span class="bi-tramo__pie">
+                  Ver el detalle
+                  <svg class="c-icon" aria-hidden="true">
+                    <use href="#i-chevron-right" />
+                  </svg>
+                </span>
+              </button>
+
+              <button
+                class="bi-tramo bi-tramo--alto"
+                type="button"
+                data-tramo="alto"
+                data-abre="#modal-tramo"
+              >
+                <span class="bi-tramo__cuerpo">
+                  <span class="bi-tramo__rango">+31 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="alto">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+                      <span data-tramo-exceso="alto">0</span> días sobre el límite
+                    </span>
+                  </span>
                 </span>
                 <span class="bi-tramo__pie">
                   Ver el detalle
@@ -1048,7 +1109,7 @@
             Detalle de colaboradores
           </h2>
           <p class="bi-card__sub" data-modal-sub>
-            0 a 15 días de vacaciones pendientes
+            0 a 20 días de vacaciones pendientes
           </p>
         </div>
         <button
@@ -1116,6 +1177,11 @@
                 <th scope="col">
                   <button class="bi-orden" type="button" data-orden="5">
                     Total días disponibles
+                  </button>
+                </th>
+                <th scope="col">
+                  <button class="bi-orden" type="button" data-orden="6">
+                    Sobre el límite
                   </button>
                 </th>
               </tr>

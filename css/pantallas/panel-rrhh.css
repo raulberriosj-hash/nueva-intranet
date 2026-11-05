@@ -451,18 +451,46 @@
   color: var(--tile-value);
 }
 
-.bi-tramo__label {
-  display: block;
-  margin-top: var(--space-2);
-  font-size: var(--fs-base);
+/* Dos pastillas por tarjeta: cuánta gente cae en el tramo y cuántos días
+   le sobran al tramo entero. Se envuelven en vez de encogerse porque el
+   texto "días sobre el límite" no se puede recortar sin mentir. */
+.bi-tramo__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.bi-tramo__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--fs-xs);
   font-weight: var(--fw-regular);
   line-height: 1.35;
   color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-md);
 }
 
-.bi-tramo__n {
+.bi-tramo__tag .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: var(--tile-accent);
+}
+
+/* La cifra manda sobre la palabra que la acompaña */
+.bi-tramo__tag span {
   font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
+}
+
+/* En la tarjeta verde el exceso sería siempre cero, así que en su lugar va
+   la confirmación. Sin cifra: no hay nada que contar. */
+.bi-tramo__tag--ok {
+  color: var(--tile-accent);
 }
 
 .bi-tramo__pie {
@@ -515,6 +543,76 @@
   --tile-border: var(--color-info-border);
   --tile-accent: var(--color-info-accent);
   --tile-value: var(--color-info-text);
+}
+
+/* ==========================================================================
+   LA LÍNEA DEL LÍMITE
+
+   El objetivo de la empresa —que nadie pase de 20 días— dicho una vez y
+   entero, encima de las tarjetas que lo desglosan. Va en el amarillo de
+   aviso y no en rojo: es una meta, no una alarma.
+   ========================================================================== */
+
+.bi-limite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-warning-text);
+  background-color: var(--color-warning-bg-soft);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-lg);
+}
+
+.bi-limite > .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--c-warning-700);
+}
+
+.bi-limite__texto {
+  flex: 1;
+  min-width: 0;
+}
+
+/* En teléfono el enlace, al envolverse, caía en medio de la frase y partía
+   "superan el límite de 20 días" de "1.845 días por recuperar". Debajo de
+   640 baja entero a su propia línea, y el icono se queda arriba con el
+   texto en vez de quedarse solo en un renglón. */
+@media (max-width: 639px) {
+  .bi-limite__texto {
+    flex-basis: 0;
+  }
+
+  .bi-limite__enlace {
+    flex-basis: 100%;
+  }
+}
+
+.bi-limite strong {
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lleva al mismo modal que las tarjetas, pero con los 158 de una vez */
+.bi-limite__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--c-warning-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bi-limite__enlace .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: inherit;
 }
 
 /* ==========================================================================
@@ -692,6 +790,29 @@
   --celda-bg: transparent;
   --celda-text: var(--color-text-secondary);
   font-weight: var(--fw-regular);
+}
+
+/* Quien pasa del límite se marca dos veces en la misma fila: el total en
+   rojo y, al lado, cuántos días le sobran. Dos columnas y no una porque
+   son dos preguntas distintas —cuánto tiene y cuánto hay que bajarle— y
+   RRHH ordena por la segunda. */
+.bi-celda--pasado {
+  --celda-bg: var(--c-error-100);
+  --celda-text: var(--c-error-800);
+}
+
+.bi-celda--exceso {
+  --celda-bg: var(--c-error-100);
+  --celda-text: var(--c-error-800);
+}
+
+/* A quien no le sobra nada no se le deja la celda en blanco: parece un
+   dato que falta. */
+.bi-celda__nada {
+  display: inline-block;
+  min-width: 46px;
+  text-align: right;
+  color: var(--color-text-secondary);
 }
 
 /* ==========================================================================

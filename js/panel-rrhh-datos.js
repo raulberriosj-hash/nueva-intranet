@@ -12,9 +12,13 @@
        2026 · 41     2025 · 3.572   2024 · 3.895
        2023 · 1.278  2022 · 351     2021 · 120     TOTAL 9.257
 
-   Y los tramos dan exactamente los de las tarjetas: 60 personas con más de
-   31 días, 164 entre 16 y 30, 385 entre 1 y 15. Son 609 con saldo; los 25
-   que faltan para los 634 activos no tienen días pendientes.
+   Los tramos salen de acá: 60 personas con más de 31 días, 98 entre 21 y
+   30, y 451 entre 1 y 20. Son 609 con saldo; los 25 que faltan para los
+   634 activos no tienen días pendientes. Sobre el límite de 20 días hay
+   158 personas y 1.845 días, que es el 20% del saldo de la empresa.
+
+   Las tarjetas NO llevan esas cifras escritas: las calcula panel-rrhh.js
+   desde este arreglo, así que cambiar una fila de acá las mueve solas.
 
    Ningún reparto supera los 15 días por año (art. 67 del Código del
    Trabajo), y los días más viejos se cargan a quienes más saldo acumulan,

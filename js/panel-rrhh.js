@@ -339,13 +339,26 @@
 
   /* --- Modal de un tramo ------------------------------------------------ */
 
-  // Los cortes son los mismos que muestran las cuatro tarjetas. "hoy" no
-  // depende del saldo sino de quién está de vacaciones en este momento, así
-  // que en la maqueta va vacío.
+  // El techo que persigue la empresa: nadie debería acumular más de esto.
+  // Está acá y en ningún otro sitio porque es una política, no un número
+  // de diseño: el día que RRHH lo baje a 15, se cambia una línea.
+  const LIMITE = 20;
+
+  // Lo que a una persona le sobra por encima del límite
+  const exceso = (t) => Math.max(0, t - LIMITE);
+
+  // Los cortes son los mismos que muestran las cuatro tarjetas, y el de
+  // "bajo" coincide a propósito con el límite. "hoy" no depende del saldo
+  // sino de quién está de vacaciones en este momento, así que en la maqueta
+  // va vacío.
   const TRAMOS = {
     alto: { sub: "Más de 31 días de vacaciones pendientes", filtra: (t) => t >= 31 },
-    medio: { sub: "16 a 30 días de vacaciones pendientes", filtra: (t) => t >= 16 && t <= 30 },
-    bajo: { sub: "0 a 15 días de vacaciones pendientes", filtra: (t) => t >= 1 && t <= 15 },
+    medio: { sub: "21 a 30 días de vacaciones pendientes", filtra: (t) => t >= 21 && t <= 30 },
+    bajo: { sub: "0 a 20 días de vacaciones pendientes", filtra: (t) => t >= 1 && t <= LIMITE },
+    sobre: {
+      sub: `Colaboradores sobre el límite de ${LIMITE} días`,
+      filtra: (t) => t > LIMITE,
+    },
     hoy: {
       sub: "Colaboradores en vacaciones hoy",
       filtra: () => false,
@@ -353,6 +366,35 @@
       vacioTexto: "Cuando haya vacaciones en curso, acá aparece quién las está tomando.",
     },
   };
+
+  /* --- Las cifras de las tarjetas ---------------------------------------
+     Se calculan desde PERSONAS y no van escritas en el HTML: si el dato
+     cambia, las tarjetas, la línea del límite y los modales siguen diciendo
+     lo mismo. Los dos excesos suman exactamente el de la línea. */
+
+  function pintaTramos() {
+    const saldos = PERSONAS.map(total);
+
+    const escribe = (sel, n) => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = cifra(n);
+    };
+
+    Object.keys(TRAMOS).forEach((clave) => {
+      const grupo = saldos.filter(TRAMOS[clave].filtra);
+      escribe(`[data-tramo-personas="${clave}"]`, grupo.length);
+      escribe(
+        `[data-tramo-exceso="${clave}"]`,
+        grupo.reduce((a, t) => a + exceso(t), 0),
+      );
+    });
+
+    const sobre = saldos.filter(TRAMOS.sobre.filtra);
+    escribe("[data-exceso-personas]", sobre.length);
+    escribe("[data-exceso-dias]", sobre.reduce((a, t) => a + exceso(t), 0));
+  }
+
+  pintaTramos();
 
   const modal = $("#modal-tramo");
 
@@ -368,7 +410,10 @@
     const ordenables = modal.querySelectorAll("[data-orden]");
 
     // Fila plana, en el orden de las columnas del modal
-    const plana = (p) => [p[0], p[1], p[2], p[3], AREAS[p[4]], total(p)];
+    const plana = (p) => {
+      const t = total(p);
+      return [p[0], p[1], p[2], p[3], AREAS[p[4]], t, exceso(t)];
+    };
 
     let base = [];      // el tramo elegido, ya aplanado
     let vista = [];     // lo que queda tras buscar y ordenar
@@ -421,12 +466,21 @@
       }
 
       cuerpo.innerHTML = trozo
-        .map(
-          (f) => `<tr>
+        .map((f) => {
+          // Quien pasa del límite se marca en los dos sitios: el total en
+          // rojo y el exceso con su cifra. El que no, deja el hueco con una
+          // raya, que se lee mejor que una celda en blanco.
+          const pasado = f[6] > 0;
+          const clase = pasado ? " bi-celda--pasado" : "";
+          const sobra = pasado
+            ? `<span class="bi-celda bi-celda--exceso">+${cifra(f[6])}</span>`
+            : `<span class="bi-celda__nada">—</span>`;
+          return `<tr>
             <td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td>
-            <td><span class="bi-celda bi-celda--total">${cifra(f[5])}</span></td>
-          </tr>`,
-        )
+            <td><span class="bi-celda bi-celda--total${clase}">${cifra(f[5])}</span></td>
+            <td>${sobra}</td>
+          </tr>`;
+        })
         .join("");
 
       notaModal.textContent = `Mostrando ${desde + 1} a ${desde + trozo.length} de ${cifra(
@@ -443,10 +497,13 @@
       sub.textContent = t.sub;
       base = PERSONAS.filter((p) => t.filtra(total(p))).map(plana);
       buscador.value = "";
-      orden = 5;
+      // Donde hay gente sobre el límite, lo primero que RRHH necesita ver es
+      // a quién más le sobra, no quién tiene más saldo. En los demás tramos
+      // las dos columnas ordenan igual, así que manda la de siempre.
+      orden = base.some((f) => f[6] > 0) ? 6 : 5;
       dir = -1;
       ordenables.forEach((b) => delete b.dataset.dir);
-      modal.querySelector('[data-orden="5"]').dataset.dir = "desc";
+      modal.querySelector(`[data-orden="${orden}"]`).dataset.dir = "desc";
       filtra();
       pinta();
     };
