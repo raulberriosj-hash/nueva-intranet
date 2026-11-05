@@ -52,10 +52,10 @@
   /* Días efectivamente tomados, mes a mes. Es lo contrario del saldo: lo
      que la gente SÍ usó.
 
-     La clave es "AAAA-MM" y no un arreglo de doce porque la ventana del
-     gráfico se mueve con el calendario: va desde enero del año anterior
-     hasta el mes en curso. En enero son 13 columnas y en diciembre 24; el
-     resto del año, algo entre medio.
+     La clave es "AAAA-MM" y no un arreglo de doce porque la ventana se
+     mueve con el calendario: son los últimos doce meses, contando el de
+     hoy. En noviembre de 2026 eso es de diciembre de 2025 a noviembre de
+     2026, y cada mes que pasa entra uno y sale el más viejo.
 
      El último mes va incompleto, porque es el que se está viviendo. Se
      dibuja igual —esconderlo haría creer que el mes pasado fue el último—
@@ -79,18 +79,18 @@
     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
   ];
 
-  /* Arma la ventana: desde el 1 de enero del año pasado hasta el mes de
-     hoy. El año solo se escribe en enero y en la primera columna; repetirlo
-     en las veintitrés ensucia el eje sin agregar nada. */
+  const MESES_VENTANA = 12;
+
+  /* Arma la ventana: los últimos doce meses, con el de hoy al final. El año
+     solo se escribe en enero y en la primera columna; repetirlo en las doce
+     ensucia el eje sin agregar nada. */
   function ventanaTomados(hoy = new Date()) {
-    const desde = new Date(hoy.getFullYear() - 1, 0, 1);
     const meses = [];
 
-    for (
-      let f = desde;
-      f <= hoy;
-      f = new Date(f.getFullYear(), f.getMonth() + 1, 1)
-    ) {
+    for (let i = MESES_VENTANA - 1; i >= 0; i--) {
+      // Día 1 del mes: con el día de hoy, restar meses se pasa de largo en
+      // los meses cortos (31 de marzo menos un mes cae en el 3 de marzo).
+      const f = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
       const anio = f.getFullYear();
       const mes = f.getMonth();
       const clave = `${anio}-${String(mes + 1).padStart(2, "0")}`;
