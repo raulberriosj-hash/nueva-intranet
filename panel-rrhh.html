@@ -702,16 +702,16 @@
 
           <!-- ============ GRÁFICO · DÍAS TOMADOS POR MES ============
              El único gráfico de la pantalla que mira los días USADOS y no
-             los pendientes. La línea de puntos es lo que la empresa devenga
-             cada mes: los meses que quedan debajo son los que engordan el
-             saldo. -->
+             los pendientes. La ventana se mueve con el calendario —de enero
+             del año pasado al mes de hoy— y el subtítulo lo pinta
+             js/panel-rrhh.js, que es quien sabe en qué mes estamos. -->
           <div class="bi-fila">
             <section class="bi-card">
               <header class="bi-card__head">
                 <div>
                   <h2 class="bi-card__title">Días tomados por mes</h2>
-                  <p class="bi-card__sub">
-                    Días efectivamente usados · 2026 frente a 2025
+                  <p class="bi-card__sub" data-tomados-sub>
+                    Días efectivamente usados
                   </p>
                 </div>
               </header>

@@ -50,26 +50,65 @@
   };
 
   /* Días efectivamente tomados, mes a mes. Es lo contrario del saldo: lo
-     que la gente SÍ usó. Dos años para que se vea si el año va mejor o
-     peor, y 2026 cortado en octubre porque es hasta donde llega el filtro
-     de arriba.
+     que la gente SÍ usó.
 
-     Los meses sin dato van en null y no en 0: un cero dibuja una columna
-     a ras de suelo y se lee como "ese mes nadie tomó vacaciones", que es
-     una afirmación distinta de "todavía no pasa". */
-  const ACTIVOS = 634;
-  const DIAS_POR_ANIO = 15; // art. 67 del Código del Trabajo
+     La clave es "AAAA-MM" y no un arreglo de doce porque la ventana del
+     gráfico se mueve con el calendario: va desde enero del año anterior
+     hasta el mes en curso. En enero son 13 columnas y en diciembre 24; el
+     resto del año, algo entre medio.
 
+     El último mes va incompleto, porque es el que se está viviendo. Se
+     dibuja igual —esconderlo haría creer que el mes pasado fue el último—
+     pero el tooltip lo dice. */
   const TOMADOS = {
-    meses: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-    2025: [1420, 1510, 520, 480, 390, 360, 610, 380, 780, 420, 450, 980],
-    2026: [1560, 1640, 590, 510, 430, 395, 690, 455, 860, 505, null, null],
+    "2025-01": 1420, "2025-02": 1510, "2025-03": 520, "2025-04": 480,
+    "2025-05": 390,  "2025-06": 360,  "2025-07": 610, "2025-08": 380,
+    "2025-09": 780,  "2025-10": 420,  "2025-11": 450, "2025-12": 980,
+    "2026-01": 1560, "2026-02": 1640, "2026-03": 590, "2026-04": 510,
+    "2026-05": 430,  "2026-06": 395,  "2026-07": 690, "2026-08": 455,
+    "2026-09": 860,  "2026-10": 505,  "2026-11": 118,
   };
 
-  // Lo que la empresa devenga cada mes. Por debajo de esta línea el saldo
-  // sube; por encima, baja. No es una meta inventada: son los 634 activos
-  // por sus 15 días al año, repartidos en doce.
-  const DEVENGO_MES = Math.round((ACTIVOS * DIAS_POR_ANIO) / 12);
+  const MESES_CORTOS = [
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+    "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+  ];
+
+  const MESES_LARGOS = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+  ];
+
+  /* Arma la ventana: desde el 1 de enero del año pasado hasta el mes de
+     hoy. El año solo se escribe en enero y en la primera columna; repetirlo
+     en las veintitrés ensucia el eje sin agregar nada. */
+  function ventanaTomados(hoy = new Date()) {
+    const desde = new Date(hoy.getFullYear() - 1, 0, 1);
+    const meses = [];
+
+    for (
+      let f = desde;
+      f <= hoy;
+      f = new Date(f.getFullYear(), f.getMonth() + 1, 1)
+    ) {
+      const anio = f.getFullYear();
+      const mes = f.getMonth();
+      const clave = `${anio}-${String(mes + 1).padStart(2, "0")}`;
+      const enCurso = anio === hoy.getFullYear() && mes === hoy.getMonth();
+
+      meses.push({
+        etiqueta:
+          mes === 0 || meses.length === 0
+            ? `${MESES_CORTOS[mes]} ${String(anio).slice(2)}`
+            : MESES_CORTOS[mes],
+        // Para el subtítulo, que es una frase y no cabe en tres letras
+        largo: `${MESES_LARGOS[mes]} de ${anio}`,
+        punto: { y: TOMADOS[clave] ?? null, enCurso },
+      });
+    }
+
+    return meses;
+  }
 
   // Las diez personas con más saldo salen del mismo arreglo que las tablas
   const TOP10 = PERSONAS.slice(0, 10).map((p) => [
@@ -99,7 +138,6 @@
     anterior: tok("--c-error-500"),
     efectivo: tok("--c-success-600"),
     transito: tok("--c-blue-support-600"),
-    previo: tok("--c-neutral-400"),
     tinta: tok("--color-text-primary"),
     suave: tok("--color-text-heading"),
     tenue: tok("--color-text-secondary"),
@@ -227,37 +265,34 @@
     ],
   });
 
-  Highcharts.chart("g-tomados", {
-    chart: { type: "column" },
-    xAxis: { categories: TOMADOS.meses },
-    yAxis: {
-      labels: { format: "{value}" },
-      // La referencia va en el eje y no en una serie: es un umbral, no un
-      // dato que se pueda comparar mes contra mes.
-      plotLines: [
+  {
+    const meses = ventanaTomados();
+    const sub = document.querySelector("[data-tomados-sub]");
+    if (sub) {
+      sub.textContent =
+        `Días efectivamente usados desde ${meses[0].largo} · ` +
+        "el mes en curso va incompleto";
+    }
+
+    Highcharts.chart("g-tomados", {
+      chart: { type: "column" },
+      xAxis: { categories: meses.map((m) => m.etiqueta) },
+      yAxis: { labels: { format: "{value}" } },
+      legend: { enabled: false },
+      tooltip: {
+        pointFormatter() {
+          return `<b>${this.y} días</b>${this.options.enCurso ? " · mes en curso" : ""}`;
+        },
+      },
+      series: [
         {
-          value: DEVENGO_MES,
-          color: COLOR.vence,
-          dashStyle: "Dash",
-          width: 2,
-          zIndex: 4,
-          label: {
-            text: `Se devengan ${DEVENGO_MES} días al mes`,
-            align: "right",
-            x: -8,
-            y: -6,
-            style: { color: COLOR.suave, fontSize: FS_CHICO },
-          },
+          name: "Días tomados",
+          data: meses.map((m) => m.punto),
+          color: COLOR.vigente,
         },
       ],
-    },
-    tooltip: { shared: true, pointFormat: "{series.name}: <b>{point.y} días</b><br>" },
-    // El año en curso manda; el anterior queda en gris, de referencia.
-    series: [
-      { name: "2026", data: TOMADOS[2026], color: COLOR.vigente },
-      { name: "2025", data: TOMADOS[2025], color: COLOR.previo },
-    ],
-  });
+    });
+  }
 
   Highcharts.chart("g-gerentes", {
     chart: { type: "column" },
