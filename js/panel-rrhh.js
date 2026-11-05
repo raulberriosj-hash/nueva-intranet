@@ -81,9 +81,10 @@
 
   const MESES_VENTANA = 12;
 
-  /* Arma la ventana: los últimos doce meses, con el de hoy al final. El año
-     solo se escribe en enero y en la primera columna; repetirlo en las doce
-     ensucia el eje sin agregar nada. */
+  /* Arma la ventana: los últimos doce meses, con el de hoy al final. Cada
+     columna lleva su año entero: con doce meses a la vista, dos de ellos de
+     años distintos, que una columna diga "Feb" a secas obliga a contar
+     hacia atrás hasta el último año escrito. */
   function ventanaTomados(hoy = new Date()) {
     const meses = [];
 
@@ -97,10 +98,7 @@
       const enCurso = anio === hoy.getFullYear() && mes === hoy.getMonth();
 
       meses.push({
-        etiqueta:
-          mes === 0 || meses.length === 0
-            ? `${MESES_CORTOS[mes]} ${String(anio).slice(2)}`
-            : MESES_CORTOS[mes],
+        etiqueta: `${MESES_CORTOS[mes]} ${anio}`,
         // Para el subtítulo, que es una frase y no cabe en tres letras
         largo: `${MESES_LARGOS[mes]} de ${anio}`,
         punto: { y: TOMADOS[clave] ?? null, enCurso },
