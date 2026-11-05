@@ -20,28 +20,23 @@
      SEGUIMIENTO DE VACACIONES · PLANTILLA PARA INTEGRAR
 
      Esto no es una pantalla suelta: es el bloque que se pega dentro de la
-     intranet que ya existe. Lo que va entre {{llaves}} son huecos para el
-     motor de plantillas. Lo que se repite va entre <!- - REPEAT - -> y
-     <!- - /REPEAT - ->: queda una sola fila de ejemplo y el backend la
-     multiplica.
+     intranet. Se copia todo lo que va entre ░░ INICIO ░░ y ░░ FIN ░░; el
+     menú, la cabecera y el título de la pantalla los pone la intranet.
 
-     QUÉ SE COPIA
-     Todo lo que está entre las marcas ░░ INICIO ░░ y ░░ FIN ░░. Nada más.
-     El menú lateral, la cabecera y el título de la pantalla los pone la
-     intranet; acá no van para no duplicarlos.
+     Lo que va entre {{llaves}} son huecos del motor de plantillas. Lo que se
+     repite va entre <!- - REPEAT - -> y <!- - /REPEAT - ->.
 
      LOS TRES ARCHIVOS
        css/seguimiento.css        se carga en el <head>
        js/seguimiento-datos.js    lo llena el backend · es el único que se toca
        js/seguimiento.js          gráficos, tabla y modal · no se toca
-     Los tres van juntos. Ver LEEME.md.
 
-     POR QUÉ NO CHOCA CON LA INTRANET
-       · Todo el CSS cuelga de .seg. Ninguna regla sale de ese contenedor y
-         ninguna hoja de la intranet entra: las reglas de acá tienen más peso
-         dentro del bloque.
-       · Las variables de color y tamaño se declaran en .seg, no en :root.
-       · Los id del HTML y los del sprite van con prefijo seg-.
+     NO CHOCA CON LA INTRANET: todo el CSS cuelga de .seg, las variables se
+     declaran ahí y no en :root, y los id llevan prefijo seg-.
+
+     QUÉ CAMBIÓ DESDE LA VERSIÓN ANTERIOR
+     Cada cambio está marcado con "NUEVO ·" donde ocurre. El resumen y los
+     pasos están en LEEME.md.
 
      HUECOS DEL HTML
        filtros.desde · filtros.hasta          fechas del rango consultado
@@ -51,24 +46,19 @@
        kpi.periodosAnteriores                 días de 2024 hacia atrás
        kpi.pendientes                         días sin tomar ni programar
        kpi.programadas                        días ya aprobados a futuro
-       tramo.alto · tramo.medio · tramo.bajo  colaboradores en cada tramo
        tramo.hoy                              colaboradores de vacaciones hoy
        anio.vigente · anio.vence              los dos años que abren las tablas
        fila.* (tabla de gerencias)            una fila por gerente de servicio
        total.*                                la fila de totales de esa tabla
        pie.gerentes · pie.colaboradores       el conteo del pie de la tabla
 
-     HUECOS DEL JS · van en js/seguimiento-datos.js
-       Los cuatro gráficos y la tabla "Saldo histórico por persona" se pintan
-       desde ese archivo. La tabla de gerencias no: son once filas y se
-       escriben acá, con el REPEAT.
+     Los demás números de los tramos ya no son huecos: salen de "personas".
 
      LO QUE FALTA POR CONECTAR
-       · El botón "Consultar" no manda el formulario: hoy no hay a dónde.
-         Envolverlo en el <form action> de la intranet o atender el submit.
-       · Los dos botones "Excel" no descargan nada todavía.
-       · El tramo "En vacaciones hoy" sale en cero: es el único dato que no
-         depende del saldo sino de quién está ausente en este momento.
+       · El botón "Consultar" no manda el formulario: no hay a dónde todavía.
+       · Los dos botones "Excel" no descargan nada.
+       · El tramo "En vacaciones hoy" es el único dato que no sale del saldo
+         sino de quién está ausente en este momento.
      ======================================================================== -->
 
     <!-- ░░░░░░░░░░░░░░░░░░░░ INICIO DEL BLOQUE ░░░░░░░░░░░░░░░░░░░░ -->
@@ -129,6 +119,19 @@
         />
         </g>
         </symbol>
+        <symbol id="seg-i-clock" viewBox="0 0 13 13" fill="none">
+        <g clip-path="url(#seg-clock-clip)">
+        <path
+        d="M6.5 3.24974V6.5H8.66684M11.9171 6.5C11.9171 9.49178 9.49178 11.9171 6.5 11.9171C3.50822 11.9171 1.0829 9.49178 1.0829 6.5C1.0829 3.50822 3.50822 1.0829 6.5 1.0829C9.49178 1.0829 11.9171 3.50822 11.9171 6.5Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        />
+        </g>
+        <defs>
+        <clipPath id="seg-clock-clip"><rect width="13" height="13" fill="white" /></clipPath>
+        </defs>
+        </symbol>
+
         <symbol id="seg-i-check" viewBox="0 0 16 16" fill="none">
         <path
         d="M3.5 8.5L6.5 11.5L12.5 4.5"
@@ -328,8 +331,11 @@
       <section class="l-section" aria-labelledby="seg-t-kpis">
         <h2 class="l-section__title" id="seg-t-kpis">Saldo de la empresa</h2>
 
+        <!-- NUEVO · el orden y los colores cambiaron: saldo total (azul),
+             programadas (verde), pendientes (amarillo), anteriores (rojo).
+             Los textos y los huecos son los mismos de antes. -->
         <div class="bi-kpis">
-          <article class="bi-kpi bi-kpi--neutro">
+          <article class="bi-kpi bi-kpi--vigente">
             <div class="bi-kpi__header">
               <span class="bi-kpi__bubble">
                 <svg class="c-icon c-icon--maleta" aria-hidden="true">
@@ -340,36 +346,6 @@
             </div>
             <p class="bi-kpi__valor">
               <span class="bi-kpi__n">{{kpi.saldoTotal}}</span
-              ><span class="bi-kpi__u">días</span>
-            </p>
-          </article>
-
-          <article class="bi-kpi bi-kpi--anterior">
-            <div class="bi-kpi__header">
-              <span class="bi-kpi__bubble">
-                <svg class="c-icon" aria-hidden="true">
-                  <use href="#seg-i-cross" />
-                </svg>
-              </span>
-              <h3 class="bi-kpi__label">Periodos anteriores</h3>
-            </div>
-            <p class="bi-kpi__valor">
-              <span class="bi-kpi__n">{{kpi.periodosAnteriores}}</span
-              ><span class="bi-kpi__u">días</span>
-            </p>
-          </article>
-
-          <article class="bi-kpi bi-kpi--vigente">
-            <div class="bi-kpi__header">
-              <span class="bi-kpi__bubble">
-                <svg class="c-icon" aria-hidden="true">
-                  <use href="#seg-i-calendar" />
-                </svg>
-              </span>
-              <h3 class="bi-kpi__label">Pendientes de utilizar</h3>
-            </div>
-            <p class="bi-kpi__valor">
-              <span class="bi-kpi__n">{{kpi.pendientes}}</span
               ><span class="bi-kpi__u">días</span>
             </p>
           </article>
@@ -388,49 +364,92 @@
               ><span class="bi-kpi__u">días</span>
             </p>
           </article>
+
+          <article class="bi-kpi bi-kpi--vence">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-calendar" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Pendientes de utilizar</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.pendientes}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
+
+          <article class="bi-kpi bi-kpi--anterior">
+            <div class="bi-kpi__header">
+              <span class="bi-kpi__bubble">
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#seg-i-cross" />
+                </svg>
+              </span>
+              <h3 class="bi-kpi__label">Periodos anteriores</h3>
+            </div>
+            <p class="bi-kpi__valor">
+              <span class="bi-kpi__n">{{kpi.periodosAnteriores}}</span
+              ><span class="bi-kpi__u">días</span>
+            </p>
+          </article>
         </div>
       </section>
 
       <!-- ============ TRAMOS DE SALDO ============
-         Cada tarjeta abre el modal del final, ya filtrado por ese tramo.
-         Los cortes (+31, 16-30, 0-15) están escritos en js/seguimiento.js. -->
+         NUEVO · los cuatro tramos cambiaron de orden, de rango y de
+         contenido. Van de menos a más grave y los cortes calzan con el
+         límite de 20 días de la empresa.
+
+           En vacaciones hoy  ·  0 a 20  ·  21 a 30  ·  +31
+
+         Las cifras de personas y de días sobre el límite ya NO son huecos:
+         las calcula js/seguimiento.js desde "personas". El único hueco que
+         queda es {{tramo.hoy}}, que no sale del saldo. -->
       <section class="l-section" aria-labelledby="seg-t-tramos">
         <h2 class="l-section__title" id="seg-t-tramos">
           Colaboradores por tramo de saldo
         </h2>
 
+        <!-- NUEVO · el objetivo de la empresa, dicho una vez y entero.
+             El botón abre el mismo modal con todos los que lo superan. -->
+        <p class="bi-limite">
+          <svg class="c-icon" aria-hidden="true"><use href="#seg-i-clock" /></svg>
+          <span class="bi-limite__texto">
+            <strong data-exceso-personas>0</strong> colaboradores superan el
+            límite de 20 días ·
+            <strong data-exceso-dias>0</strong> días por recuperar
+          </span>
+          <button
+            class="bi-limite__enlace"
+            type="button"
+            data-tramo="sobre"
+            data-abre="#seg-modal-tramo"
+          >
+            Ver el detalle
+            <svg class="c-icon" aria-hidden="true">
+              <use href="#seg-i-chevron-right" />
+            </svg>
+          </button>
+        </p>
+
         <div class="bi-tramos">
           <button
-            class="bi-tramo bi-tramo--alto"
+            class="bi-tramo bi-tramo--hoy"
             type="button"
-            data-tramo="alto"
+            data-tramo="hoy"
             data-abre="#seg-modal-tramo"
           >
             <span class="bi-tramo__cuerpo">
-              <span class="bi-tramo__rango">+31 días de saldo</span>
-              <span class="bi-tramo__label"
-                ><span class="bi-tramo__n">{{tramo.alto}}</span> Colaboradores</span
-              >
-            </span>
-            <span class="bi-tramo__pie">
-              Ver el detalle
-              <svg class="c-icon" aria-hidden="true">
-                <use href="#seg-i-chevron-right" />
-              </svg>
-            </span>
-          </button>
-
-          <button
-            class="bi-tramo bi-tramo--medio"
-            type="button"
-            data-tramo="medio"
-            data-abre="#seg-modal-tramo"
-          >
-            <span class="bi-tramo__cuerpo">
-              <span class="bi-tramo__rango">16 a 30 días de saldo</span>
-              <span class="bi-tramo__label"
-                ><span class="bi-tramo__n">{{tramo.medio}}</span> Colaboradores</span
-              >
+              <span class="bi-tramo__rango">En vacaciones hoy</span>
+              <span class="bi-tramo__tags">
+                <span class="bi-tramo__tag">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-user" /></svg>
+                  <span>{{tramo.hoy}}</span>
+                  <span class="u-visually-hidden">colaboradores</span>
+                </span>
+              </span>
             </span>
             <span class="bi-tramo__pie">
               Ver el detalle
@@ -447,10 +466,18 @@
             data-abre="#seg-modal-tramo"
           >
             <span class="bi-tramo__cuerpo">
-              <span class="bi-tramo__rango">0 a 15 días de saldo</span>
-              <span class="bi-tramo__label"
-                ><span class="bi-tramo__n">{{tramo.bajo}}</span> Colaboradores</span
-              >
+              <span class="bi-tramo__rango">0 a 20 días de saldo</span>
+              <span class="bi-tramo__tags">
+                <span class="bi-tramo__tag">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-user" /></svg>
+                  <span data-tramo-personas="bajo">0</span>
+                  <span class="u-visually-hidden">colaboradores</span>
+                </span>
+                <span class="bi-tramo__tag bi-tramo__tag--ok">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-check" /></svg>
+                  Dentro del límite
+                </span>
+              </span>
             </span>
             <span class="bi-tramo__pie">
               Ver el detalle
@@ -461,16 +488,52 @@
           </button>
 
           <button
-            class="bi-tramo bi-tramo--hoy"
+            class="bi-tramo bi-tramo--medio"
             type="button"
-            data-tramo="hoy"
+            data-tramo="medio"
             data-abre="#seg-modal-tramo"
           >
             <span class="bi-tramo__cuerpo">
-              <span class="bi-tramo__rango">En vacaciones hoy</span>
-              <span class="bi-tramo__label"
-                ><span class="bi-tramo__n">{{tramo.hoy}}</span> Colaboradores</span
-              >
+              <span class="bi-tramo__rango">21 a 30 días de saldo</span>
+              <span class="bi-tramo__tags">
+                <span class="bi-tramo__tag">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-user" /></svg>
+                  <span data-tramo-personas="medio">0</span>
+                  <span class="u-visually-hidden">colaboradores</span>
+                </span>
+                <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-clock" /></svg>
+                  <span data-tramo-exceso="medio">0</span> días sobre el límite
+                </span>
+              </span>
+            </span>
+            <span class="bi-tramo__pie">
+              Ver el detalle
+              <svg class="c-icon" aria-hidden="true">
+                <use href="#seg-i-chevron-right" />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="bi-tramo bi-tramo--alto"
+            type="button"
+            data-tramo="alto"
+            data-abre="#seg-modal-tramo"
+          >
+            <span class="bi-tramo__cuerpo">
+              <span class="bi-tramo__rango">+31 días de saldo</span>
+              <span class="bi-tramo__tags">
+                <span class="bi-tramo__tag">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-user" /></svg>
+                  <span data-tramo-personas="alto">0</span>
+                  <span class="u-visually-hidden">colaboradores</span>
+                </span>
+                <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                  <svg class="c-icon" aria-hidden="true"><use href="#seg-i-clock" /></svg>
+                  <span data-tramo-exceso="alto">0</span> días sobre el límite
+                </span>
+              </span>
             </span>
             <span class="bi-tramo__pie">
               Ver el detalle
@@ -513,7 +576,30 @@
         </section>
       </div>
 
-      <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============ -->
+      <!-- ============ GRÁFICO · DÍAS TOMADOS POR MES ============
+         NUEVO · tarjeta entera. Mira los días USADOS, no los pendientes.
+         La ventana son los últimos doce meses con el de hoy al final, y la
+         arma js/seguimiento.js desde "tomados". -->
+      <div class="bi-fila">
+        <section class="bi-card">
+          <header class="bi-card__head">
+            <div>
+              <h2 class="bi-card__title">Días tomados por mes</h2>
+              <p class="bi-card__sub">
+                Días efectivamente utilizados por mes del año
+              </p>
+            </div>
+          </header>
+          <div class="bi-card__body">
+            <div class="bi-plot bi-plot--alto" id="seg-g-tomados"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============
+         NUEVO · ahora es una línea por colaborador, no el total de
+         personas. Cambia el subtítulo, la altura y la forma del dato
+         en seguimiento-datos.js. -->
       <div class="bi-fila">
         <section class="bi-card">
           <header class="bi-card__head">
@@ -521,11 +607,13 @@
               <h2 class="bi-card__title">
                 Colaboradores con saldo de periodos anteriores
               </h2>
-              <p class="bi-card__sub">Evolución semanal</p>
+              <p class="bi-card__sub">
+                Evolución semanal · los ocho con más días
+              </p>
             </div>
           </header>
           <div class="bi-card__body">
-            <div class="bi-plot" id="seg-g-anteriores"></div>
+            <div class="bi-plot bi-plot--alto" id="seg-g-anteriores"></div>
           </div>
         </section>
       </div>
@@ -824,6 +912,12 @@
                   <th scope="col">
                     <button class="bi-orden" type="button" data-orden="5">
                       Total días disponibles
+                    </button>
+                  </th>
+                  <!-- NUEVO · columna de exceso sobre el límite -->
+                  <th scope="col">
+                    <button class="bi-orden" type="button" data-orden="6">
+                      Sobre el límite
                     </button>
                   </th>
                 </tr>

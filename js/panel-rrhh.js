@@ -633,7 +633,7 @@
     ordenables.forEach((b) =>
       b.addEventListener("click", () => {
         const col = Number(b.dataset.orden);
-        dir = orden === col ? -dir : col === 5 ? -1 : 1;
+        dir = orden === col ? -dir : col >= 5 ? -1 : 1;
         orden = col;
         ordenables.forEach((o) => delete o.dataset.dir);
         b.dataset.dir = dir === 1 ? "asc" : "desc";

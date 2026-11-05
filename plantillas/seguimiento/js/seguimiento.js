@@ -3,8 +3,9 @@
 
    Este archivo no se toca: los datos están en seguimiento-datos.js.
 
-   Hace tres cosas:
-     · dibuja los cuatro gráficos (Highcharts),
+   Hace cuatro cosas:
+     · dibuja los cinco gráficos (Highcharts),
+     · escribe las cifras de los tramos y de la línea del límite,
      · pinta y pagina la tabla "Saldo histórico por persona",
      · arma el modal que abren las tarjetas de tramo.
 
@@ -166,13 +167,25 @@
 
   /* --- Modal de un tramo ------------------------------------------------ */
 
-  // Los cortes son los mismos que muestran las cuatro tarjetas. "hoy" no
-  // depende del saldo sino de quién está ausente en este momento, así que
-  // hoy por hoy sale vacío: ese dato todavía no llega.
+  // NUEVO · el techo que persigue la empresa. Está solo acá: el día que
+  // RRHH lo baje a 15, se cambia esta línea y se mueven las tarjetas, los
+  // modales y la línea del límite.
+  const LIMITE = 20;
+
+  // Lo que a una persona le sobra por encima del límite
+  const exceso = (t) => Math.max(0, t - LIMITE);
+
+  // NUEVO · cortes nuevos, y "sobre" es el tramo que abre la línea del
+  // límite. "hoy" no depende del saldo sino de quién está ausente en este
+  // momento, así que ese dato no sale de acá.
   const TRAMOS = {
     alto: { sub: "Más de 31 días de vacaciones pendientes", filtra: (t) => t >= 31 },
-    medio: { sub: "16 a 30 días de vacaciones pendientes", filtra: (t) => t >= 16 && t <= 30 },
-    bajo: { sub: "0 a 15 días de vacaciones pendientes", filtra: (t) => t >= 1 && t <= 15 },
+    medio: { sub: "21 a 30 días de vacaciones pendientes", filtra: (t) => t >= 21 && t <= 30 },
+    bajo: { sub: "0 a 20 días de vacaciones pendientes", filtra: (t) => t >= 1 && t <= LIMITE },
+    sobre: {
+      sub: `Colaboradores sobre el límite de ${LIMITE} días`,
+      filtra: (t) => t > LIMITE,
+    },
     hoy: {
       sub: "Colaboradores en vacaciones hoy",
       filtra: () => false,
@@ -180,6 +193,34 @@
       vacioTexto: "Cuando haya vacaciones en curso, acá aparece quién las está tomando.",
     },
   };
+
+  /* NUEVO · las cifras de las tarjetas y de la línea del límite se calculan
+     acá, desde "personas", y ya no son huecos del HTML: así la tarjeta y el
+     modal que abre esa tarjeta no pueden decir cosas distintas.
+     "hoy" se salta a propósito: ese número lo escribe {{tramo.hoy}}. */
+  (function pintaTramos() {
+    const saldos = PERSONAS.map(total);
+
+    const escribe = (sel, n) => {
+      const el = $(sel);
+      if (el) el.textContent = cifra(n);
+    };
+
+    Object.keys(TRAMOS)
+      .filter((clave) => clave !== "hoy")
+      .forEach((clave) => {
+        const grupo = saldos.filter(TRAMOS[clave].filtra);
+        escribe(`[data-tramo-personas="${clave}"]`, grupo.length);
+        escribe(
+          `[data-tramo-exceso="${clave}"]`,
+          grupo.reduce((a, t) => a + exceso(t), 0),
+        );
+      });
+
+    const sobre = saldos.filter(TRAMOS.sobre.filtra);
+    escribe("[data-exceso-personas]", sobre.length);
+    escribe("[data-exceso-dias]", sobre.reduce((a, t) => a + exceso(t), 0));
+  })();
 
   const modal = $("#seg-modal-tramo");
 
@@ -194,8 +235,12 @@
     const pager = $(".c-pagination", modal);
     const ordenables = $$("[data-orden]", modal);
 
-    // Fila plana, en el orden de las columnas del modal
-    const plana = (p) => [p[0], p[1], p[2], p[3], AREAS[p[4]], total(p)];
+    // Fila plana, en el orden de las columnas del modal. NUEVO · la última
+    // es el exceso sobre el límite.
+    const plana = (p) => {
+      const t = total(p);
+      return [p[0], p[1], p[2], p[3], AREAS[p[4]], t, exceso(t)];
+    };
 
     let base = [];   // el tramo elegido, ya aplanado
     let vista = [];  // lo que queda tras buscar y ordenar
@@ -248,12 +293,20 @@
       }
 
       cuerpo.innerHTML = trozo
-        .map(
-          (f) => `<tr>
+        .map((f) => {
+          // NUEVO · quien pasa del límite va con el total en rojo y su
+          // exceso al lado; el que no, con una raya.
+          const pasado = f[6] > 0;
+          const clase = pasado ? " bi-celda--pasado" : "";
+          const sobra = pasado
+            ? `<span class="bi-celda bi-celda--exceso">+${cifra(f[6])}</span>`
+            : `<span class="bi-celda__nada">—</span>`;
+          return `<tr>
             <td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td>
-            <td><span class="bi-celda bi-celda--total">${cifra(f[5])}</span></td>
-          </tr>`,
-        )
+            <td><span class="bi-celda bi-celda--total${clase}">${cifra(f[5])}</span></td>
+            <td>${sobra}</td>
+          </tr>`;
+        })
         .join("");
 
       notaModal.textContent = `Mostrando ${desde + 1} a ${desde + trozo.length} de ${cifra(
@@ -270,10 +323,12 @@
       sub.textContent = t.sub;
       base = PERSONAS.filter((p) => t.filtra(total(p))).map(plana);
       buscador.value = "";
-      orden = 5;
+      // NUEVO · donde hay gente sobre el límite, lo primero que RRHH necesita
+      // ver es a quién más le sobra; en los demás tramos ordena como siempre.
+      orden = base.some((f) => f[6] > 0) ? 6 : 5;
       dir = -1;
       ordenables.forEach((b) => delete b.dataset.dir);
-      $('[data-orden="5"]', modal).dataset.dir = "desc";
+      $(`[data-orden="${orden}"]`, modal).dataset.dir = "desc";
       filtra();
       pinta();
     };
@@ -304,7 +359,7 @@
     ordenables.forEach((b) =>
       b.addEventListener("click", () => {
         const col = Number(b.dataset.orden);
-        dir = orden === col ? -dir : col === 5 ? -1 : 1;
+        dir = orden === col ? -dir : col >= 5 ? -1 : 1;
         orden = col;
         ordenables.forEach((o) => delete o.dataset.dir);
         b.dataset.dir = dir === 1 ? "asc" : "desc";
@@ -336,6 +391,7 @@
   };
 
   const COLOR = {
+    vigente: tok("--c-corporate-600"),
     vence: tok("--c-warning-500"),
     anterior: tok("--c-error-500"),
     efectivo: tok("--c-success-600"),
@@ -450,16 +506,67 @@
     ],
   });
 
+  // NUEVO · una línea por colaborador en vez del total de personas
   Highcharts.chart("seg-g-anteriores", {
-    chart: { type: "areaspline" },
+    chart: { type: "line" },
     xAxis: { categories: DATOS.anteriores.semanas },
-    legend: { enabled: false },
-    tooltip: { pointFormat: "<b>{point.y} personas</b>" },
+    yAxis: { labels: { format: "{value}" } },
+    legend: { align: "center", verticalAlign: "bottom", maxHeight: 72 },
+    tooltip: { shared: true, pointFormat: "{series.name}: <b>{point.y} días</b><br>" },
     plotOptions: {
-      areaspline: { fillOpacity: 0.12, lineWidth: 2, marker: { radius: 3 } },
+      series: {
+        // Van todas en la misma franja de días: sin atenuar las demás al
+        // pasar el cursor no se distinguen.
+        states: { inactive: { opacity: 0.2 } },
+        marker: { radius: 3 },
+        dataLabels: {
+          enabled: true,
+          style: { fontSize: FS_CHICO, fontWeight: PESO_BOLD, color: COLOR.suave, textOutline: "none" },
+          // Solo el último punto: rotular cada semana tapa el dibujo
+          formatter() {
+            return this.point.index === DATOS.anteriores.semanas.length - 1 ? this.y : null;
+          },
+        },
+      },
     },
-    series: [{ name: "Colaboradores", data: DATOS.anteriores.personas, color: COLOR.anterior }],
+    series: DATOS.anteriores.series,
   });
+
+  /* NUEVO · días tomados por mes. La ventana se mueve con el calendario: los
+     últimos doce meses, con el de hoy al final. Por eso el backend manda un
+     objeto con clave "AAAA-MM" y no una lista de doce: así el gráfico sigue
+     bien aunque la página se abra el mes que viene. El último mes va
+     incompleto —es el que se está viviendo— y el tooltip lo dice. */
+  {
+    const MESES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    const hoy = new Date();
+    const tomados = DATOS.tomados || {};
+    const meses = [];
+
+    for (let i = 11; i >= 0; i--) {
+      // Día 1: restar meses desde el día de hoy se pasa de largo en los
+      // meses cortos (31 de marzo menos un mes cae en el 3 de marzo).
+      const f = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+      const clave = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`;
+      meses.push({
+        etiqueta: `${MESES[f.getMonth()]} ${f.getFullYear()}`,
+        punto: { y: tomados[clave] ?? null, enCurso: i === 0 },
+      });
+    }
+
+    Highcharts.chart("seg-g-tomados", {
+      chart: { type: "column" },
+      xAxis: { categories: meses.map((m) => m.etiqueta) },
+      yAxis: { labels: { format: "{value}" } },
+      legend: { enabled: false },
+      tooltip: {
+        pointFormatter() {
+          return `<b>${this.y} días</b>${this.options.enCurso ? " · mes en curso" : ""}`;
+        },
+      },
+      series: [{ name: "Días tomados", data: meses.map((m) => m.punto), color: COLOR.vigente }],
+    });
+  }
 
   Highcharts.chart("seg-g-gerentes", {
     chart: { type: "column" },

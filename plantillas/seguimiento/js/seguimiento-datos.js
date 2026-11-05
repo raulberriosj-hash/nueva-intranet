@@ -9,21 +9,39 @@
    válido y la pantalla no dibuja nada: es a propósito, así no se publica a
    medias.
 
-   Los cuatro gráficos y la tabla "Saldo histórico por persona" salen de acá.
-   La tabla de gerencias no: esa va escrita en el HTML, con su REPEAT.
+   Los cinco gráficos, la tabla "Saldo histórico por persona" y las cifras de
+   los cuatro tramos salen de acá. La tabla de gerencias no: esa va escrita
+   en el HTML, con su REPEAT.
 
-   Qué NO va en este archivo: los indicadores de arriba, los cuatro tramos y
-   la tabla de gerencias. Esos son huecos del HTML.
+   QUÉ CAMBIÓ DESDE LA VERSIÓN ANTERIOR
+     · "anteriores" cambió de forma: ahora son series por colaborador.
+     · "tomados" es nuevo.
+     · Los tramos ya no se mandan por el HTML: se calculan desde "personas".
+   Lo demás se queda igual.
    ========================================================================== */
 
 window.SEGUIMIENTO = {
-  /* Colaboradores con saldo de periodos anteriores, semana a semana.
-     Las dos listas tienen el mismo largo y el mismo orden.
-     Ejemplo:  { semanas: ["Sem 31", "Sem 32"], personas: [231, 236] }        */
+  /* CAMBIÓ · Saldo de periodos anteriores semana a semana, una serie por
+     colaborador. Antes era un solo número de personas por semana.
+
+     Los ocho con más días viejos bastan: con más, el gráfico no se lee.
+     "data" tiene un número por semana, en el orden de "semanas".
+     Ejemplo:
+       { semanas: ["26/10", "02/11"], series: [{ name: "…", data: [59, 58] }] } */
   anteriores: {
     semanas: {{anteriores.semanas}},
-    personas: {{anteriores.personas}},
+    series: {{anteriores.series}},
   },
+
+  /* NUEVO · Días efectivamente tomados, mes a mes. Es lo contrario del
+     saldo: lo que la gente SÍ usó.
+
+     Es un objeto con clave "AAAA-MM", no una lista de doce, porque la
+     ventana se mueve sola con el calendario: el gráfico toma los últimos
+     doce meses contando el de hoy. Mandar unos cuantos meses de más no
+     molesta; los que falten salen vacíos.
+     Ejemplo:  { "2026-10": 505, "2026-11": 118 }                            */
+  tomados: {{tomados}},
 
   /* Evolución semanal de vacaciones, por fecha de ingreso de la solicitud.
      Tres listas del mismo largo: la etiqueta de la semana, los días ya

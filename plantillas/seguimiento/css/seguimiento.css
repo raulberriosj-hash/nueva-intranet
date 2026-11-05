@@ -931,6 +931,14 @@
   --tile-value: var(--color-danger-text);
 }
 
+/* NUEVO · lo usa "Pendientes de utilizar" */
+.seg .bi-kpi--vence {
+  --tile-bg: var(--color-warning-bg);
+  --tile-border: var(--color-warning-border);
+  --tile-accent: var(--c-warning-700);
+  --tile-value: var(--color-warning-text);
+}
+
 .seg .bi-kpi--vigente {
   --tile-bg: var(--color-info-bg);
   --tile-border: var(--color-info-border);
@@ -999,18 +1007,44 @@
   color: var(--tile-value);
 }
 
-.seg .bi-tramo__label {
-  display: block;
-  margin-top: var(--space-2);
-  font-size: var(--fs-base);
+/* NUEVO · reemplazan a .bi-tramo__label y .bi-tramo__n, que ya no se usan.
+   Dos pastillas por tarjeta: cuánta gente cae en el tramo y cuántos días le
+   sobran al tramo entero. */
+.seg .bi-tramo__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.seg .bi-tramo__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--fs-xs);
   font-weight: var(--fw-regular);
   line-height: 1.35;
   color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-md);
 }
 
-.seg .bi-tramo__n {
+.seg .bi-tramo__tag .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: var(--tile-accent);
+}
+
+.seg .bi-tramo__tag span {
   font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
+}
+
+/* En la tarjeta verde el exceso sería siempre cero: va la confirmación */
+.seg .bi-tramo__tag--ok {
+  color: var(--tile-accent);
 }
 
 .seg .bi-tramo__pie {
@@ -1063,6 +1097,71 @@
   --tile-border: var(--color-info-border);
   --tile-accent: var(--color-info-accent);
   --tile-value: var(--color-info-text);
+}
+
+/* ==========================================================================
+   NUEVO · LA LÍNEA DEL LÍMITE
+   El objetivo de la empresa dicho una vez, encima de las tarjetas. Amarillo
+   de aviso y no rojo: es una meta, no una alarma.
+   ========================================================================== */
+
+.seg .bi-limite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-warning-text);
+  background-color: var(--color-warning-bg-soft);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-lg);
+}
+
+.seg .bi-limite > .c-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--c-warning-700);
+}
+
+.seg .bi-limite__texto {
+  flex: 1;
+  min-width: 0;
+}
+
+/* En teléfono el enlace baja entero a su propia línea en vez de partir la
+   frase por la mitad */
+@media (max-width: 639px) {
+  .seg .bi-limite__texto {
+    flex-basis: 0;
+  }
+
+  .seg .bi-limite__enlace {
+    flex-basis: 100%;
+  }
+}
+
+.seg .bi-limite strong {
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.seg .bi-limite__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--c-warning-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.seg .bi-limite__enlace .c-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  color: inherit;
 }
 
 .seg .bi-fila {
@@ -1228,6 +1327,22 @@
   --celda-bg: transparent;
   --celda-text: var(--color-text-secondary);
   font-weight: var(--fw-regular);
+}
+
+/* NUEVO · quien pasa del límite se marca dos veces en la misma fila del
+   modal: el total en rojo y, al lado, los días que le sobran. */
+.seg .bi-celda--pasado,
+.seg .bi-celda--exceso {
+  --celda-bg: var(--c-error-100);
+  --celda-text: var(--c-error-800);
+}
+
+/* A quien no le sobra nada no se le deja la celda en blanco */
+.seg .bi-celda__nada {
+  display: inline-block;
+  min-width: 46px;
+  text-align: right;
+  color: var(--color-text-secondary);
 }
 
 .seg .bi-pie {
