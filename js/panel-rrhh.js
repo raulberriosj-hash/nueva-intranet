@@ -74,11 +74,6 @@
     "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
   ];
 
-  const MESES_LARGOS = [
-    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
-  ];
-
   const MESES_VENTANA = 12;
 
   /* Arma la ventana: los últimos doce meses, con el de hoy al final. Cada
@@ -99,8 +94,6 @@
 
       meses.push({
         etiqueta: `${MESES_CORTOS[mes]} ${anio}`,
-        // Para el subtítulo, que es una frase y no cabe en tres letras
-        largo: `${MESES_LARGOS[mes]} de ${anio}`,
         punto: { y: TOMADOS[clave] ?? null, enCurso },
       });
     }
@@ -265,12 +258,6 @@
 
   {
     const meses = ventanaTomados();
-    const sub = document.querySelector("[data-tomados-sub]");
-    if (sub) {
-      sub.textContent =
-        `Días efectivamente usados desde ${meses[0].largo} · ` +
-        "el mes en curso va incompleto";
-    }
 
     Highcharts.chart("g-tomados", {
       chart: { type: "column" },
