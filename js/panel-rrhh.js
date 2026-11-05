@@ -19,9 +19,22 @@
      DATOS  ·  reemplazar por la respuesta del backend
      ====================================================================== */
 
+  // Saldo de periodos anteriores —2024 y hacia atrás— persona por persona:
+  // una serie por colaborador y un punto por semana. Son los ocho que más
+  // arrastran de los 264 que tienen días viejos, porque 264 líneas no se
+  // dibujan. El último punto de cada serie es lo que hoy dice la tabla.
   const ANTERIORES = {
-    semanas: ["Sem 31", "Sem 32", "Sem 33", "Sem 34", "Sem 35", "Sem 36", "Sem 37", "Sem 38"],
-    personas: [231, 236, 240, 243, 249, 252, 258, 264],
+    semanas: ["14/09", "21/09", "28/09", "05/10", "12/10", "19/10", "26/10", "02/11"],
+    series: [
+      { name: "Tomás Eduardo Alarcón Quintana", data: [64, 64, 63, 62, 61, 60, 59, 59] },
+      { name: "Elisa Margarita Olivares Pinto", data: [71, 69, 67, 66, 64, 62, 60, 59] },
+      { name: "Diego Armando Cornejo Barrientos", data: [62, 62, 61, 61, 60, 60, 59, 59] },
+      { name: "Gabriela Nicole Tapia Riveros", data: [59, 59, 59, 59, 59, 59, 59, 59] },
+      { name: "Cristián Mauricio Carrasco Garrido", data: [66, 65, 64, 63, 62, 61, 60, 59] },
+      { name: "Rodrigo Alberto Fierro Fuentealba", data: [68, 66, 64, 63, 61, 60, 59, 58] },
+      { name: "Javiera Belén Verdugo Olivares", data: [60, 59, 58, 57, 56, 55, 54, 53] },
+      { name: "Constanza Elena Sandoval Araya", data: [57, 56, 56, 55, 55, 54, 54, 53] },
+    ],
   };
 
   const SEMANAL = {
@@ -213,18 +226,29 @@
      ====================================================================== */
 
   Highcharts.chart("g-anteriores", {
-    chart: { type: "areaspline" },
+    chart: { type: "line" },
     xAxis: { categories: ANTERIORES.semanas },
-    legend: { enabled: false },
-    tooltip: { pointFormat: "<b>{point.y} personas</b>" },
+    yAxis: { labels: { format: "{value}" } },
+    legend: { align: "center", verticalAlign: "bottom", maxHeight: 72 },
+    tooltip: { shared: true, pointFormat: "{series.name}: <b>{point.y} días</b><br>" },
     plotOptions: {
-      areaspline: {
-        fillOpacity: 0.12,
-        lineWidth: 2,
+      series: {
+        // Al pasar el cursor por una línea, las otras siete se atenúan: van
+        // todas en la misma franja de días y si no, no se distinguen.
+        states: { inactive: { opacity: 0.2 } },
         marker: { radius: 3 },
+        dataLabels: {
+          enabled: true,
+          style: { fontSize: FS_CHICO, fontWeight: PESO_BOLD, color: COLOR.suave, textOutline: "none" },
+          // Solo el último punto: ocho series rotuladas semana a semana
+          // tapan el dibujo entero.
+          formatter() {
+            return this.point.index === ANTERIORES.semanas.length - 1 ? this.y : null;
+          },
+        },
       },
     },
-    series: [{ name: "Colaboradores", data: ANTERIORES.personas, color: COLOR.anterior }],
+    series: ANTERIORES.series,
   });
 
   Highcharts.chart("g-top10", {

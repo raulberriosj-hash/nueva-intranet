@@ -720,7 +720,10 @@
             </section>
           </div>
 
-          <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============ -->
+          <!-- ============ GRÁFICO · PERIODOS ANTERIORES ============
+             Una línea por colaborador, no el total de personas: se sigue
+             cómo baja el saldo viejo de cada uno. Las series las arma
+             js/panel-rrhh.js. -->
           <div class="bi-fila">
             <section class="bi-card">
               <header class="bi-card__head">
@@ -728,11 +731,13 @@
                   <h2 class="bi-card__title">
                     Colaboradores con saldo de periodos anteriores
                   </h2>
-                  <p class="bi-card__sub">Evolución semanal</p>
+                  <p class="bi-card__sub">
+                    Evolución semanal · los ocho con más días
+                  </p>
                 </div>
               </header>
               <div class="bi-card__body">
-                <div class="bi-plot" id="g-anteriores"></div>
+                <div class="bi-plot bi-plot--alto" id="g-anteriores"></div>
               </div>
             </section>
           </div>
