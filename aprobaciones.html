@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/sistema/03-layout.css" />
     <link rel="stylesheet" href="css/sistema/04-components.css" />
     <link rel="stylesheet" href="css/sistema/05-sidebar.css" />
+    <link rel="stylesheet" href="css/sistema/06-tramos.css" />
     <link rel="stylesheet" href="css/pantallas/aprobaciones.css" />
   </head>
 
@@ -194,6 +195,145 @@
         </header>
 
         <main class="l-body" id="contenido">
+          <!-- ============ SALDO DEL EQUIPO ============
+             Los mismos tiles del panel de RRHH —css/sistema/06-tramos.css—
+             pero acotados a los colaboradores de esta jefatura. Las cifras
+             las calcula js/aprobaciones.js desde EQUIPO: acá van en cero
+             para que no haya dos verdades si el dato cambia. -->
+          <section class="l-section" aria-labelledby="t-saldo">
+            <h2 class="l-section__title" id="t-saldo">Saldo de tu equipo</h2>
+
+            <p class="bi-limite">
+              <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+              <span class="bi-limite__texto">
+                <strong data-exceso-personas>0</strong> de tus colaboradores
+                superan el límite de 20 días ·
+                <strong data-exceso-dias>0</strong> días por recuperar
+              </span>
+              <button
+                class="bi-limite__enlace"
+                type="button"
+                data-tramo="sobre"
+                data-abre="#modal-equipo"
+              >
+                Ver el detalle
+                <svg class="c-icon" aria-hidden="true">
+                  <use href="#i-chevron-right" />
+                </svg>
+              </button>
+            </p>
+
+            <div class="bi-tramos">
+              <button
+                class="bi-tramo bi-tramo--hoy"
+                type="button"
+                data-tramo="hoy"
+                data-abre="#modal-equipo"
+              >
+                <span class="bi-tramo__cuerpo">
+                  <span class="bi-tramo__rango">En vacaciones hoy</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="hoy">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                  </span>
+                </span>
+                <span class="bi-tramo__pie">
+                  Ver el detalle
+                  <svg class="c-icon" aria-hidden="true">
+                    <use href="#i-chevron-right" />
+                  </svg>
+                </span>
+              </button>
+
+              <button
+                class="bi-tramo bi-tramo--bajo"
+                type="button"
+                data-tramo="bajo"
+                data-abre="#modal-equipo"
+              >
+                <span class="bi-tramo__cuerpo">
+                  <span class="bi-tramo__rango">0 a 20 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="bajo">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--ok">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-check" /></svg>
+                      Dentro del límite
+                    </span>
+                  </span>
+                </span>
+                <span class="bi-tramo__pie">
+                  Ver el detalle
+                  <svg class="c-icon" aria-hidden="true">
+                    <use href="#i-chevron-right" />
+                  </svg>
+                </span>
+              </button>
+
+              <button
+                class="bi-tramo bi-tramo--medio"
+                type="button"
+                data-tramo="medio"
+                data-abre="#modal-equipo"
+              >
+                <span class="bi-tramo__cuerpo">
+                  <span class="bi-tramo__rango">21 a 30 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="medio">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+                      <span data-tramo-exceso="medio">0</span> días sobre el límite
+                    </span>
+                  </span>
+                </span>
+                <span class="bi-tramo__pie">
+                  Ver el detalle
+                  <svg class="c-icon" aria-hidden="true">
+                    <use href="#i-chevron-right" />
+                  </svg>
+                </span>
+              </button>
+
+              <button
+                class="bi-tramo bi-tramo--alto"
+                type="button"
+                data-tramo="alto"
+                data-abre="#modal-equipo"
+              >
+                <span class="bi-tramo__cuerpo">
+                  <span class="bi-tramo__rango">+31 días de saldo</span>
+                  <span class="bi-tramo__tags">
+                    <span class="bi-tramo__tag">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-user" /></svg>
+                      <span data-tramo-personas="alto">0</span>
+                      <span class="u-visually-hidden">colaboradores</span>
+                    </span>
+                    <span class="bi-tramo__tag bi-tramo__tag--exceso">
+                      <svg class="c-icon" aria-hidden="true"><use href="#i-clock" /></svg>
+                      <span data-tramo-exceso="alto">0</span> días sobre el límite
+                    </span>
+                  </span>
+                </span>
+                <span class="bi-tramo__pie">
+                  Ver el detalle
+                  <svg class="c-icon" aria-hidden="true">
+                    <use href="#i-chevron-right" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </section>
+
           <!-- Tabla de solicitudes -->
           <section class="l-section" aria-labelledby="t-solicitudes">
             <div class="c-sectionhead">
@@ -852,9 +992,52 @@
       </div>
     </dialog>
 
+    <!-- ============ MODAL · DETALLE DE UN TRAMO ============
+       Lo abren las cuatro tarjetas y la línea del límite. El equipo de una
+       jefatura son unas pocas personas, así que acá no hay buscador ni
+       paginación: la lista entera cabe de una vez. Las filas las pinta
+       js/aprobaciones.js. -->
+    <dialog class="c-modal" id="modal-equipo" aria-labelledby="modal-equipo-titulo">
+      <div class="c-modal__header">
+        <div>
+          <h2 class="c-modal__title" id="modal-equipo-titulo">Detalle de tu equipo</h2>
+          <p class="s-aprob__modalSub" data-equipo-sub></p>
+        </div>
+        <button class="c-closebtn" type="button" data-cierra aria-label="Cerrar">
+          <svg class="c-icon" aria-hidden="true"><use href="#i-cross" /></svg>
+        </button>
+      </div>
+
+      <div class="c-modal__body">
+        <table class="c-table s-aprob__tablaEquipo" data-equipo-caja hidden>
+          <caption class="u-visually-hidden">
+            Colaboradores del tramo elegido
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Colaborador</th>
+              <th scope="col" class="c-table__dias">Días de saldo</th>
+              <th scope="col" class="c-table__dias">Sobre el límite</th>
+            </tr>
+          </thead>
+          <tbody data-equipo-filas></tbody>
+        </table>
+
+        <div class="c-empty c-empty--compact" data-equipo-vacio hidden>
+          <span class="c-empty__bubble">
+            <svg class="c-icon" aria-hidden="true"><use href="#i-check" /></svg>
+          </span>
+          <p class="c-empty__title" data-equipo-vacio-titulo></p>
+          <p class="c-empty__text" data-equipo-vacio-texto></p>
+        </div>
+      </div>
+    </dialog>
+
     <!-- Desplegables, calendario, diálogos y sidebar. Sin dependencias
      ni datos: va tal cual a producción. -->
     <script src="js/sidebar.js" defer></script>
     <script src="js/componentes.js" defer></script>
+    <!-- Los tiles de saldo del equipo. Es el único con datos de muestra. -->
+    <script src="js/aprobaciones.js" defer></script>
   </body>
 </html>

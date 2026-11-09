@@ -44,3 +44,44 @@
   .s-aprob__acciones { justify-content: stretch; }
   .s-aprob__acciones .c-btn { flex: 1; }
 }
+
+/* ==========================================================================
+   MODAL DEL SALDO DEL EQUIPO
+   Los tiles vienen de 06-tramos.css. Acá solo lo propio del modal que abren.
+   ========================================================================== */
+
+.s-aprob__modalSub {
+  margin-top: var(--space-1);
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.s-aprob__tablaEquipo {
+  margin-top: var(--space-2);
+}
+
+/* Quien pasa del límite se marca en rojo, igual que en el panel de RRHH */
+.s-aprob__exceso {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-error-800);
+  background-color: var(--c-error-100);
+  border-radius: var(--radius-md);
+}
+
+/* A quien no le sobra nada no se le deja la celda en blanco */
+.s-aprob__nada {
+  color: var(--color-text-secondary);
+}
+
+/* En teléfono la tabla se apila y la celda queda estrecha: el nombre de la
+   persona, que es lo que se viene a ver, se parte en dos líneas en vez de
+   cortarse con puntos suspensivos. */
+@media (max-width: 767px) {
+  .s-aprob__tablaEquipo .c-persona__nombre {
+    overflow: visible;
+    white-space: normal;
+  }
+}
