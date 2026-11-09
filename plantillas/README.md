@@ -19,10 +19,7 @@ prototipo. Están acá para quien las busque.
 
 - `mis-vacaciones.html` — solicitud de vacaciones del colaborador
 - `informe-colaborador.html` — informe de un colaborador
+- `aprobaciones.html` — solicitudes del equipo, para la jefatura
 - `seguimiento/` — el panel de RRHH, con su propio CSS, sus datos y su
   LEEME.md. Es la única que va en carpeta aparte: se monta dentro de la
   intranet que ya existe y no se puede pisar con sus estilos.
-
-## Qué falta
-
-La de `aprobaciones.html`.

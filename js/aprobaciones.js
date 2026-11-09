@@ -13,16 +13,19 @@
   "use strict";
 
   /* ======================================================================
-     DATOS  ·  reemplazar por la respuesta del backend
+     DATOS
 
      Una fila por colaborador a cargo:
        [nombre, área, [días por periodo, del más nuevo al más viejo], hoy]
 
      "hoy" es si está de vacaciones en este momento. No sale del saldo: una
      persona puede estar fuera y tener días pendientes igual.
+
+     En producción las filas llegan en window.EQUIPO —ver la plantilla—. El
+     arreglo de acá abajo es solo para que la maqueta se vea con datos.
      ====================================================================== */
 
-  const EQUIPO = [
+  const MUESTRA = [
     ["María Fernanda Valenzuela", "Operaciones", [0, 4, 15, 15], false],
     ["Ignacio Mella Peñaloza", "Operaciones", [0, 1, 15, 15], false],
     ["Andrés Silva", "Infraestructura", [2, 10, 15, 0], false],
@@ -33,6 +36,8 @@
     ["Paula Riquelme", "Infraestructura", [6, 0, 0, 0], false],
     ["Tomás Vergara", "Desarrollo", [0, 0, 0, 0], true],
   ];
+
+  const EQUIPO = window.EQUIPO || MUESTRA;
 
   /* ======================================================================
      TRAMOS
