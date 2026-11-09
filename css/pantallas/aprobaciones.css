@@ -3,6 +3,12 @@
    Lo exclusivo de esta vista. Solo la carga jefatura.html.
    ========================================================================== */
 
+/* Con un solo contador, la píldora va pegada al título y no en el otro
+   extremo de la fila: el título deja de estirarse. */
+.s-aprob__head .c-sectionhead__title {
+  flex: 0 1 auto;
+}
+
 /* La tabla de aprobaciones tiene seis columnas y no pesan lo mismo:
    el nombre necesita aire y los días casi nada. */
 .s-aprob__col--persona   { width: 23%; }
